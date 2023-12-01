@@ -42,10 +42,11 @@ public class ServiceEventosImpl implements ServiceEventos {
 
 	@Override
 	public Optional<List<Evento>> findByNombre(String name) {
-
+		
 	    List<Evento> eventos = repository.findByNombre(name).orElseThrow(EventoNotFoundException::new);
 	    
 	    return Optional.ofNullable(eventos);
+
 	}
 	
 	

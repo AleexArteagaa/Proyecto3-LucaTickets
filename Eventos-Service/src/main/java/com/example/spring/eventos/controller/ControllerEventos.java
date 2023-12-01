@@ -70,6 +70,7 @@ public class ControllerEventos {
 	Evento evento;
 	
 	@GetMapping()
+
     public List<EventoDTO> eventoList() {
         final List<Evento> all = serviceEventos.findAll();
         return adapter.of(all);
@@ -80,7 +81,6 @@ public class ControllerEventos {
         final List<Evento> all = serviceEventos.findByNombre();
         return adapter.of(all);
     }
-	
 	
 	
 }

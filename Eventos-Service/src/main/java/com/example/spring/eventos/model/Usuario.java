@@ -1,6 +1,5 @@
 package com.example.spring.eventos.model;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -29,8 +28,8 @@ public class Usuario {
     @Column(name = "mail", unique = true, nullable = false)
     private String mail;
 
-    @Column(name = "contraseña", nullable = false)
-    private String contraseña;
+    @Column(name = "contrasenia", nullable = false)
+    private String contrasenia;
 
     @Column(name = "fecha_alta", nullable = false)
     private LocalDate fechaAlta;
@@ -40,11 +39,11 @@ public class Usuario {
 		super();
 	}
 
-    public Usuario(String nombre, String apellido, String mail, String contraseña, LocalDate fechaAlta) {
+    public Usuario(String nombre, String apellido, String mail, String contrasenia, LocalDate fechaAlta) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.mail = mail;
-        this.contraseña = contraseña;
+        this.contrasenia = contrasenia;
         this.fechaAlta = fechaAlta;
     }
 
@@ -80,12 +79,13 @@ public class Usuario {
 		this.mail = mail;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+
+	public String getContrasenia() {
+		return contrasenia;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
 	}
 
 	public LocalDate getFechaAlta() {
@@ -99,7 +99,7 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return "Usuario [idUsuario=" + idUsuario + ", nombre=" + nombre + ", apellido=" + apellido + ", mail=" + mail
-				+ ", contraseña=" + contraseña + ", fechaAlta=" + fechaAlta + "]";
+				+ ", contraseña=" + contrasenia + ", fechaAlta=" + fechaAlta + "]";
 	}
 
 

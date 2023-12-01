@@ -1,12 +1,9 @@
 package com.example.spring.eventos.repository;
 
-<<<<<<< HEAD
+import org.springframework.data.jpa.repository.JpaRepository;
 
-=======
-import org.springframework.stereotype.Repository;
+import com.example.spring.eventos.model.Evento;
 
-@Repository
->>>>>>> Jonay
-public class RepositoryEventos {
-
+public interface RepositoryEventos extends JpaRepository<Evento, Long> {
+	
 }

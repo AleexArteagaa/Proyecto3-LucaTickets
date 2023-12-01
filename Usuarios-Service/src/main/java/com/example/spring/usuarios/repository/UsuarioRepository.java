@@ -1,5 +1,5 @@
 package com.example.spring.usuarios.repository;
 
-public class UsuarioRepository {
+public class UsuarioRepository{
 
 }

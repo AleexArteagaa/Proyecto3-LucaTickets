@@ -5,9 +5,9 @@ public class RecintoNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public RecintoNotFoundException() {
-		super("Epic Fail: No existe el recinto");
+		super("No existe el recinto en la base de datos");
 	}
-	public RecintoNotFoundException(Long id) {
-		super("Epic Fail: No existe el recinto" +id);
+	public RecintoNotFoundException(String mensaje ) {
+		super(mensaje);
 	}	
 }

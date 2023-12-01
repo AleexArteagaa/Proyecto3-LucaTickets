@@ -12,15 +12,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Email;
 
-
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_usuario")
+	private Long idUsuario;
 
     @Column(name = "nombre")
     @NotEmpty(message = "El nombre no puede estar vacío")
@@ -42,8 +41,7 @@ public class Usuario {
     @Column(name = "fecha_alta")
     private LocalDate fechaAlta;
 
-
-    public Usuario() {
+	public Usuario() {
 		super();
 	}
 
@@ -114,6 +112,4 @@ public class Usuario {
 				+ ", contraseña=" + contrasenia + ", fechaAlta=" + fechaAlta + "]";
 	}
 
-
-  
 }

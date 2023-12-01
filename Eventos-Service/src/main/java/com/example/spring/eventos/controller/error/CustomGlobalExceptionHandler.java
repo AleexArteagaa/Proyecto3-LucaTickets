@@ -1,4 +1,4 @@
-package com.example.spring.usuarios.controller.error;
+package com.example.spring.eventos.controller.error;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,15 +21,17 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class);
 
-	@ExceptionHandler(UsuarioNotFoundException.class)
+	@ExceptionHandler(RecintoNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<Object> handleUsuarioNotFoundException(UsuarioNotFoundException ex, WebRequest request) {
-		logger.error("------ UsuarioNotFoundException()");
+	public ResponseEntity<Object> handleRecintoNotFoundException(RecintoNotFoundException ex, WebRequest request) {
+		logger.error("------ RecintoNotFoundException() ");
 
 		CustomErrorJson customError = new CustomErrorJson();
 		customError.setTimestamp(new Date());
@@ -42,16 +44,51 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setPath(uri);
 		customError.setJdk(System.getProperty("java.version"));
 		
-		
-		
-
 		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(UsuarioRepetidoException.class)
+	@ExceptionHandler(EventoRepetidoException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleEventoRepetidoException(EventoRepetidoException ex, WebRequest request) {
+		logger.error("------ EventoRepetidoException() ");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of(ex.getMessage()));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+		
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(RecintoIsNullException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleRecintoIsNullException(RecintoIsNullException ex, WebRequest request) {
+		logger.error("------ RecintoIsNullException() ");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of(ex.getMessage()));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+		
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<Object> handleUsuarioRepetidoException(UsuarioRepetidoException ex, WebRequest request) {
-		logger.error("------ UsuarioRepetidoException() ");
+	public ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex, WebRequest request) {
+		logger.error("------ SQLIntegrityConstraintViolationException() ");
 
 		CustomErrorJson customError = new CustomErrorJson();
 		customError.setTimestamp(new Date());
@@ -63,9 +100,29 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		uri = uri.substring(uri.lastIndexOf("=") + 1);
 		customError.setPath(uri);
 		customError.setJdk(System.getProperty("java.version"));
-
-
+		
 		return new ResponseEntity<>(customError, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleAnioNotValidException(MethodArgumentTypeMismatchException ex,
+			WebRequest request) {
+		logger.error("------ AnioNotValidException()");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of("Valor introducido por parámetro no válido"));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+
+
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
 	}
 	
 	@Override
@@ -117,39 +174,17 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setStatus(status.value());
 		customError.setError(status.toString());
 
-		// Get all errors indicando el campo en el que falla
 		List<String> messages = new ArrayList<String>();
 		for (FieldError error : ex.getBindingResult().getFieldErrors()) {
 			messages.add(error.getField() + ": " + error.getDefaultMessage());
 		}
 		customError.setMessage(messages);
-
-		// Para recoger el path y simular de forma completa los datos originales
-		// request.getDescription(false) ---> uri=/juego
-		String uri = request.getDescription(false);
-		uri = uri.substring(uri.lastIndexOf("=") + 1);
-		customError.setPath(uri);
-
-		return new ResponseEntity<>(customError, headers, status);
-	}
-	
-	@ExceptionHandler(ListEmptyException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<Object> handleJuegosIsEmptyException(ListEmptyException ex, WebRequest request) {
-		logger.error("------ ListEmptyException() ");
-
-		CustomErrorJson customError = new CustomErrorJson();
-		customError.setTimestamp(new Date());
-		customError.setStatus(HttpStatus.NOT_FOUND.value());
-		customError.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
-		customError.setMessage(List.of("No se han encontrado usuarios."));
-		customError.setPath(request.getDescription(false));
 		String uri = request.getDescription(false);
 		uri = uri.substring(uri.lastIndexOf("=") + 1);
 		customError.setPath(uri);
 		customError.setJdk(System.getProperty("java.version"));
 
-		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(customError, headers, status);
 	}
 	
 

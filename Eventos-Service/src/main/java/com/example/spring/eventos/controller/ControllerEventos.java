@@ -42,12 +42,13 @@ public class ControllerEventos {
 	
 	@Autowired
 	private ServiceEventos serviceEventos;
+	
+	EventoAdapter adapter;
 
 	
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody EventoDTO eventoDTO) {
 		
-		System.out.println(eventoDTO.getRecinto());
 		Recinto recinto = serviceRecinto.obtenerPorNombre(eventoDTO.getRecinto());
 		
 		Evento evento = new Evento(eventoDTO.getNombre(), eventoDTO.getDescripcionCorta(), eventoDTO.getDescripcionExtendida(), eventoDTO.getFoto(), eventoDTO.getFechaEvento(), eventoDTO.getHoraEvento(), eventoDTO.getPrecioMinimo(), eventoDTO.getPrecioMaximo(), eventoDTO.getNormas(), recinto);
@@ -61,16 +62,8 @@ public class ControllerEventos {
 		
 	}
 
-
-	
-	@Autowired
-	EventoAdapter adapter;
-	
-	@Autowired
-	Evento evento;
 	
 	@GetMapping()
-
     public List<EventoDTO> eventoList() {
         final List<Evento> all = serviceEventos.findAll();
         return adapter.of(all);

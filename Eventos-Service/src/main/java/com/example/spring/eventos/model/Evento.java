@@ -1,4 +1,4 @@
-package com.example.spring.eventos.entities;
+package com.example.spring.eventos.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

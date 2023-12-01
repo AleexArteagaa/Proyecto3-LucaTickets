@@ -29,9 +29,9 @@ public class ServiceEventosImpl implements ServiceEventos {
 	}
 
 	@Override
-	public List<Evento> findByNombre() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Evento> findByNombre(String nombre) {
+
+		return repository.findByNombre();
 	}
 	
 	

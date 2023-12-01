@@ -1,10 +1,10 @@
-package com.example.spring.eventos.model;
+package com.example.spring.eventos.response;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.example.spring.eventos.entities.Evento;
-import com.example.spring.eventos.entities.Recinto;
+import com.example.spring.eventos.model.Evento;
+import com.example.spring.eventos.model.Recinto;
 
 
 public class EventoDTO {

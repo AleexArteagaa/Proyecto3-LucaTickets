@@ -1,4 +1,4 @@
-package com.example.spring.eventos.entities;
+package com.example.spring.eventos.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

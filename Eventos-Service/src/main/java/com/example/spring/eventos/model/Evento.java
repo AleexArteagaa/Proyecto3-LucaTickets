@@ -2,6 +2,7 @@ package com.example.spring.eventos.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -181,7 +182,22 @@ public class Evento {
 	public void setRecinto(Recinto recinto) {
 		this.recinto = recinto;
 	}
+	
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Evento evento = (Evento) o;
+        return Objects.equals(nombre, evento.nombre) &&
+               Objects.equals(fechaEvento, evento.fechaEvento) &&
+               Objects.equals(horaEvento, evento.horaEvento) &&
+               Objects.equals(recinto.getNombre(), evento.recinto.getNombre());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, fechaEvento, horaEvento, recinto.getNombre());
+    }
 
 	@Override
 	public String toString() {

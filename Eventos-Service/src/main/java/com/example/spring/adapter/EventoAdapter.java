@@ -12,6 +12,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EventoAdapter {
+	
+    public EventoDTO of(Evento evento) {
+    	EventoDTO eventoDTO = new EventoDTO();
+    	eventoDTO.setNombre(evento.getNombre());
+    	eventoDTO.setDescripcionCorta(evento.getDescripcionCorta());
+    	eventoDTO.setDescripcionExtendida(evento.getDescripcionExtendida());
+    	eventoDTO.setFoto(evento.getFoto());
+    	eventoDTO.setFechaEvento(evento.getFechaEvento());
+    	eventoDTO.setHoraEvento(evento.getHoraEvento());
+    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
+    	eventoDTO.setNormas(evento.getNombre());
+
+        return eventoDTO;
+    }
 
     public EventoDTO of(Evento evento, Recinto recinto) {
     	EventoDTO eventoDTO = new EventoDTO();
@@ -28,7 +42,9 @@ public class EventoAdapter {
         return eventoDTO;
     }
 
-    public List<EventoAdapter> of(List<Evento> eventos) {
-		return null;
+    public List<EventoDTO> of(List<Evento> eventos) {
+        return eventos.stream()
+                .map(p -> of(p))
+                .collect(Collectors.toList());
     }
 }

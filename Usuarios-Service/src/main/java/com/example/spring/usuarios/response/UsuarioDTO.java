@@ -14,6 +14,16 @@ public class UsuarioDTO {
 		super();
 	}
 
+	public UsuarioDTO(Long id, String nombre, String apellido, String mail, String contrasenia, LocalDate fechaAlta) {
+		super();
+		this.id=id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.mail = mail;
+		this.contrasenia = contrasenia;
+		this.fechaAlta = fechaAlta;
+	}
+	
 	public UsuarioDTO(String nombre, String apellido, String mail, String contrasenia, LocalDate fechaAlta) {
 		super();
 		this.nombre = nombre;

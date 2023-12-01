@@ -9,43 +9,41 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_usuario")
+	private Long idUsuario;
 
-    @Column(name = "nombre")
-    private String nombre;
+	@Column(name = "nombre")
+	private String nombre;
 
-    @Column(name = "apellido")
-    private String apellido;
+	@Column(name = "apellido")
+	private String apellido;
 
-    @Column(name = "mail", unique = true, nullable = false)
-    private String mail;
+	@Column(name = "mail", unique = true, nullable = false)
+	private String mail;
 
-    @Column(name = "contrasenia", nullable = false)
-    private String contrasenia;
+	@Column(name = "contrasenia", nullable = false)
+	private String contrasenia;
 
-    @Column(name = "fecha_alta", nullable = false)
-    private LocalDate fechaAlta;
+	@Column(name = "fecha_alta", nullable = false)
+	private LocalDate fechaAlta;
 
-
-    public Usuario() {
+	public Usuario() {
 		super();
 	}
 
-    public Usuario(String nombre, String apellido, String mail, String contrasenia, LocalDate fechaAlta) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.mail = mail;
-        this.contrasenia = contrasenia;
-        this.fechaAlta = fechaAlta;
-    }
+	public Usuario(String nombre, String apellido, String mail, String contrasenia, LocalDate fechaAlta) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.mail = mail;
+		this.contrasenia = contrasenia;
+		this.fechaAlta = fechaAlta;
+	}
 
 	public Long getIdUsuario() {
 		return idUsuario;
@@ -101,6 +99,4 @@ public class Usuario {
 				+ ", contraseña=" + contrasenia + ", fechaAlta=" + fechaAlta + "]";
 	}
 
-
-  
 }

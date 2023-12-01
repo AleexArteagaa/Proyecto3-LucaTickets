@@ -20,4 +20,10 @@ public class ServiceEventosImpl implements ServiceEventos {
 		return repository.findAll();
 	}
 
+	@Override
+	public List<Evento> findByNombre() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

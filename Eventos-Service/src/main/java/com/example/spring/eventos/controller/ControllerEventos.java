@@ -42,6 +42,9 @@ public class ControllerEventos {
 	
 	@Autowired
 	private ServiceEventos serviceEventos;
+	
+	@Autowired
+	EventoAdapter adapter;
 
 	
 	@PostMapping
@@ -60,14 +63,6 @@ public class ControllerEventos {
 		return ResponseEntity.created(location).body(result);
 		
 	}
-
-
-	
-	@Autowired
-	EventoAdapter adapter;
-	
-	@Autowired
-	Evento evento;
 	
 	@GetMapping()
 
@@ -78,7 +73,7 @@ public class ControllerEventos {
 	
 	@GetMapping("/{nombre}")
     public List<EventoDTO> nombreList() {
-        final List<Evento> all = serviceEventos.findByNombre();
+        final List<Evento> all = serviceEventos.findByNombre(String nombre);
         return adapter.of(all);
     }
 	

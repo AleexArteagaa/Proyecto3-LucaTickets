@@ -21,6 +21,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -46,14 +48,14 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 	}
 
 	@ExceptionHandler(EventoRepetidoException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<Object> handleEventoRepetidoException(EventoRepetidoException ex, WebRequest request) {
 		logger.error("------ EventoRepetidoException() ");
 
 		CustomErrorJson customError = new CustomErrorJson();
 		customError.setTimestamp(new Date());
-		customError.setStatus(HttpStatus.NOT_FOUND.value());
-		customError.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
 		customError.setMessage(List.of(ex.getMessage()));
 		customError.setPath(request.getDescription(false));
 		String uri = request.getDescription(false);
@@ -61,9 +63,46 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setPath(uri);
 		customError.setJdk(System.getProperty("java.version"));
 		
-		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(RecintoIsNullException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleRecintoIsNullException(RecintoIsNullException ex, WebRequest request) {
+		logger.error("------ RecintoIsNullException() ");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of(ex.getMessage()));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+		
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex, WebRequest request) {
+		logger.error("------ SQLIntegrityConstraintViolationException() ");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		customError.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+		customError.setMessage(List.of(ex.getMessage()));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+		
+		return new ResponseEntity<>(customError, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

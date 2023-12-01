@@ -41,7 +41,7 @@ public class ServiceEventosImpl implements ServiceEventos {
 	@Override
 	public List<Evento> findByNombre(String nombre) {
 
-		return repository.findByNombre();
+		return repository.findByNombre(nombre);
 	}
 	
 	

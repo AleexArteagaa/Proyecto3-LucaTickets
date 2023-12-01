@@ -9,7 +9,7 @@ import com.example.spring.eventos.model.Evento;
 
 public interface RepositoryEventos extends JpaRepository<Evento, Long> {
 
-	List<Evento> findByNombre();
+	public List<Evento> findByNombre(String nombre);
 	
 }
 	

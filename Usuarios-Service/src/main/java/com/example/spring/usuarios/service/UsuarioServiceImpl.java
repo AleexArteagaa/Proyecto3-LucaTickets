@@ -22,4 +22,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 	public void deleteById(Long id) {
 		repo.deleteById(id);
 	}
+	public Usuario save(Usuario usuario) {
+		return repo.save(usuario);
+	}
 }

@@ -28,7 +28,7 @@ public class EventoAdapter {
         return eventoDTO;
     }
 
-    public List<EventoAdapter> of(List<Evento> eventos) {
+    public List<EventoDTO> of(List<Evento> eventos) {
 		return null;
     }
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.spring.usuarios.adapter.UsuarioAdapter;
+import com.example.spring.usuarios.controller.error.UsuarioRepetidoException;
 import com.example.spring.usuarios.model.Usuario;
 import com.example.spring.usuarios.response.UsuarioDTO;
 import com.example.spring.usuarios.service.UsuarioService;
@@ -86,13 +87,21 @@ public class UsuariosController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<UsuarioDTO> editarUsuario(@PathVariable int id, @Valid @RequestBody Usuario usuario) {
+	public ResponseEntity<UsuarioDTO> editarUsuario(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
 		logger.info("------ Editar usuario (PUT)");
-		UsuarioDTO result = adaptador.of(servicio.save(usuario));
+		Usuario usuarioExistente = servicio.findById(id);
+		
+		usuarioExistente.setApellido(usuario.getApellido());
+		usuarioExistente.setContrasenia(usuario.getContrasenia());
+		usuarioExistente.setFechaAlta(usuario.getFechaAlta());
+		usuarioExistente.setMail(usuario.getMail());
+		usuarioExistente.setNombre(usuario.getNombre());		
+		
+		UsuarioDTO result = adaptador.of(servicio.save(usuarioExistente));
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId())
 				.toUri();
-
+		
 		return ResponseEntity.created(location).body(result);
 	}
 	

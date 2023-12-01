@@ -17,7 +17,7 @@ public class UsuarioAdapter {
 		List<UsuarioDTO> usuariosDTO = new ArrayList<UsuarioDTO>();
 
 		for (Usuario usuario : usuarios) {
-			usuariosDTO.add(new UsuarioDTO(usuario.getNombre(), usuario.getApellido(), usuario.getMail(),
+			usuariosDTO.add(new UsuarioDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getApellido(), usuario.getMail(),
 					usuario.getContrasenia(), usuario.getFechaAlta()));
 		}
 

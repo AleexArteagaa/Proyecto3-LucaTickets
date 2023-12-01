@@ -7,7 +7,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Email;
 
 
 @Entity
@@ -20,18 +23,23 @@ public class Usuario {
     private Long idUsuario;
 
     @Column(name = "nombre")
+    @NotEmpty(message = "El nombre no puede estar vacío")
     private String nombre;
 
     @Column(name = "apellido")
+    @NotEmpty(message = "El apellido no puede estar vacío")
     private String apellido;
 
-    @Column(name = "mail", unique = true, nullable = false)
+    @Column(name = "mail")
+    @NotEmpty(message = "El mail no puede estar vacío")
+    @Email(message = "El formato del mail es incorrecto")
     private String mail;
 
-    @Column(name = "contrasenia", nullable = false)
+    @Column(name = "contrasenia")
+    @NotEmpty(message = "La contraseña no puede estar vacía")
     private String contrasenia;
 
-    @Column(name = "fecha_alta", nullable = false)
+    @Column(name = "fecha_alta")
     private LocalDate fechaAlta;
 
 
@@ -45,6 +53,11 @@ public class Usuario {
         this.mail = mail;
         this.contrasenia = contrasenia;
         this.fechaAlta = fechaAlta;
+    }
+    
+    @PrePersist
+    protected void onCreate() {
+        fechaAlta = LocalDate.now();
     }
 
 	public Long getIdUsuario() {

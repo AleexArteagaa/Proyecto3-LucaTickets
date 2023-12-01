@@ -48,16 +48,16 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
 	}
 
-	/*@ExceptionHandler(JuegoRepetidoException.class)
+	@ExceptionHandler(UsuarioRepetidoException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<Object> handleJuegoRepetidoException(JuegoRepetidoException ex, WebRequest request) {
-		logger.error("------ JuegoRepetidoException() ");
+	public ResponseEntity<Object> handleUsuarioRepetidoException(UsuarioRepetidoException ex, WebRequest request) {
+		logger.error("------ UsuarioRepetidoException() ");
 
 		CustomErrorJson customError = new CustomErrorJson();
 		customError.setTimestamp(new Date());
 		customError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		customError.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-		customError.setMessage(List.of("Juego repetido"));
+		customError.setMessage(List.of(ex.getMessage()));
 		customError.setPath(request.getDescription(false));
 		String uri = request.getDescription(false);
 		uri = uri.substring(uri.lastIndexOf("=") + 1);
@@ -66,7 +66,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
 
 		return new ResponseEntity<>(customError, HttpStatus.INTERNAL_SERVER_ERROR);
-	}*/
+	}
 	
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,

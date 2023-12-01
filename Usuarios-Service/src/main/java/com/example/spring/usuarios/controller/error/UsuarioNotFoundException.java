@@ -9,6 +9,6 @@ public class UsuarioNotFoundException extends RuntimeException {
 	}
 	public UsuarioNotFoundException(Long id) {
 		super("Epic Fail: No existe el usuario con id " + id);
-	}	
+	}
 
 }

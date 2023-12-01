@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,16 +62,18 @@ public class ControllerEventos {
 	}
 	
 	@GetMapping()
-    public List<EventoDTO> eventoList() {
+    public List<EventoDTO> findAll() {
+		logger.info("------ Listado de eventos (GET) ");
         final List<Evento> all = serviceEventos.findAll();
         return adapter.of(all);
     }
 	
 	@GetMapping("/{nombre}")
     public List<EventoDTO> nombreList(@PathVariable String nombre) {
-		final List<Evento> eventoNombre = serviceEventos.findByNombre(nombre);
-        return adapter.of(eventoNombre);
-    }
-	
-	
+		logger.info("------ Listado de eventos por nombre (GET) ");
+	    Optional<List<Evento>> eventoNombre = serviceEventos.findByNombre(nombre);
+	    
+	    	return adapter.of(eventoNombre);   	
+	}
+
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -57,7 +59,6 @@ public class ControllerEventos {
 		return ResponseEntity.created(location).body(result);
 		
 	}
-
 	
 	@GetMapping()
     public List<EventoDTO> eventoList() {
@@ -66,9 +67,9 @@ public class ControllerEventos {
     }
 	
 	@GetMapping("/{nombre}")
-    public List<EventoDTO> nombreList() {
-        final List<Evento> all = serviceEventos.findByNombre();
-        return adapter.of(all);
+    public List<EventoDTO> nombreList(@PathVariable String nombre) {
+		final List<Evento> eventoNombre = serviceEventos.findByNombre(nombre);
+        return adapter.of(eventoNombre);
     }
 	
 	

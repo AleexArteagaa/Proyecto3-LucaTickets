@@ -24,7 +24,6 @@ import com.example.spring.eventos.service.ServiceRecinto;
 
 import jakarta.validation.Valid;
 
-import com.example.spring.eventos.service.ServiceEventos;
 
 
 @RestController
@@ -43,7 +42,8 @@ public class ControllerEventos {
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody EventoDTO eventoDTO) {
 		
-		Recinto recinto = serviceRecinto.obtenerPorNombre(eventoDTO.getNombre());
+		System.out.println(eventoDTO.getRecinto());
+		Recinto recinto = serviceRecinto.obtenerPorNombre(eventoDTO.getRecinto());
 		
 		Evento evento = new Evento(eventoDTO.getNombre(), eventoDTO.getDescripcionCorta(), eventoDTO.getDescripcionExtendida(), eventoDTO.getFoto(), eventoDTO.getFechaEvento(), eventoDTO.getHoraEvento(), eventoDTO.getPrecioMinimo(), eventoDTO.getPrecioMaximo(), eventoDTO.getNormas(), recinto);
 		
@@ -52,15 +52,10 @@ public class ControllerEventos {
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getIdEvento())
 				.toUri();
 		
-		return null;
+		return ResponseEntity.created(location).body(result);
 		
 	}
 
-	private static final Logger log = LoggerFactory.getLogger(ControllerEventos.class);
-	
-	@Autowired
-	private ServiceEventos eventoService;
-	
 
 	
 }

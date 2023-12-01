@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Recintos")
+@Table(name = "recintos")
 public class Recinto {
 
     @Id
@@ -25,7 +25,7 @@ public class Recinto {
     @Column(name = "direccion", nullable = false)
     private String direccion;
 
-    @Column(name = "tipoRecinto", nullable = false)
+    @Column(name = "tipo_recinto", nullable = false)
     private String tipoRecinto;
 
     @Column(name = "aforo", nullable = false)

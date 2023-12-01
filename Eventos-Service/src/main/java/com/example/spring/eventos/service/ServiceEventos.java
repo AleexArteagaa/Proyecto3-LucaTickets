@@ -8,4 +8,6 @@ public interface ServiceEventos {
 
 	List<Evento> findAll();
 
+	List<Evento> findByNombre();
+
 }

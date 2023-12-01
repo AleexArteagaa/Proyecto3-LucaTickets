@@ -31,8 +31,15 @@ public class ControllerEventos {
 	Evento evento;
 	
 	@GetMapping()
-    public List<EventoDTO> list() {
+
+    public List<EventoDTO> eventoList() {
         final List<Evento> all = servicio.findAll();
+        return adapter.of(all);
+    }
+	
+	@GetMapping("/{nombre}")
+    public List<EventoDTO> nombreList() {
+        final List<Evento> all = servicio.findByNombre();
         return adapter.of(all);
     }
 	

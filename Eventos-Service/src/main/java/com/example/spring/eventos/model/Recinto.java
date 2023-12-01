@@ -22,8 +22,8 @@ public class Recinto {
     @Column(name = "ciudad", nullable = false)
     private String ciudad;
 
-    @Column(name = "dirección", nullable = false)
-    private String dirección;
+    @Column(name = "direccion", nullable = false)
+    private String direccion;
 
     @Column(name = "tipoRecinto", nullable = false)
     private String tipoRecinto;
@@ -35,10 +35,10 @@ public class Recinto {
 		super();
 	}
 
-	public Recinto(String nombre, String ciudad, String dirección, String tipoRecinto, int aforo) {
+	public Recinto(String nombre, String ciudad, String direccion, String tipoRecinto, int aforo) {
         this.nombre = nombre;
         this.ciudad = ciudad;
-        this.dirección = dirección;
+        this.direccion = direccion;
         this.tipoRecinto = tipoRecinto;
         this.aforo = aforo;
     }
@@ -67,12 +67,12 @@ public class Recinto {
 		this.ciudad = ciudad;
 	}
 
-	public String getDirección() {
-		return dirección;
+	public String getDireccion() {
+		return direccion;
 	}
 
-	public void setDirección(String dirección) {
-		this.dirección = dirección;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
 	public String getTipoRecinto() {
@@ -94,7 +94,7 @@ public class Recinto {
 	@Override
 	public String toString() {
 		return "Recinto [idRecinto=" + idRecinto + ", nombre=" + nombre + ", ciudad=" + ciudad + ", dirección="
-				+ dirección + ", tipoRecinto=" + tipoRecinto + ", aforo=" + aforo + "]";
+				+ direccion + ", tipoRecinto=" + tipoRecinto + ", aforo=" + aforo + "]";
 	}
 	
 	

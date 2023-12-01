@@ -1,4 +1,4 @@
-package com.example.spring.usuarios.entities;
+package com.example.spring.usuarios.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.example.spring.usuarios.entities;
+package com.example.spring.usuarios.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

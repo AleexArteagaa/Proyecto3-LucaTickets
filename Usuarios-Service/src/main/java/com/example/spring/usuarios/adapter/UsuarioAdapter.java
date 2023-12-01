@@ -1,6 +1,9 @@
 package com.example.spring.usuarios.adapter;
 
-//Se utiliza para convertir de Entity a DTO
-public class UsuarioAdapter {
+import org.springframework.stereotype.Component;
 
+//Se utiliza para convertir de Entity a DTO
+@Component
+public class UsuarioAdapter {
+	
 }

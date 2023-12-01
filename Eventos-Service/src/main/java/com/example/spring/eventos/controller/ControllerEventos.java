@@ -18,7 +18,6 @@ public class ControllerEventos {
 	@Autowired
 	private ServiceEventos eventoService;
 	
-	@Autowired
-	private ServiceAdapter adapterService;
+
 	
 }

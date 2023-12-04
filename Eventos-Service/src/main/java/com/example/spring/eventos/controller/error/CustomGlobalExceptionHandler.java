@@ -157,19 +157,35 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setStatus(HttpStatus.BAD_REQUEST.value());
 		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
 		
-		if (ex.getCause().toString().contains("Invalid value for MonthOfYear")) {
-			mensajesError.add("Valor del mes no válido");	
-		} 
-		if (ex.getCause().toString().contains("Invalid value for DayOfMonth")) {
-			mensajesError.add("Valor del día no válido");	
-		}if (ex.getCause().toString().contains("could not be parsed at index 0")) {
-			mensajesError.add("Formato de fecha no válido (yyyy-mm-dd)");	
-
-		}if (ex.getCause().toString().contains("Invalid value for HourOfDay")) {
-			mensajesError.add("Valor de la hora no válido");	
+		if (ex.getCause() != null && ex.getCause().toString().contains("fechaEvento")) {
+			if (ex.getCause().toString().contains("MonthOfYear")) {
+				mensajesError.add("El mes debe ser: 1-12");
+			}
+ 
+			if (ex.getCause().toString().contains("DayOfMonth")) {
+				mensajesError.add("El día debe ser: 1-28/31");
+			}
+			
+			if (ex.getCause().toString().contains("could not be parsed at index 8") || ex.getCause().toString().contains("could not be parsed at index 5") || ex.getCause().toString().contains("Text '0")) {
+				mensajesError.add("El año, mes o día no pueden tener valor 0");
+			}
+ 
+			if (!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
+				mensajesError.add("El formato de la fecha debe ser yyyy-MM-dd");
+			}
+ 
+		}
+		if (ex.getCause().toString().contains("Invalid value for HourOfDay")) {
+			mensajesError.add("Valor de la hora no válido");
 		}
 		if (ex.getCause().toString().contains("Invalid value for MinuteOfHour")) {
-			mensajesError.add("Valor de los minutos no válido");	
+			mensajesError.add("Valor de los minutos no válido");
+		}
+		if (ex.getCause().toString().contains("Unrecognized token")) {
+			mensajesError.add("Valor introducido no válido");
+		}
+		if (ex.getCause().toString().contains("java.lang.Double")) {
+			mensajesError.add("El precio debe ser un número");
 		}
 		customError.setMessage(mensajesError);
 		System.out.println(ex.getCause());

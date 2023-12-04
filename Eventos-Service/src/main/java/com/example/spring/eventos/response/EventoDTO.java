@@ -6,29 +6,38 @@ import java.time.LocalTime;
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 
 public class EventoDTO {
-	
-	    private String nombre;
 
-	    private String descripcionCorta;
+    @NotEmpty(message = "El nombre no puede ser vacío")
+    private String nombre;
 
-	    private String descripcionExtendida;
+    @NotEmpty(message = "La descripción corta no puede ser vacía")
+    private String descripcionCorta;
 
-	    private String foto;
+    private String descripcionExtendida;
 
-	    private LocalDate fechaEvento;
+    private String foto;
 
-	    private LocalTime horaEvento;
+    @NotNull(message = "La fecha del evento no puede ser nula")
+    private LocalDate fechaEvento;
 
-	    private Double precioMinimo;
+    @NotNull(message = "La hora del evento no puede ser nula")
+    private LocalTime horaEvento;
 
-	    private Double precioMaximo;
+    @NotNull(message = "El precio mínimo no puede ser nulo")
+    private Double precioMinimo;
 
-	    private String normas;
+    @NotNull(message = "El precio máximo no puede ser nulo")
+    private Double precioMaximo;
 
-	    private String recinto;
-	    
+    private String normas;
+
+    @NotEmpty(message = "El nombre del recinto no puede ser vacío")
+    private String recinto;
     
 		public EventoDTO() {
 			super();

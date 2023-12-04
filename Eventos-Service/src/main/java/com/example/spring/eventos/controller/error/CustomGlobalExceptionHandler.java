@@ -150,11 +150,29 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		logger.error("------ handleHttpMessageNotReadable()");
 
-		CustomErrorJson customError = new CustomErrorJson();
+		List<String> mensajesError = new ArrayList<>();
+
+		CustomErrorJson customError = new CustomErrorJson();;
 		customError.setTimestamp(new Date());
 		customError.setStatus(HttpStatus.BAD_REQUEST.value());
 		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
-		customError.setMessage(List.of("Valor introducido no válido"));
+		
+		if (ex.getCause().toString().contains("Invalid value for MonthOfYear")) {
+			mensajesError.add("Valor del mes no válido");	
+		} 
+		if (ex.getCause().toString().contains("Invalid value for DayOfMonth")) {
+			mensajesError.add("Valor del día no válido");	
+		}if (ex.getCause().toString().contains("could not be parsed at index 0")) {
+			mensajesError.add("Formato de fecha no válido (yyyy-mm-dd)");	
+
+		}if (ex.getCause().toString().contains("Invalid value for HourOfDay")) {
+			mensajesError.add("Valor de la hora no válido");	
+		}
+		if (ex.getCause().toString().contains("Invalid value for MinuteOfHour")) {
+			mensajesError.add("Valor de los minutos no válido");	
+		}
+		customError.setMessage(mensajesError);
+		System.out.println(ex.getCause());
 		customError.setPath(request.getDescription(false));
 		String uri = request.getDescription(false);
 		uri = uri.substring(uri.lastIndexOf("=") + 1);

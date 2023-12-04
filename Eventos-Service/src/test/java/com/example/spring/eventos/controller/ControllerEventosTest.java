@@ -112,14 +112,12 @@ public class ControllerEventosTest {
     	
 	    String nombreCorrecto = "Evento2";	    
 		Recinto recinto1 = new Recinto("Recinto 1", "Madrid", "Calle Principe de Vergara", "Local", 200);		
-        Evento evento1 = new Evento("Evento 1", "Descripción Corta 1", "Descripción Extendida 1", "foto1.jpg", 
-                                     LocalDate.of(2023, 12, 1), LocalTime.of(20, 0), 100.0, 200.0, "Normas 1", recinto1);
         Evento evento2 = new Evento("Evento 2", "Descripción Corta 2", "Descripción Extendida 2", "foto2.jpg", 
                                      LocalDate.of(2023, 12, 2), LocalTime.of(21, 0), 150.0, 250.0, "Normas 2", recinto1);
 	    
-	    when(serviceEventos.findByNombre(nombreCorrecto)).thenReturn(Optional.ofNullable(Arrays.asList(evento2)));
+	    when(serviceEventos.findByNombre(nombreCorrecto)).thenReturn(Arrays.asList(evento2));
 
-	    Optional<List<Evento>> eventosEncontrados = serviceEventos.findByNombre(nombreCorrecto);
+	    List<Evento> eventosEncontrados = serviceEventos.findByNombre(nombreCorrecto);
 
 	    boolean todosLosEventosCoinciden = eventosEncontrados.stream()
 	                                                         .allMatch(evento -> nombreCorrecto.equals(evento2.getNombre()));

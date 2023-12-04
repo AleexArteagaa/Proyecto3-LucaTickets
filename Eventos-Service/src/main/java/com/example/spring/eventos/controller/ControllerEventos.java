@@ -41,8 +41,9 @@ public class ControllerEventos {
 	@Autowired
 	private ServiceEventos serviceEventos;
 	
-	@Autowired
-	private EventoAdapter adapter;
+	
+	private EventoAdapter adapter = new EventoAdapter();
+
 
 	
 	@PostMapping
@@ -65,14 +66,13 @@ public class ControllerEventos {
 	@GetMapping()
     public List<EventoDTO> findAll() {
 		logger.info("------ Listado de eventos (GET) ");
-        final List<Evento> all = serviceEventos.findAll();
-        return adapter.of(all);
+        return adapter.listaADTO(serviceEventos.findAll());
     }
 	
 	@GetMapping("/{nombre}")
     public List<EventoDTO> findByNombre(@PathVariable String nombre) {
 		logger.info("------ Listado de eventos por nombre (GET) ");
-	    Optional<List<Evento>> eventoNombre = serviceEventos.findByNombre(nombre);
+	    List<Evento> eventoNombre = serviceEventos.findByNombre(nombre);
 	    
 	    	return adapter.of(eventoNombre);   	
 	}

@@ -1,15 +1,15 @@
-package com.example.spring.eventos;
+package com.example.spring.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-@SpringBootApplication
 @EnableDiscoveryClient
-public class EventosServiceApplication {
+@SpringBootApplication
+public class GatewayServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EventosServiceApplication.class, args);
+		SpringApplication.run(GatewayServerApplication.class, args);
 	}
 
 }

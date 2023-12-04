@@ -1,8 +1,10 @@
 package com.example.spring.adapter;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.example.spring.eventos.controller.error.EventoNotFoundException;
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
 import com.example.spring.eventos.response.EventoDTO;
@@ -47,5 +49,15 @@ public class EventoAdapter {
         return eventos.stream()
                 .map(p -> of(p))
                 .collect(Collectors.toList());
+    }
+
+    public List<EventoDTO> of(Optional<List<Evento>> optionalEventos) {
+        if (optionalEventos.isPresent()) {
+            return optionalEventos.get().stream()
+                                   .map(this::of)
+                                   .collect(Collectors.toList());
+        } else {
+        	 throw new EventoNotFoundException();
+        }
     }
 }

@@ -69,7 +69,7 @@ public class ControllerEventos {
     }
 	
 	@GetMapping("/{nombre}")
-    public List<EventoDTO> nombreList(@PathVariable String nombre) {
+    public List<EventoDTO> findByNombre(@PathVariable String nombre) {
 		logger.info("------ Listado de eventos por nombre (GET) ");
 	    Optional<List<Evento>> eventoNombre = serviceEventos.findByNombre(nombre);
 	    

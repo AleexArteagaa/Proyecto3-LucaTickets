@@ -39,7 +39,7 @@ import com.example.spring.usuarios.utilidades.Utilidades;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UsuariosControllerTest {
+public class TestUsuariosController {
 
 	@MockBean
 	private UsuarioService servicio;

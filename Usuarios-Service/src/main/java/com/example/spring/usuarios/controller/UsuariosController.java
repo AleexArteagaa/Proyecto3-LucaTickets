@@ -87,18 +87,19 @@ public class UsuariosController {
 	public ResponseEntity<UsuarioDTO> editarUsuario(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
 		logger.info("------ Editar usuario (PUT)");
 		Usuario usuarioExistente = servicio.findById(id);
-		
+		logger.info("------- " + id);
+		logger.info("------- " + usuarioExistente);
 		usuarioExistente.setApellido(usuario.getApellido());
 		usuarioExistente.setContrasenia(usuario.getContrasenia());
 		usuarioExistente.setFechaAlta(usuario.getFechaAlta());
 		usuarioExistente.setMail(usuario.getMail());
-		usuarioExistente.setNombre(usuario.getNombre());		
-		
+		usuarioExistente.setNombre(usuario.getNombre());
+
 		UsuarioDTO result = adaptador.of(servicio.save(usuarioExistente));
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId())
 				.toUri();
-		
+
 		return ResponseEntity.created(location).body(result);
 	}
 

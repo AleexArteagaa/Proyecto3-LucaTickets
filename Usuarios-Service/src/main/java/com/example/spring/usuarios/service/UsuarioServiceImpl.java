@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.spring.usuarios.controller.error.UsuarioNotFoundException;
 import com.example.spring.usuarios.controller.error.UsuarioRepetidoException;
 import com.example.spring.usuarios.controller.error.InvalidPasswordException;
+import com.example.spring.usuarios.controller.error.InvalidYearException;
 import com.example.spring.usuarios.controller.error.ListEmptyException;
 import com.example.spring.usuarios.model.Usuario;
 import com.example.spring.usuarios.repository.UsuarioRepository;
@@ -38,6 +39,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public Usuario save(Usuario usuario) {
 		if (usuario.getContrasenia().length() < 4) {
 			throw new InvalidPasswordException();
+		}
+
+		if (usuario.getFechaAlta().getYear() < 2000) {
+			throw new InvalidYearException();
 		}
 
 		List<Usuario> lista = findAll();

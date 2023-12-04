@@ -61,11 +61,13 @@ public class Usuario {
     	this.contrasenia = contrasenia;
     	this.fechaAlta = fechaAlta;
     }
-    
 
-	@PrePersist
-    protected void onCreate() {
-        fechaAlta = LocalDate.now();
+    public Usuario(String nombre, String apellido, String mail, String contrasenia) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.mail = mail;
+        this.contrasenia = contrasenia;
+        this.fechaAlta = LocalDate.now();
     }
 
 	public Long getIdUsuario() {

@@ -41,7 +41,8 @@ public class ControllerEventos {
 	@Autowired
 	private ServiceEventos serviceEventos;
 	
-	EventoAdapter adapter;
+	@Autowired
+	private EventoAdapter adapter;
 
 	
 	@PostMapping

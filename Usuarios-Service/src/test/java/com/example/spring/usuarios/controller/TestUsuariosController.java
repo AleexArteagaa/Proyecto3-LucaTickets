@@ -97,15 +97,17 @@ public class TestUsuariosController {
 
 	@Test
 	public void testDeleteByIdUsuarioEliminadoCorrectamente() throws Exception {
-		
+
 		Long id = (long) 8;
 		Usuario usuario = new Usuario(id, "prueba", "prueba", "prueba@gmail.com", "prueba", LocalDate.now());
 		when(servicio.findById(id)).thenReturn(usuario);
 
-	    mockMvc.perform(delete("/usuario/{id}", id)).andDo(print()).andExpect(status().isOk());
-	    
-	    verify(servicio, times(1)).deleteById(id);
-    public void testAltaUsuarioExitoso() throws Exception {
+		mockMvc.perform(delete("/usuario/{id}", id)).andDo(print()).andExpect(status().isOk());
+
+		verify(servicio, times(1)).deleteById(id);
+	}
+
+	public void testAltaUsuarioExitoso() throws Exception {
         when(servicio.save(any())).thenReturn(new Usuario());
 
         String usuarioJson = "{\r\n"
@@ -168,32 +170,23 @@ public class TestUsuariosController {
 		mockMvc.perform(put("/usuario/{id}", 9).content(usuarioJson).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated());
 	}
-	
+
 	@Test
 	void testEditarUsuarioRepetido() throws Exception {
 		String errorMessage = "Epic Fail: Ya existe un usuario con ese correo electronico";
-		
+
 		Usuario usuarioExistente = new Usuario();
 		usuarioExistente.setIdUsuario(8L);
 
 		when(servicio.findById(8L)).thenReturn(usuarioExistente);
 		when(servicio.save(any())).thenThrow(new UsuarioRepetidoException());
 
-		String usuarioJson = "{\r\n"
-				+ "    \"nombre\": \"pruebaUsuario\",\r\n"
-				+ "    \"apellido\": \"Usuario\",\r\n"
-				+ "    \"mail\": \"usuario@gmail.com\",\r\n"
-				+ "    \"contrasenia\": \"1234\",\r\n"
-				+ "    \"fechaAlta\": \"2023-12-02\"\r\n"
-				+ "}";
+		String usuarioJson = "{\r\n" + "    \"nombre\": \"pruebaUsuario\",\r\n" + "    \"apellido\": \"Usuario\",\r\n"
+				+ "    \"mail\": \"usuario@gmail.com\",\r\n" + "    \"contrasenia\": \"1234\",\r\n"
+				+ "    \"fechaAlta\": \"2023-12-02\"\r\n" + "}";
 
-		mockMvc.perform(put("/usuario/{id}", 8)
-				.content(usuarioJson)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status()
-						.isInternalServerError())
-				.andExpect(jsonPath("$.message")
-						.value(errorMessage));
+		mockMvc.perform(put("/usuario/{id}", 8).content(usuarioJson).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError()).andExpect(jsonPath("$.message").value(errorMessage));
 	}
 
 }

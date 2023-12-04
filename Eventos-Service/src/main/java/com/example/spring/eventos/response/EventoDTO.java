@@ -46,10 +46,11 @@ public class EventoDTO {
 			super();
 		}
 
-		public EventoDTO(String nombre, String descripcionCorta, String descripcionExtendida, String foto,
+		public EventoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
 				LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas,
 				String recinto) {
 			super();
+			this.id = id;
 			this.nombre = nombre;
 			this.descripcionCorta = descripcionCorta;
 			this.descripcionExtendida = descripcionExtendida;
@@ -60,20 +61,6 @@ public class EventoDTO {
 			this.precioMaximo = precioMaximo;
 			this.normas = normas;
 			this.recinto = recinto;
-		}
-		
-		public EventoDTO(Long id, String nombre, String descripcionCorta, String foto,
-				LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas) {
-			super();
-			this.id = id;
-			this.nombre = nombre;
-			this.descripcionCorta = descripcionCorta;
-			this.foto = foto;
-			this.fechaEvento = fechaEvento;
-			this.horaEvento = horaEvento;
-			this.precioMinimo = precioMinimo;
-			this.precioMaximo = precioMaximo;
-			this.normas = normas;
 		}
 		
 		public EventoDTO(Evento evento, Recinto recinto) {
@@ -90,8 +77,8 @@ public class EventoDTO {
 			this.recinto = recinto.getNombre();
 		}
 		
-		public String getIdEvento() {
-			return nombre;
+		public Long getIdEvento() {
+			return id;
 		}
 
 		public void setIdEvento(Long id) {

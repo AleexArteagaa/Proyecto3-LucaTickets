@@ -19,8 +19,8 @@ public class EventoAdapter {
 		List<EventoDTO> eventosDTO = new ArrayList<EventoDTO>();
 
 		for (Evento evento : eventos) {
-			eventosDTO.add(new EventoDTO(evento.getIdEvento(), evento.getNombre(), evento.getDescripcionCorta(), evento.getFoto(),
-					evento.getFechaEvento(), evento.getHoraEvento(), evento.getPrecioMinimo(), evento.getPrecioMaximo(), evento.getNormas()));
+			eventosDTO.add(new EventoDTO(evento.getIdEvento(), evento.getNombre(), evento.getDescripcionCorta(), evento.getDescripcionExtendida(), evento.getFoto(),
+					evento.getFechaEvento(), evento.getHoraEvento(), evento.getPrecioMinimo(), evento.getPrecioMaximo(), evento.getNormas(), evento.getRecinto().getNombre()));
 		}
 
 		return eventosDTO;
@@ -31,11 +31,14 @@ public class EventoAdapter {
     	eventoDTO.setIdEvento(evento.getIdEvento());
     	eventoDTO.setNombre(evento.getNombre());
     	eventoDTO.setDescripcionCorta(evento.getDescripcionCorta());
+    	eventoDTO.setDescripcionExtendida(evento.getDescripcionExtendida());
     	eventoDTO.setFoto(evento.getFoto());
     	eventoDTO.setFechaEvento(evento.getFechaEvento());
     	eventoDTO.setHoraEvento(evento.getHoraEvento());
+    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo());
     	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
-    	eventoDTO.setNormas(evento.getNombre());
+    	eventoDTO.setNormas(evento.getNormas());
+    	eventoDTO.setRecinto(evento.getRecinto().getNombre());
 
         return eventoDTO;
     }
@@ -45,9 +48,11 @@ public class EventoAdapter {
     	eventoDTO.setIdEvento(evento.getIdEvento());
     	eventoDTO.setNombre(evento.getNombre());
     	eventoDTO.setDescripcionCorta(evento.getDescripcionCorta());
+    	eventoDTO.setDescripcionExtendida(evento.getDescripcionExtendida());
     	eventoDTO.setFoto(evento.getFoto());
     	eventoDTO.setFechaEvento(evento.getFechaEvento());
     	eventoDTO.setHoraEvento(evento.getHoraEvento());
+    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo());
     	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
     	eventoDTO.setNormas(evento.getNormas());
     	eventoDTO.setRecinto(recinto.getNombre());

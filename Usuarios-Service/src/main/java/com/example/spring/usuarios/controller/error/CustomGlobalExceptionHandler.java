@@ -114,25 +114,28 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setPath(request.getDescription(false));
 		List<String> mensajes = new ArrayList<>();
 		if (ex.getCause() != null && ex.getCause().toString().contains("fechaAlta")) {
-			if(ex.getCause().toString().contains("MonthOfYear")) {
+			if (ex.getCause().toString().contains("MonthOfYear")) {
 				mensajes.add("El mes debe ser: 1-12");
-				
 			}
-			
-			if(ex.getCause().toString().contains("DayOfMonth")) {
+
+			if (ex.getCause().toString().contains("DayOfMonth")) {
 				mensajes.add("El día debe ser: 1-28/31");
-				
-			}
-			if(!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
-				mensajes.add("El formato de la fecha debe ser yyyy-MM-dd");
-				
 			}
 			
+			if (ex.getCause().toString().contains("could not be parsed at index 8") || ex.getCause().toString().contains("could not be parsed at index 5") || ex.getCause().toString().contains("could not be parsed at index 0")) {
+				mensajes.add("El año, mes o día no pueden tener valor 0");
+			}
+
+			if (!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
+				mensajes.add("El formato de la fecha debe ser yyyy-MM-dd");
+			}
+
 		} else {
 			mensajes.add("Valor introducido no válido");
 		}
 		
 		customError.setMessage(mensajes);
+
 		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
 
 	}

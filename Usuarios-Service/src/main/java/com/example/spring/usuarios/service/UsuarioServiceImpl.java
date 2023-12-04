@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.spring.usuarios.controller.error.UsuarioNotFoundException;
 import com.example.spring.usuarios.controller.error.UsuarioRepetidoException;
+import com.example.spring.usuarios.controller.error.InvalidPasswordException;
 import com.example.spring.usuarios.controller.error.ListEmptyException;
 import com.example.spring.usuarios.model.Usuario;
 import com.example.spring.usuarios.repository.UsuarioRepository;
@@ -35,13 +36,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario save(Usuario usuario) {
+		if (usuario.getContrasenia().length() < 4) {
+			throw new InvalidPasswordException();
+		}
+
 		List<Usuario> lista = findAll();
 		for (Usuario user : lista) {
-	        if (!user.getIdUsuario().equals(usuario.getIdUsuario()) && user.getMail().equalsIgnoreCase(usuario.getMail())) {
-	            throw new UsuarioRepetidoException();
-	        }
-	    }
-		
+			if (!user.getIdUsuario().equals(usuario.getIdUsuario())
+					&& user.getMail().equalsIgnoreCase(usuario.getMail())) {
+				throw new UsuarioRepetidoException();
+			}
+		}
+
 		return repo.save(usuario);
 	}
 

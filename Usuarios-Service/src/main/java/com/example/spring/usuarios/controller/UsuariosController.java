@@ -3,7 +3,6 @@ package com.example.spring.usuarios.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,15 +49,13 @@ public class UsuariosController {
 	public ResponseEntity<Map<String, Object>> deleteById(@PathVariable Long id) {
 
 		logger.info("----- BORRADO DE USUARIO (DELETE) -----");
-		Optional<Usuario> usuarioOptional = Optional.ofNullable(servicio.findById(id));
+		Usuario usuario = servicio.findById(id);
 		Map<String, Object> respuesta = new HashMap<>();
 		HttpStatus status = null;
 
-		if (usuarioOptional.isPresent()) {
-			servicio.deleteById(id);
-			status = HttpStatus.OK;
-			respuesta = Utilidades.usuarioEliminadoJson(adaptador.of(usuarioOptional));
-		}
+		servicio.deleteById(id);
+		status = HttpStatus.OK;
+		respuesta = Utilidades.usuarioEliminadoJson(adaptador.of(usuario));
 
 		return new ResponseEntity<>(respuesta, status);
 	}
@@ -87,18 +84,18 @@ public class UsuariosController {
 	public ResponseEntity<UsuarioDTO> editarUsuario(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
 		logger.info("------ Editar usuario (PUT)");
 		Usuario usuarioExistente = servicio.findById(id);
-		
+
 		usuarioExistente.setApellido(usuario.getApellido());
 		usuarioExistente.setContrasenia(usuario.getContrasenia());
 		usuarioExistente.setFechaAlta(usuario.getFechaAlta());
 		usuarioExistente.setMail(usuario.getMail());
-		usuarioExistente.setNombre(usuario.getNombre());		
-		
+		usuarioExistente.setNombre(usuario.getNombre());
+
 		UsuarioDTO result = adaptador.of(servicio.save(usuarioExistente));
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId())
 				.toUri();
-		
+
 		return ResponseEntity.created(location).body(result);
 	}
 

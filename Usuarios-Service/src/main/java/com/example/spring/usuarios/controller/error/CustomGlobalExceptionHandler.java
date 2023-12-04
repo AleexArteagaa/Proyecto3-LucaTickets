@@ -82,6 +82,25 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
 		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(InvalidYearException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleInvalidYearException(InvalidYearException ex, WebRequest request) {
+		logger.error("------ InvalidYearException() ");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of(ex.getMessage()));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
@@ -114,25 +133,28 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setPath(request.getDescription(false));
 		List<String> mensajes = new ArrayList<>();
 		if (ex.getCause() != null && ex.getCause().toString().contains("fechaAlta")) {
-			if(ex.getCause().toString().contains("MonthOfYear")) {
+			if (ex.getCause().toString().contains("MonthOfYear")) {
 				mensajes.add("El mes debe ser: 1-12");
-				
 			}
-			
-			if(ex.getCause().toString().contains("DayOfMonth")) {
+
+			if (ex.getCause().toString().contains("DayOfMonth")) {
 				mensajes.add("El día debe ser: 1-28/31");
-				
-			}
-			if(!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
-				mensajes.add("El formato de la fecha debe ser yyyy-MM-dd");
-				
 			}
 			
+			if (ex.getCause().toString().contains("could not be parsed at index 8") || ex.getCause().toString().contains("could not be parsed at index 5") || ex.getCause().toString().contains("Text '0")) {
+				mensajes.add("El año, mes o día no pueden tener valor 0");
+			}
+
+			if (!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
+				mensajes.add("El formato de la fecha debe ser yyyy-MM-dd");
+			}
+
 		} else {
 			mensajes.add("Valor introducido no válido");
 		}
 		
 		customError.setMessage(mensajes);
+
 		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
 
 	}

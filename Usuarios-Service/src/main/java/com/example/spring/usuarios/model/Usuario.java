@@ -53,9 +53,21 @@ public class Usuario {
         this.fechaAlta = fechaAlta;
     }
     
-    @PrePersist
-    protected void onCreate() {
-        fechaAlta = LocalDate.now();
+    public Usuario(Long idUsuario, String nombre, String apellido, String mail, String contrasenia, LocalDate fechaAlta) {
+    	this.idUsuario=idUsuario;
+    	this.nombre = nombre;
+    	this.apellido = apellido;
+    	this.mail = mail;
+    	this.contrasenia = contrasenia;
+    	this.fechaAlta = fechaAlta;
+    }
+
+    public Usuario(String nombre, String apellido, String mail, String contrasenia) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.mail = mail;
+        this.contrasenia = contrasenia;
+        this.fechaAlta = LocalDate.now();
     }
 
 	public Long getIdUsuario() {

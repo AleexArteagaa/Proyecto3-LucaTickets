@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,15 +44,21 @@ public class ControllerEventosTest {
 
     @Mock
     private ServiceEventos serviceEventos;
+    
+    @InjectMocks
+    private ControllerEventos controllerEventos;
+    
+    @MockBean
+    private Evento evento;
 
     @Autowired
     private MockMvc mockMvc;
     
-	@MockBean
-	private ServiceEventos serv;
+
 
     @Test
     void testSaveEventoRecintoNulo() throws Exception {
+    	
     	
         mockMvc.perform(post("/evento")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -61,17 +68,18 @@ public class ControllerEventosTest {
     
     @Test
     void testSaveEventoRepetido() throws Exception {
-        when(serviceEventos.save(any())).thenThrow(new EventoRepetidoException());
 
+		when(serviceEventos.save(any())).thenThrow(new EventoRepetidoException());
+     
         mockMvc.perform(post("/evento")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"nombre\": \"Concierto Melendi\", \"descripcionCorta\": \"Descripción corta del evento\", \"descripcionExtendida\": \"Descripción extendida del evento\", \"foto\": \"URL de la foto del evento\", \"fechaEvento\": \"2023-12-01\", \"horaEvento\": \"18:30\", \"precioMinimo\": 30.5, \"precioMaximo\": 100.0, \"normas\": \"Normas del evento\", \"recinto\": \"Wizink Center\"}"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest()); 
     }
 
 	@Test
     void testListadoEventosVacio() throws Exception {
-        when(serv.findAll()).thenReturn(Collections.emptyList());
+        when(serviceEventos.findAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/juego"))
                 .andDo(print())
@@ -90,7 +98,7 @@ public class ControllerEventosTest {
         
         List<Evento> listaEventos = Arrays.asList(evento1, evento2);
 
-        when(serv.findAll()).thenReturn(listaEventos);
+        when(serviceEventos.findAll()).thenReturn(listaEventos);
 
         mockMvc.perform(get("/juego"))
                .andDo(print())
@@ -109,9 +117,9 @@ public class ControllerEventosTest {
         Evento evento2 = new Evento("Evento 2", "Descripción Corta 2", "Descripción Extendida 2", "foto2.jpg", 
                                      LocalDate.of(2023, 12, 2), LocalTime.of(21, 0), 150.0, 250.0, "Normas 2", recinto1);
 	    
-	    when(serv.findByNombre(nombreCorrecto)).thenReturn(Optional.ofNullable(Arrays.asList(evento2)));
+	    when(serviceEventos.findByNombre(nombreCorrecto)).thenReturn(Optional.ofNullable(Arrays.asList(evento2)));
 
-	    Optional<List<Evento>> eventosEncontrados = serv.findByNombre(nombreCorrecto);
+	    Optional<List<Evento>> eventosEncontrados = serviceEventos.findByNombre(nombreCorrecto);
 
 	    boolean todosLosEventosCoinciden = eventosEncontrados.stream()
 	                                                         .allMatch(evento -> nombreCorrecto.equals(evento2.getNombre()));
@@ -127,7 +135,7 @@ public class ControllerEventosTest {
         when(serviceEventos.findByNombre(nombreInexistente)).thenThrow(new EventoNotFoundException());
 
         assertThrows(EventoNotFoundException.class, () -> {
-            serv.findByNombre(nombreInexistente);
+        	serviceEventos.findByNombre(nombreInexistente);
         });
     }
 }

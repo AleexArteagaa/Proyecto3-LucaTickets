@@ -104,6 +104,27 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(customError, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@ExceptionHandler(InvalidYearException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleInvalidYearException(InvalidYearException ex,
+			WebRequest request) {
+		logger.error("------ InvalidYearException()");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of("Año no váido. Debe ser mayor del 2000"));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+
+
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
+	
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<Object> handleAnioNotValidException(MethodArgumentTypeMismatchException ex,
@@ -150,11 +171,45 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		logger.error("------ handleHttpMessageNotReadable()");
 
-		CustomErrorJson customError = new CustomErrorJson();
+		List<String> mensajesError = new ArrayList<>();
+
+		CustomErrorJson customError = new CustomErrorJson();;
 		customError.setTimestamp(new Date());
 		customError.setStatus(HttpStatus.BAD_REQUEST.value());
 		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
-		customError.setMessage(List.of("Valor introducido no válido"));
+		
+		if (ex.getCause() != null && ex.getCause().toString().contains("fechaEvento")) {
+			if (ex.getCause().toString().contains("MonthOfYear")) {
+				mensajesError.add("El mes debe ser: 1-12");
+			}
+ 
+			if (ex.getCause().toString().contains("DayOfMonth")) {
+				mensajesError.add("El día debe ser: 1-28/31");
+			}
+			
+			if (ex.getCause().toString().contains("could not be parsed at index 8") || ex.getCause().toString().contains("could not be parsed at index 5") || ex.getCause().toString().contains("Text '0")) {
+				mensajesError.add("El año, mes o día no pueden tener valor 0");
+			}
+ 
+			if (!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
+				mensajesError.add("El formato de la fecha debe ser yyyy-MM-dd");
+			}
+ 
+		}
+		if (ex.getCause().toString().contains("Invalid value for HourOfDay")) {
+			mensajesError.add("Valor de la hora no válido");
+		}
+		if (ex.getCause().toString().contains("Invalid value for MinuteOfHour")) {
+			mensajesError.add("Valor de los minutos no válido");
+		}
+		if (ex.getCause().toString().contains("Unrecognized token")) {
+			mensajesError.add("Valor introducido no válido");
+		}
+		if (ex.getCause().toString().contains("java.lang.Double")) {
+			mensajesError.add("El precio debe ser un número");
+		}
+		customError.setMessage(mensajesError);
+		System.out.println(ex.getCause());
 		customError.setPath(request.getDescription(false));
 		String uri = request.getDescription(false);
 		uri = uri.substring(uri.lastIndexOf("=") + 1);

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.spring.eventos.controller.error.EventoNotFoundException;
 import com.example.spring.eventos.controller.error.EventoRepetidoException;
+import com.example.spring.eventos.controller.error.InvalidYearException;
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.repository.RepositoryEventos;
 
@@ -23,6 +24,10 @@ public class ServiceEventosImpl implements ServiceEventos {
 	public Evento save(Evento evento) {
 
 		List<Evento> eventos = repository.findAll();
+		
+		if (evento.getFechaEvento().getYear() < 2000) {
+			throw new InvalidYearException();
+		}
 		
         for (Evento existingEvento : eventos) {
             if (existingEvento.equals(evento)) {

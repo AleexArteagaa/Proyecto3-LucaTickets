@@ -41,9 +41,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		uri = uri.substring(uri.lastIndexOf("=") + 1);
 		customError.setPath(uri);
 		customError.setJdk(System.getProperty("java.version"));
-		
-		
-		
 
 		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
 	}
@@ -64,10 +61,28 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setPath(uri);
 		customError.setJdk(System.getProperty("java.version"));
 
-
 		return new ResponseEntity<>(customError, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
+	@ExceptionHandler(InvalidPasswordException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleInvalidPasswordException(InvalidPasswordException ex, WebRequest request) {
+		logger.error("------ InvalidPasswordException() ");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of(ex.getMessage()));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
+
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -84,7 +99,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setPath(uri);
 		customError.setJdk(System.getProperty("java.version"));
 
-
 		return new ResponseEntity<>(customError, headers, HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
@@ -97,13 +111,30 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setTimestamp(new Date());
 		customError.setStatus(HttpStatus.BAD_REQUEST.value());
 		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
-		customError.setMessage(List.of("Valor introducido no válido"));
 		customError.setPath(request.getDescription(false));
-		String uri = request.getDescription(false);
-		uri = uri.substring(uri.lastIndexOf("=") + 1);
-		customError.setPath(uri);
+		List<String> mensajes = new ArrayList<>();
+		if (ex.getCause() != null && ex.getCause().toString().contains("fechaAlta")) {
+			if(ex.getCause().toString().contains("MonthOfYear")) {
+				mensajes.add("El mes debe ser: 1-12");
+				
+			}
+			
+			if(ex.getCause().toString().contains("DayOfMonth")) {
+				mensajes.add("El día debe ser: 1-28/31");
+				
+			}
+			if(!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
+				mensajes.add("El formato de la fecha debe ser yyyy-MM-dd");
+				
+			}
+			
+		} else {
+			mensajes.add("Valor introducido no válido");
+		}
+		
+		customError.setMessage(mensajes);
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
 
-		return new ResponseEntity<>(customError, headers, HttpStatus.BAD_REQUEST);
 	}
 
 	@Override
@@ -132,7 +163,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
 		return new ResponseEntity<>(customError, headers, status);
 	}
-	
+
 	@ExceptionHandler(ListEmptyException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<Object> handleJuegosIsEmptyException(ListEmptyException ex, WebRequest request) {
@@ -151,6 +182,5 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
 		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
 	}
-	
 
 }

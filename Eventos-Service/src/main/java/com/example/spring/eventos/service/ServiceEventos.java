@@ -11,7 +11,7 @@ public interface ServiceEventos {
 
 	public List<Evento> findAll();
 
-	public Optional<List<Evento>> findByNombre(String name);
+	public List<Evento> findByNombre(String name);
 	
 
 }

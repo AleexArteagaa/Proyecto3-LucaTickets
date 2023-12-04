@@ -11,6 +11,9 @@ import jakarta.validation.constraints.NotNull;
 
 
 public class EventoDTO {
+	
+	 @NotEmpty(message = "El id no puede ser vacío")
+	 private Long id;
 
     @NotEmpty(message = "El nombre no puede ser vacío")
     private String nombre;
@@ -58,8 +61,23 @@ public class EventoDTO {
 			this.normas = normas;
 			this.recinto = recinto;
 		}
-			
+		
+		public EventoDTO(Long id, String nombre, String descripcionCorta, String foto,
+				LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas) {
+			super();
+			this.id = id;
+			this.nombre = nombre;
+			this.descripcionCorta = descripcionCorta;
+			this.foto = foto;
+			this.fechaEvento = fechaEvento;
+			this.horaEvento = horaEvento;
+			this.precioMinimo = precioMinimo;
+			this.precioMaximo = precioMaximo;
+			this.normas = normas;
+		}
+		
 		public EventoDTO(Evento evento, Recinto recinto) {
+			this.id = evento.getIdEvento();
 			this.nombre = evento.getNombre();
 			this.descripcionCorta = evento.getDescripcionCorta();
 			this.descripcionExtendida = evento.getDescripcionExtendida();
@@ -70,6 +88,14 @@ public class EventoDTO {
 			this.precioMaximo = evento.getPrecioMaximo();
 			this.normas = evento.getNormas();
 			this.recinto = recinto.getNombre();
+		}
+		
+		public String getIdEvento() {
+			return nombre;
+		}
+
+		public void setIdEvento(Long id) {
+			this.id = id;
 		}
 
 		public String getNombre() {

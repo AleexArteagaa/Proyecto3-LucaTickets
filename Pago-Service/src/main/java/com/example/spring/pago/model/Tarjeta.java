@@ -17,6 +17,8 @@ public class Tarjeta {
 	private String concepto;
 	
 	private String cantidad;
+	
+	
 
 	
 	

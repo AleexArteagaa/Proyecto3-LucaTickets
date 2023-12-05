@@ -20,23 +20,23 @@ public class UsuarioEvento {
 	
     @ManyToOne
     @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
+    private Long usuario;
 
     @ManyToOne
     @JoinColumn(name = "id_evento")
-    private Evento evento;
+    private Long evento;
 
 
     public UsuarioEvento() {}
 
-    public UsuarioEvento(Usuario usuario, Evento evento) {
+    public UsuarioEvento(Long usuario, Long evento) {
         this.usuario = usuario;
         this.evento = evento;
     }
     
     
 
-	public UsuarioEvento(Long idCompra, Usuario usuario, Evento evento) {
+	public UsuarioEvento(Long idCompra, Long usuario, Long evento) {
 		super();
 		this.idCompra = idCompra;
 		this.usuario = usuario;
@@ -53,19 +53,19 @@ public class UsuarioEvento {
 		this.idCompra = idCompra;
 	}
 
-	public Usuario getUsuario() {
+	public Long getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Long usuario) {
 		this.usuario = usuario;
 	}
 
-	public Evento getEvento() {
+	public Long getEvento() {
 		return evento;
 	}
 
-	public void setEvento(Evento evento) {
+	public void setEvento(Long evento) {
 		this.evento = evento;
 	}
 

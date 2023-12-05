@@ -127,9 +127,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 	
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<Object> handleAnioNotValidException(MethodArgumentTypeMismatchException ex,
+	public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex,
 			WebRequest request) {
-		logger.error("------ AnioNotValidException()");
+		logger.error("------ MethodArgumentTypeMismatchException()");
 
 		CustomErrorJson customError = new CustomErrorJson();
 		customError.setTimestamp(new Date());
@@ -195,6 +195,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 				mensajesError.add("El formato de la fecha debe ser yyyy-MM-dd");
 			}
  
+		}else if (ex.getMessage().contains("Required request body is missing")) {
+			mensajesError.add("El body no puede estar vacío");
+		} else if (ex.getCause().toString().contains("Unexpected character ('")) {
+			mensajesError.add("Estructura del body errónea");
 		}
 		if (ex.getCause().toString().contains("Invalid value for HourOfDay")) {
 			mensajesError.add("Valor de la hora no válido");

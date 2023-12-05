@@ -61,8 +61,8 @@ public class EventoDTO {
 		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
 		        this.fechaEvento = LocalDate.parse(fechaEvento.format(formatter), formatter);
 		        this.horaEvento = horaEvento;
-		        this.precioMinimo = precioMinimo + " €";
-		        this.precioMaximo = precioMaximo + " €";
+		        this.precioMinimo = precioMinimo;
+		        this.precioMaximo = precioMaximo;
 		        this.normas = normas;
 		        this.recinto = recinto;
 		    }
@@ -164,6 +164,7 @@ public class EventoDTO {
 
 	        return Double.parseDouble(formato.format(Double.parseDouble(soloNumeros)));
 	    }
+	    
 		public void setPrecioMaximo(String precioMaximo) {
 			this.precioMaximo = precioMaximo;
 		}

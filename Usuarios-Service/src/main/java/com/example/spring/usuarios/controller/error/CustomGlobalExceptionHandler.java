@@ -177,18 +177,37 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		}
 		customError.setMessage(messages);
 
-		// Para recoger el path y simular de forma completa los datos originales
-		// request.getDescription(false) ---> uri=/juego
 		String uri = request.getDescription(false);
 		uri = uri.substring(uri.lastIndexOf("=") + 1);
 		customError.setPath(uri);
 
 		return new ResponseEntity<>(customError, headers, status);
 	}
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex,
+			WebRequest request) {
+		logger.error("------ MethodArgumentTypeMismatchException()");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of("Valor introducido por parámetro no válido"));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+
+
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
 
 	@ExceptionHandler(ListEmptyException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<Object> handleJuegosIsEmptyException(ListEmptyException ex, WebRequest request) {
+	public ResponseEntity<Object> handleUsuariosIsEmptyException(ListEmptyException ex, WebRequest request) {
 		logger.error("------ ListEmptyException() ");
 
 		CustomErrorJson customError = new CustomErrorJson();

@@ -23,6 +23,7 @@ import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
 import com.example.spring.adapter.EventoAdapter;
 import com.example.spring.eventos.response.EventoDTO;
+import com.example.spring.eventos.response.EventoListadoDTO;
 import com.example.spring.eventos.service.ServiceEventos;
 import com.example.spring.eventos.service.ServiceRecinto;
 
@@ -42,7 +43,8 @@ public class ControllerEventos {
 	private ServiceEventos serviceEventos;
 	
 	
-	EventoAdapter adapter = new EventoAdapter();
+	private EventoAdapter adapter = new EventoAdapter();
+
 
 	
 	@PostMapping
@@ -63,13 +65,13 @@ public class ControllerEventos {
 	}
 	
 	@GetMapping()
-    public List<EventoDTO> findAll() {
+    public List<EventoListadoDTO> findAll() {
 		logger.info("------ Listado de eventos (GET) ");
         return adapter.listaADTO(serviceEventos.findAll());
     }
 	
 	@GetMapping("/{nombre}")
-    public List<EventoDTO> findByNombre(@PathVariable String nombre) {
+    public List<EventoListadoDTO> findByNombre(@PathVariable String nombre) {
 		logger.info("------ Listado de eventos por nombre (GET) ");
 	    List<Evento> eventoNombre = serviceEventos.findByNombre(nombre);
 	    

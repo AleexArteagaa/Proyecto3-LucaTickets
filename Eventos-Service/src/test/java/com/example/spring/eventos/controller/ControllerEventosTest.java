@@ -158,7 +158,7 @@ public class ControllerEventosTest {
 
 		when(serviceEventos.findById(id)).thenReturn(evento);
 
-		mockMvc.perform(get("/usuario/{id}", id)).andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(get("/evento/{id}", id)).andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(id));
 
 	}

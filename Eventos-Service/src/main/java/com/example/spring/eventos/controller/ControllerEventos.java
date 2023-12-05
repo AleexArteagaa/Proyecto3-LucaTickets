@@ -53,6 +53,8 @@ public class ControllerEventos {
 		logger.info("------ Alta de evento (POST)");
 		Recinto recinto = serviceRecinto.obtenerPorNombre(eventoDTO.getRecinto());
 		
+		eventoDTO.getPrecioMinimo();
+		
 		Evento evento = new Evento(eventoDTO.getNombre(), eventoDTO.getDescripcionCorta(), eventoDTO.getDescripcionExtendida(), eventoDTO.getFoto(), eventoDTO.getFechaEvento(), eventoDTO.getHoraEvento(), eventoDTO.getPrecioMinimo(), eventoDTO.getPrecioMaximo(), eventoDTO.getNormas(), recinto);
 		
 		Evento result = this.serviceEventos.save(evento);

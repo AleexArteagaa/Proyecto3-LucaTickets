@@ -1,6 +1,7 @@
 package com.example.spring.usuarios.response;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class UsuarioDTO {
 	private Long id;
@@ -73,8 +74,13 @@ public class UsuarioDTO {
 		this.contrasenia = contrasenia;
 	}
 
-	public LocalDate getFechaAlta() {
-		return fechaAlta;
+	public String getFechaAlta() {		
+		return formatearFecha(fechaAlta);		
+	}
+
+	private String formatearFecha(LocalDate fechaAlta) {
+		DateTimeFormatter formateada = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return fechaAlta.format(formateada);
 	}
 
 	public void setFechaAlta(LocalDate fechaAlta) {

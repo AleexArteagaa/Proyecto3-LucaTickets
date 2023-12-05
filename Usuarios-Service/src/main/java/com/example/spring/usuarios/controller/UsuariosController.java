@@ -67,14 +67,8 @@ public class UsuariosController {
 			@Parameter(description = "ID del usuario a eliminar") @PathVariable Long id) {
 		logger.info("----- BORRADO DE USUARIO (DELETE) -----");
 		Usuario usuario = servicio.findById(id);
-		Map<String, Object> respuesta = new HashMap<>();
-		HttpStatus status = null;
-
 		servicio.deleteById(id);
-		status = HttpStatus.OK;
-		respuesta = Utilidades.usuarioEliminadoJson(adaptador.of(usuario));
-
-		return new ResponseEntity<>(respuesta, status);
+		return Utilidades.usuarioEliminadoJson(adaptador.of(usuario));
 	}
 
 	/**

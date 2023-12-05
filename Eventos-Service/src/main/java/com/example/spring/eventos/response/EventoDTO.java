@@ -1,14 +1,21 @@
 package com.example.spring.eventos.response;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import com.example.spring.eventos.utilidades.DeserializaciónLocalDate;
 
 public class EventoDTO {
 	
@@ -24,6 +31,8 @@ public class EventoDTO {
 
     private String foto;
 
+    @JsonDeserialize(using = DeserializaciónLocalDate.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @NotNull(message = "La fecha del evento no puede ser nula")
     private LocalDate fechaEvento;
 
@@ -31,10 +40,10 @@ public class EventoDTO {
     private LocalTime horaEvento;
 
     @NotNull(message = "El precio mínimo no puede ser nulo")
-    private Double precioMinimo;
+    private String precioMinimo;
 
     @NotNull(message = "El precio máximo no puede ser nulo")
-    private Double precioMaximo;
+    private String precioMaximo;
 
     private String normas;
 
@@ -45,37 +54,39 @@ public class EventoDTO {
 			super();
 		}
 
-		public EventoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
-				LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas,
-				String recinto) {
-			super();
-			this.id = id;
-			this.nombre = nombre;
-			this.descripcionCorta = descripcionCorta;
-			this.descripcionExtendida = descripcionExtendida;
-			this.foto = foto;
-			this.fechaEvento = fechaEvento;
-			this.horaEvento = horaEvento;
-			this.precioMinimo = precioMinimo;
-			this.precioMaximo = precioMaximo;
-			this.normas = normas;
-			this.recinto = recinto;
-		}
+		 public EventoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
+		            LocalDate fechaEvento, LocalTime horaEvento, String precioMinimo, String precioMaximo, String normas,
+		            String recinto) {
+		        super();
+		        this.id = id;
+		        this.nombre = nombre;
+		        this.descripcionCorta = descripcionCorta;
+		        this.descripcionExtendida = descripcionExtendida;
+		        this.foto = foto;
+		        this.fechaEvento = fechaEvento;
+		        this.horaEvento = horaEvento;
+		        this.precioMinimo = precioMinimo;
+		        this.precioMaximo = precioMaximo;
+		        this.normas = normas;
+		        this.recinto = recinto;
+		    }
 		
-		public EventoDTO(Evento evento, Recinto recinto) {
-			this.id = evento.getIdEvento();
-			this.nombre = evento.getNombre();
-			this.descripcionCorta = evento.getDescripcionCorta();
-			this.descripcionExtendida = evento.getDescripcionExtendida();
-			this.foto = evento.getFoto();
-			this.fechaEvento = evento.getFechaEvento();
-			this.horaEvento = evento.getHoraEvento();
-			this.precioMinimo = evento.getPrecioMinimo();
-			this.precioMaximo = evento.getPrecioMaximo();
-			this.normas = evento.getNormas();
-			this.recinto = recinto.getNombre();
-		}
-		
+		  public EventoDTO(Evento evento, Recinto recinto) {
+		        this.id = evento.getIdEvento();
+		        this.nombre = evento.getNombre();
+		        this.descripcionCorta = evento.getDescripcionCorta();
+		        this.descripcionExtendida = evento.getDescripcionExtendida();
+		        this.foto = evento.getFoto();
+
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
+		        this.fechaEvento = LocalDate.parse(evento.getFechaEvento().format(formatter), formatter);
+
+		        this.horaEvento = evento.getHoraEvento();
+		        this.precioMinimo = evento.getPrecioMinimo().toString() + " €";
+		        this.precioMaximo = evento.getPrecioMaximo().toString() + " €";
+		        this.normas = evento.getNormas();
+		        this.recinto = recinto.getNombre();
+		    }
 		public Long getIdEvento() {
 			return id;
 		}
@@ -132,22 +143,35 @@ public class EventoDTO {
 			this.horaEvento = horaEvento;
 		}
 
-		public Double getPrecioMinimo() {
-			return precioMinimo;
-		}
 
-		public void setPrecioMinimo(Double precioMinimo) {
+		public void setPrecioMinimo(String precioMinimo) {
 			this.precioMinimo = precioMinimo;
 		}
 
-		public Double getPrecioMaximo() {
-			return precioMaximo;
-		}
+	    public Double getPrecioMaximo() {
+	        return convertirPrecioFormato(precioMaximo);
+	    }
+	    public Double getPrecioMinimo() {
+	        return convertirPrecioFormato(precioMinimo);
+	    }
 
-		public void setPrecioMaximo(Double precioMaximo) {
+	    private Double convertirPrecioFormato(String precio) {
+	        if (precio == null) {
+	            return null;
+	        }
+
+	        String soloNumeros = precio.replaceAll("[^\\d.]", "");
+
+	        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+	        symbols.setDecimalSeparator('.');
+	        DecimalFormat formato = new DecimalFormat("#.0", symbols);
+
+	        return Double.parseDouble(formato.format(Double.parseDouble(soloNumeros)));
+	    }
+	    
+		public void setPrecioMaximo(String precioMaximo) {
 			this.precioMaximo = precioMaximo;
 		}
-
 		public String getNormas() {
 			return normas;
 		}

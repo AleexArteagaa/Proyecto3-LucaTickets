@@ -1,7 +1,8 @@
 package com.example.spring.eventos.controller;
 
-
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,53 +29,47 @@ import com.example.spring.eventos.service.ServiceRecinto;
 
 import jakarta.validation.Valid;
 
-
 @RestController
 @RequestMapping("/evento")
 public class ControllerEventos {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ControllerEventos.class);
-	
+
 	@Autowired
 	private ServiceRecinto serviceRecinto;
-	
+
 	@Autowired
 	private ServiceEventos serviceEventos;
-	
-	
+
 	private EventoAdapter adapter = new EventoAdapter();
 
-
-	
 	@PostMapping
-	public ResponseEntity<?> save(@Valid @RequestBody EventoDTO eventoDTO) {
+	public EventoListadoDTO save(@Valid @RequestBody EventoDTO eventoDTO) {
 		
 		logger.info("------ Alta de evento (POST)");
 		Recinto recinto = serviceRecinto.obtenerPorNombre(eventoDTO.getRecinto());
 		
+		eventoDTO.getPrecioMinimo();
+
 		Evento evento = new Evento(eventoDTO.getNombre(), eventoDTO.getDescripcionCorta(), eventoDTO.getDescripcionExtendida(), eventoDTO.getFoto(), eventoDTO.getFechaEvento(), eventoDTO.getHoraEvento(), eventoDTO.getPrecioMinimo(), eventoDTO.getPrecioMaximo(), eventoDTO.getNormas(), recinto);
 		
 		Evento result = this.serviceEventos.save(evento);
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getIdEvento())
-				.toUri();
-		
-		return ResponseEntity.created(location).body(result);
-		
+		return adapter.of(result);
 	}
-	
+
 	@GetMapping()
-    public List<EventoListadoDTO> findAll() {
+	public List<EventoListadoDTO> findAll() {
 		logger.info("------ Listado de eventos (GET) ");
-        return adapter.listaADTO(serviceEventos.findAll());
-    }
-	
+		return adapter.listaADTO(serviceEventos.findAll());
+	}
+
 	@GetMapping("/{nombre}")
-    public List<EventoListadoDTO> findByNombre(@PathVariable String nombre) {
+	public List<EventoListadoDTO> findByNombre(@PathVariable String nombre) {
 		logger.info("------ Listado de eventos por nombre (GET) ");
-	    List<Evento> eventoNombre = serviceEventos.findByNombre(nombre);
-	    
-	    	return adapter.of(eventoNombre);   	
+		List<Evento> eventoNombre = serviceEventos.findByNombre(nombre);
+
+		return adapter.of(eventoNombre);
 	}
 	
 	@GetMapping("/{id}")

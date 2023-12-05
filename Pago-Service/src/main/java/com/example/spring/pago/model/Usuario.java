@@ -1,8 +1,6 @@
-package com.example.spring.usuarios.model;
+package com.example.spring.pago.model;
 
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,39 +8,34 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Email;
+
 
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_usuario")
-	private Long idUsuario;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
+    private Long idUsuario;
 
     @Column(name = "nombre")
-    @NotEmpty(message = "El nombre no puede estar vacío")
     private String nombre;
 
     @Column(name = "apellido")
-    @NotEmpty(message = "El apellido no puede estar vacío")
     private String apellido;
 
-    @Column(name = "mail")
-    @NotEmpty(message = "El mail no puede estar vacío")
-    @Email(message = "El formato del mail es incorrecto")
+    @Column(name = "mail", unique = true, nullable = false)
     private String mail;
 
-    @Column(name = "contrasenia")
-    @NotEmpty(message = "La contraseña no puede estar vacía")
+    @Column(name = "contrasenia", nullable = false)
     private String contrasenia;
 
-    @Column(name = "fecha_alta")
+    @Column(name = "fecha_alta", nullable = false)
     private LocalDate fechaAlta;
 
-	public Usuario() {
+
+    public Usuario() {
 		super();
 	}
 
@@ -52,23 +45,6 @@ public class Usuario {
         this.mail = mail;
         this.contrasenia = contrasenia;
         this.fechaAlta = fechaAlta;
-    }
-    
-    public Usuario(Long idUsuario, String nombre, String apellido, String mail, String contrasenia, LocalDate fechaAlta) {
-    	this.idUsuario=idUsuario;
-    	this.nombre = nombre;
-    	this.apellido = apellido;
-    	this.mail = mail;
-    	this.contrasenia = contrasenia;
-    	this.fechaAlta = fechaAlta;
-    }
-
-    public Usuario(String nombre, String apellido, String mail, String contrasenia) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.mail = mail;
-        this.contrasenia = contrasenia;
-        this.fechaAlta = LocalDate.now();
     }
 
 	public Long getIdUsuario() {
@@ -103,6 +79,7 @@ public class Usuario {
 		this.mail = mail;
 	}
 
+
 	public String getContrasenia() {
 		return contrasenia;
 	}
@@ -125,4 +102,6 @@ public class Usuario {
 				+ ", contraseña=" + contrasenia + ", fechaAlta=" + fechaAlta + "]";
 	}
 
+
+  
 }

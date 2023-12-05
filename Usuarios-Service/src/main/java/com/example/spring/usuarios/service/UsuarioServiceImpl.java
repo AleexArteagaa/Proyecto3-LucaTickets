@@ -1,5 +1,6 @@
 package com.example.spring.usuarios.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (usuario.getContrasenia().length() < 4) {
 			throw new InvalidPasswordException();
 		}
-
-		if (usuario.getFechaAlta().getYear() < 2000) {
-			throw new InvalidYearException();
+		
+		if (usuario.getFechaAlta() != null) {
+			if (usuario.getFechaAlta().getYear() < 2000) {
+				throw new InvalidYearException();
+			}
+		}else {
+			usuario.setFechaAlta(LocalDate.now());
 		}
 
 		List<Usuario> lista = findAll();

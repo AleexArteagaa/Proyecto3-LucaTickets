@@ -22,7 +22,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -163,7 +162,26 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
 	}
 	
-	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex,
+			WebRequest request) {
+		logger.error("------ AnioNotValidException()");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of("Valor introducido por parámetro no válido"));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+
+
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
 	
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
@@ -211,9 +229,13 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 			}
  
 			if (!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
-				mensajesError.add("El formato de la fecha debe ser yyyy-MM-dd");
+				mensajesError.add("El formato de la fecha debe ser dd-MM-yyyy");
 			}
  
+		}else if (ex.getMessage().contains("Required request body is missing")) {
+			mensajesError.add("El body no puede estar vacío");
+		} else if (ex.getCause().toString().contains("Unexpected character ('")) {
+			mensajesError.add("Estructura del body errónea");
 		}
 		if (ex.getCause().toString().contains("Invalid value for HourOfDay")) {
 			mensajesError.add("Valor de la hora no válido");

@@ -1,6 +1,9 @@
 package com.example.spring.pago.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -9,13 +12,16 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "usuarios_eventos")
 public class UsuarioEvento {
-
-    @Id
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_compra")
+	private Long idCompra;
+	
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-
-    @Id
+ 
     @ManyToOne
     @JoinColumn(name = "id_evento")
     private Evento evento;
@@ -27,6 +33,25 @@ public class UsuarioEvento {
         this.usuario = usuario;
         this.evento = evento;
     }
+    
+    
+
+	public UsuarioEvento(Long idCompra, Usuario usuario, Evento evento) {
+		super();
+		this.idCompra = idCompra;
+		this.usuario = usuario;
+		this.evento = evento;
+	}
+
+	
+	
+	public Long getIdCompra() {
+		return idCompra;
+	}
+
+	public void setIdCompra(Long idCompra) {
+		this.idCompra = idCompra;
+	}
 
 	public Usuario getUsuario() {
 		return usuario;

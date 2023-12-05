@@ -1,5 +1,9 @@
 package com.example.spring.pago.service;
 
-public class PagoServiceImpl implements PagoService {
+import com.example.spring.pago.response.TarjetaResponse;
 
+public class PagoServiceImpl implements PagoService {
+	public TarjetaResponse realizarPago() {
+		return new TarjetaResponse();
+	}
 }

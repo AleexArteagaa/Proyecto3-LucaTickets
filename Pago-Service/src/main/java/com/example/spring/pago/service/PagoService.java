@@ -1,5 +1,7 @@
 package com.example.spring.pago.service;
 
-public interface PagoService {
+import com.example.spring.pago.response.TarjetaResponse;
 
+public interface PagoService {
+	public TarjetaResponse realizarPago();
 }

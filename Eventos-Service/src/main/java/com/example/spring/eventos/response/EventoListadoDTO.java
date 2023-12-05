@@ -10,44 +10,37 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 
-public class EventoDTO {
+public class EventoListadoDTO {
 	
 	 private Long id;
 
-    @NotEmpty(message = "El nombre no puede ser vacío")
     private String nombre;
 
-    @NotEmpty(message = "La descripción corta no puede ser vacía")
     private String descripcionCorta;
 
     private String descripcionExtendida;
 
     private String foto;
 
-    @NotNull(message = "La fecha del evento no puede ser nula")
     private LocalDate fechaEvento;
 
-    @NotNull(message = "La hora del evento no puede ser nula")
     private LocalTime horaEvento;
 
-    @NotNull(message = "El precio mínimo no puede ser nulo")
     private Double precioMinimo;
 
-    @NotNull(message = "El precio máximo no puede ser nulo")
     private Double precioMaximo;
 
     private String normas;
 
-    @NotEmpty(message = "El nombre del recinto no puede ser vacío")
-    private String recinto;
+    private RecintoDTO recinto;
     
-		public EventoDTO() {
+		public EventoListadoDTO() {
 			super();
 		}
 
-		public EventoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
+		public EventoListadoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
 				LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas,
-				String recinto) {
+				RecintoDTO recinto) {
 			super();
 			this.id = id;
 			this.nombre = nombre;
@@ -62,7 +55,7 @@ public class EventoDTO {
 			this.recinto = recinto;
 		}
 		
-		public EventoDTO(Evento evento, Recinto recinto) {
+		public EventoListadoDTO(Evento evento, Recinto recinto) {
 			this.id = evento.getIdEvento();
 			this.nombre = evento.getNombre();
 			this.descripcionCorta = evento.getDescripcionCorta();
@@ -73,16 +66,9 @@ public class EventoDTO {
 			this.precioMinimo = evento.getPrecioMinimo();
 			this.precioMaximo = evento.getPrecioMaximo();
 			this.normas = evento.getNormas();
-			this.recinto = recinto.getNombre();
+			this.recinto = new RecintoDTO(recinto);
 		}
 		
-		public Long getIdEvento() {
-			return id;
-		}
-
-		public void setIdEvento(Long id) {
-			this.id = id;
-		}
 
 		public String getNombre() {
 			return nombre;
@@ -156,11 +142,20 @@ public class EventoDTO {
 			this.normas = normas;
 		}
 
-		public String getRecinto() {
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public RecintoDTO getRecinto() {
 			return recinto;
 		}
 
-		public void setRecinto(String recinto) {
+		public void setRecinto(RecintoDTO recinto) {
 			this.recinto = recinto;
 		}
 

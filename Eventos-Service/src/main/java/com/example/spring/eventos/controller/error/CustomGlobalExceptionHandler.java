@@ -22,6 +22,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -125,26 +126,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<Object> handleAnioNotValidException(MethodArgumentTypeMismatchException ex,
-			WebRequest request) {
-		logger.error("------ AnioNotValidException()");
-
-		CustomErrorJson customError = new CustomErrorJson();
-		customError.setTimestamp(new Date());
-		customError.setStatus(HttpStatus.BAD_REQUEST.value());
-		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
-		customError.setMessage(List.of("Valor introducido por parámetro no válido"));
-		customError.setPath(request.getDescription(false));
-		String uri = request.getDescription(false);
-		uri = uri.substring(uri.lastIndexOf("=") + 1);
-		customError.setPath(uri);
-		customError.setJdk(System.getProperty("java.version"));
-
-
-		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
-	}
+	
 	
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,

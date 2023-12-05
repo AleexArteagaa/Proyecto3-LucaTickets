@@ -41,23 +41,14 @@ import com.example.spring.eventos.service.ServiceRecinto;
 @AutoConfigureMockMvc
 public class ControllerEventosTest {
 	
+	@MockBean
+	private ServiceRecinto serviceRecinto;
 	
-	@Mock
-    private ServiceRecinto serviceRecinto;
-
-    @Mock
-    private ServiceEventos serviceEventos;
-    
-    @InjectMocks
-    private ControllerEventos controllerEventos;
-    
-    @MockBean
-    private Evento evento;
-
-    @Autowired
-    private MockMvc mockMvc;
-    
-
+	@MockBean
+	private ServiceEventos serviceEventos;
+	
+	@Autowired
+	private MockMvc mockMvc;
 
     @Test
     void testSaveEventoRecintoNulo() throws Exception {

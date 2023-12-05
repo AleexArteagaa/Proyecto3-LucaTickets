@@ -9,10 +9,13 @@ import java.util.Locale;
 
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import com.example.spring.eventos.utilidades.DeserializaciónLocalDate;
 
 public class EventoDTO {
 	
@@ -28,6 +31,8 @@ public class EventoDTO {
 
     private String foto;
 
+    @JsonDeserialize(using = DeserializaciónLocalDate.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @NotNull(message = "La fecha del evento no puede ser nula")
     private LocalDate fechaEvento;
 
@@ -58,8 +63,7 @@ public class EventoDTO {
 		        this.descripcionCorta = descripcionCorta;
 		        this.descripcionExtendida = descripcionExtendida;
 		        this.foto = foto;
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
-		        this.fechaEvento = LocalDate.parse(fechaEvento.format(formatter), formatter);
+		        this.fechaEvento = fechaEvento;
 		        this.horaEvento = horaEvento;
 		        this.precioMinimo = precioMinimo;
 		        this.precioMaximo = precioMaximo;

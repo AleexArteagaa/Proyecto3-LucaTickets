@@ -46,6 +46,25 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		
 		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(RecintoNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ResponseEntity<Object> EventoNotFoundException(RecintoNotFoundException ex, WebRequest request) {
+		logger.error("------ RecintoNotFoundException() ");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.NOT_FOUND.value());
+		customError.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
+		customError.setMessage(List.of(ex.getMessage()));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
+		
+		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
+	}
 
 	@ExceptionHandler(EventoRepetidoException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

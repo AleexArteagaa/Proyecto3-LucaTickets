@@ -12,8 +12,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class EventoDTO {
 	
-	 @NotEmpty(message = "El id no puede ser vacío")
-	 private Long id;
+	private Long id;
 
     @NotEmpty(message = "El nombre no puede ser vacío")
     private String nombre;

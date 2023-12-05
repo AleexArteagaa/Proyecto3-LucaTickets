@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.spring.eventos.controller.error.EventoNotFoundException;
 import com.example.spring.eventos.controller.error.EventoRepetidoException;
+import com.example.spring.eventos.controller.error.EventosIsEmptyException;
 import com.example.spring.eventos.controller.error.InvalidYearException;
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.repository.RepositoryEventos;
@@ -40,8 +41,14 @@ public class ServiceEventosImpl implements ServiceEventos {
 	
 	@Override
 	public List<Evento> findAll() {
+		
+		List<Evento> eventos = repository.findAll();
+				
+	    if (eventos.isEmpty()) {
+			throw new EventosIsEmptyException();
+		}
 
-		return repository.findAll();
+		return eventos;
 	}
 
 	@Override
@@ -49,8 +56,20 @@ public class ServiceEventosImpl implements ServiceEventos {
 		
 	    List<Evento> eventos = repository.findByNombre(name).orElseThrow(EventoNotFoundException::new);
 	    
+	    if (eventos.isEmpty()) {
+			throw new EventosIsEmptyException();
+		}
+	    
 	    return eventos;
 
+	}
+
+	@Override
+	public Evento findById(Long id) {
+		Evento evento = repository.findById(id).orElseThrow(EventoNotFoundException::new);
+    
+		return evento;
+		
 	}
 	
 	

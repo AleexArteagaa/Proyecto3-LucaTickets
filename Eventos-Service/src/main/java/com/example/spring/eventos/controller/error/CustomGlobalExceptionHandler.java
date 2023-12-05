@@ -66,6 +66,24 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(EventosIsEmptyException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ResponseEntity<Object> EventosIsEmptyException(EventosIsEmptyException ex, WebRequest request) {
+		logger.error("------ EventosIsEmptyException() ");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.NOT_FOUND.value());
+		customError.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
+		customError.setMessage(List.of("No hay ningún evento"));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+
+		return new ResponseEntity<>(customError, HttpStatus.NOT_FOUND);
+	}
+	
 	@ExceptionHandler(EventoRepetidoException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<Object> handleEventoRepetidoException(EventoRepetidoException ex, WebRequest request) {

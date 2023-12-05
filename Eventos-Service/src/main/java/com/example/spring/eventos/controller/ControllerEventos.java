@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,6 +70,14 @@ public class ControllerEventos {
 		List<Evento> eventoNombre = serviceEventos.findByNombre(nombre);
 
 		return adapter.of(eventoNombre);
+	}
+	
+	@GetMapping("/{id}")
+	public EventoListadoDTO findById(@PathVariable Long id) {
+		logger.info("------ Listado de eventos por id (GET) ");
+		Evento evento = serviceEventos.findById(id);
+
+		return adapter.of(evento);
 	}
 
 }

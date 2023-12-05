@@ -1,6 +1,7 @@
 package com.example.spring.eventos.controller;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.spring.eventos.controller.error.EventoNotFoundException;
 import com.example.spring.eventos.controller.error.EventoRepetidoException;
+import com.example.spring.eventos.controller.error.EventosIsEmptyException;
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
 import com.example.spring.eventos.service.ServiceEventos;
@@ -41,23 +43,14 @@ import com.example.spring.eventos.service.ServiceRecinto;
 @AutoConfigureMockMvc
 public class ControllerEventosTest {
 	
+	@MockBean
+	private ServiceRecinto serviceRecinto;
 	
-	@Mock
-    private ServiceRecinto serviceRecinto;
-
-    @Mock
-    private ServiceEventos serviceEventos;
-    
-    @InjectMocks
-    private ControllerEventos controllerEventos;
-    
-    @MockBean
-    private Evento evento;
-
-    @Autowired
-    private MockMvc mockMvc;
-    
-
+	@MockBean
+	private ServiceEventos serviceEventos;
+	
+	@Autowired
+	private MockMvc mockMvc;
 
     @Test
     void testSaveEventoRecintoNulo() throws Exception {
@@ -83,12 +76,11 @@ public class ControllerEventosTest {
 	@Test
     void testListadoEventosVacio() throws Exception {
 		
-        when(serviceEventos.findAll()).thenReturn(Collections.emptyList());
+        when(serviceEventos.findAll()).thenThrow(new EventosIsEmptyException());
 
         mockMvc.perform(get("/evento"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("[]"));
+                .andExpect(status().isNotFound());
     }
 	
 	@Test
@@ -111,6 +103,19 @@ public class ControllerEventosTest {
                .andExpect(jsonPath("$[0].nombre").value(evento1.getNombre()))
                .andExpect(jsonPath("$[1].nombre").value(evento2.getNombre()));
     }
+	
+	@Test
+	void testListaEventosMismaLongitud() throws Exception {
+		List<Evento> eventosEnLista = Arrays.asList(
+				new Evento("Evento 1", "Descripción Corta 1", "Descripción Extendida 1", "foto1.jpg", 
+                        LocalDate.of(2023, 12, 1), LocalTime.of(20, 0), 100.0, 200.0, "Normas 1", new Recinto("Recinto 1", "Madrid", "Calle Principe de Vergara", "Local", 200)));
+		int numeroEventosEnFichero = 1;
+
+		when(serviceEventos.findAll()).thenReturn(eventosEnLista);
+
+		mockMvc.perform(get("/evento")).andExpect(status().isOk())
+				.andExpect(jsonPath("$", hasSize(numeroEventosEnFichero)));
+	}
 	
     @Test
     void testFindByNombreCorrecto() throws Exception {
@@ -141,4 +146,30 @@ public class ControllerEventosTest {
         	serviceEventos.findByNombre(nombreInexistente);
         });
     }
+    
+	@Test
+	void testFindByIdCoincide() throws Exception {
+
+		Long id = (long) 800;
+		Recinto recinto1 = new Recinto("Recinto 1", "Madrid", "Calle Principe de Vergara", "Local", 200);
+		Evento evento = new Evento("Evento 2", "Descripción Corta 2", "Descripción Extendida 2", "foto2.jpg", 
+                LocalDate.of(2023, 12, 2), LocalTime.of(21, 0), 150.0, 250.0, "Normas 2", recinto1);
+		evento.setIdEvento(id);
+
+		when(serviceEventos.findById(id)).thenReturn(evento);
+
+		mockMvc.perform(get("/usuario/{id}", id)).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(id));
+
+	}
+    
+	@Test
+	void testFindByIdNulo() throws Exception {
+		
+		Long id = (long) 234788234;
+
+		when(serviceEventos.findById(id)).thenThrow(new EventoNotFoundException());
+
+		mockMvc.perform(get("/evento/{id}", id)).andDo(print()).andExpect(status().isNotFound());
+	}
 }

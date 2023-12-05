@@ -14,82 +14,67 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 
-public class EventoDTO {
+public class EventoListadoDTO {
 	
 	 private Long id;
 
-    @NotEmpty(message = "El nombre no puede ser vacío")
     private String nombre;
 
-    @NotEmpty(message = "La descripción corta no puede ser vacía")
     private String descripcionCorta;
 
     private String descripcionExtendida;
 
     private String foto;
 
-    @NotNull(message = "La fecha del evento no puede ser nula")
     private LocalDate fechaEvento;
 
-    @NotNull(message = "La hora del evento no puede ser nula")
     private LocalTime horaEvento;
 
-    @NotNull(message = "El precio mínimo no puede ser nulo")
     private String precioMinimo;
 
-    @NotNull(message = "El precio máximo no puede ser nulo")
     private String precioMaximo;
 
     private String normas;
 
-    @NotEmpty(message = "El nombre del recinto no puede ser vacío")
-    private String recinto;
+    private RecintoDTO recinto;
     
-		public EventoDTO() {
+		public EventoListadoDTO() {
 			super();
 		}
 
-		 public EventoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
-		            LocalDate fechaEvento, LocalTime horaEvento, String precioMinimo, String precioMaximo, String normas,
-		            String recinto) {
-		        super();
-		        this.id = id;
-		        this.nombre = nombre;
-		        this.descripcionCorta = descripcionCorta;
-		        this.descripcionExtendida = descripcionExtendida;
-		        this.foto = foto;
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
-		        this.fechaEvento = LocalDate.parse(fechaEvento.format(formatter), formatter);
-		        this.horaEvento = horaEvento;
-		        this.precioMinimo = precioMinimo;
-		        this.precioMaximo = precioMaximo;
-		        this.normas = normas;
-		        this.recinto = recinto;
-		    }
-		
-		  public EventoDTO(Evento evento, Recinto recinto) {
-		        this.id = evento.getIdEvento();
-		        this.nombre = evento.getNombre();
-		        this.descripcionCorta = evento.getDescripcionCorta();
-		        this.descripcionExtendida = evento.getDescripcionExtendida();
-		        this.foto = evento.getFoto();
-
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
-		        this.fechaEvento = LocalDate.parse(evento.getFechaEvento().format(formatter), formatter);
-
-		        this.horaEvento = evento.getHoraEvento();
-		        this.precioMinimo = evento.getPrecioMinimo().toString() + " €";
-		        this.precioMaximo = evento.getPrecioMaximo().toString() + " €";
-		        this.normas = evento.getNormas();
-		        this.recinto = recinto.getNombre();
-		    }
-		public Long getIdEvento() {
-			return id;
-		}
-
-		public void setIdEvento(Long id) {
+		public EventoListadoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
+				LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas,
+				RecintoDTO recinto) {
+			super();
 			this.id = id;
+			this.nombre = nombre;
+			this.descripcionCorta = descripcionCorta;
+			this.descripcionExtendida = descripcionExtendida;
+			this.foto = foto;
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
+	        this.fechaEvento = LocalDate.parse(fechaEvento.format(formatter), formatter);
+			this.horaEvento = horaEvento;
+			this.precioMinimo = precioMinimo + " €";
+			this.precioMaximo = precioMaximo + " €";
+			this.normas = normas;
+			this.recinto = recinto;
 		}
+		
+		public EventoListadoDTO(Evento evento, Recinto recinto) {
+			this.id = evento.getIdEvento();
+			this.nombre = evento.getNombre();
+			this.descripcionCorta = evento.getDescripcionCorta();
+			this.descripcionExtendida = evento.getDescripcionExtendida();
+			this.foto = evento.getFoto();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
+	        this.fechaEvento = LocalDate.parse(evento.getFechaEvento().format(formatter), formatter);
+			this.horaEvento = evento.getHoraEvento();
+	        this.precioMinimo = evento.getPrecioMinimo().toString() + " €";
+	        this.precioMaximo = evento.getPrecioMaximo().toString() + " €";
+			this.normas = evento.getNormas();
+			this.recinto = new RecintoDTO(recinto);
+		}
+		
 
 		public String getNombre() {
 			return nombre;
@@ -139,11 +124,6 @@ public class EventoDTO {
 			this.horaEvento = horaEvento;
 		}
 
-
-		public void setPrecioMinimo(String precioMinimo) {
-			this.precioMinimo = precioMinimo;
-		}
-
 	    public Double getPrecioMaximo() {
 	        return convertirPrecioFormato(precioMaximo);
 	    }
@@ -165,9 +145,14 @@ public class EventoDTO {
 	        return Double.parseDouble(formato.format(Double.parseDouble(soloNumeros)));
 	    }
 	    
-		public void setPrecioMaximo(String precioMaximo) {
-			this.precioMaximo = precioMaximo;
+		public void setPrecioMaximo(Double precioMaximo) {
+			this.precioMaximo = precioMaximo + " €";
 		}
+		
+		public void setPrecioMinimo(Double precioMinimo) {
+			this.precioMinimo = precioMinimo + " €";
+		}
+	    
 		public String getNormas() {
 			return normas;
 		}
@@ -176,11 +161,20 @@ public class EventoDTO {
 			this.normas = normas;
 		}
 
-		public String getRecinto() {
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public RecintoDTO getRecinto() {
 			return recinto;
 		}
 
-		public void setRecinto(String recinto) {
+		public void setRecinto(RecintoDTO recinto) {
 			this.recinto = recinto;
 		}
 

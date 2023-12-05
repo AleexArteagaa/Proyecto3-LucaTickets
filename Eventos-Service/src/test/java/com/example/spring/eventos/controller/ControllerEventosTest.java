@@ -1,5 +1,6 @@
 package com.example.spring.eventos.controller;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,11 +8,13 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -79,11 +82,13 @@ public class ControllerEventosTest {
 
 	@Test
     void testListadoEventosVacio() throws Exception {
+		
         when(serviceEventos.findAll()).thenReturn(Collections.emptyList());
 
-        mockMvc.perform(get("/juego"))
+        mockMvc.perform(get("/evento"))
                 .andDo(print())
-                .andExpect(status().isNoContent()); 
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
     }
 	
 	@Test
@@ -100,7 +105,7 @@ public class ControllerEventosTest {
 
         when(serviceEventos.findAll()).thenReturn(listaEventos);
 
-        mockMvc.perform(get("/juego"))
+        mockMvc.perform(get("/evento"))
                .andDo(print())
                .andExpect(status().isOk())
                .andExpect(jsonPath("$[0].nombre").value(evento1.getNombre()))
@@ -108,9 +113,9 @@ public class ControllerEventosTest {
     }
 	
     @Test
-    void testFindByNombreCorrecto() {
+    void testFindByNombreCorrecto() throws Exception {
     	
-	    String nombreCorrecto = "Evento2";	    
+	    String nombreCorrecto = "Evento 2";	    
 		Recinto recinto1 = new Recinto("Recinto 1", "Madrid", "Calle Principe de Vergara", "Local", 200);		
         Evento evento2 = new Evento("Evento 2", "Descripción Corta 2", "Descripción Extendida 2", "foto2.jpg", 
                                      LocalDate.of(2023, 12, 2), LocalTime.of(21, 0), 150.0, 250.0, "Normas 2", recinto1);
@@ -126,7 +131,7 @@ public class ControllerEventosTest {
 	}
     
     @Test
-    void testFindByEventosNameNotFound() {
+    void testFindByEventosNameNotFound() throws Exception {
     	
         String nombreInexistente = "Evento Inexistente";
 

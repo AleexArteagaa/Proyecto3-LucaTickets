@@ -129,7 +129,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex,
 			WebRequest request) {
-		logger.error("------ MethodArgumentTypeMismatchException()");
+		logger.error("------ AnioNotValidException()");
 
 		CustomErrorJson customError = new CustomErrorJson();
 		customError.setTimestamp(new Date());

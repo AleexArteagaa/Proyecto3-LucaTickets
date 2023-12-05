@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
 import com.example.spring.eventos.response.EventoDTO;
+import com.example.spring.eventos.response.EventoListadoDTO;
+import com.example.spring.eventos.response.RecintoDTO;
 
 import org.springframework.stereotype.Component;
 
@@ -14,21 +16,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventoAdapter {
 	
-	public List<EventoDTO> listaADTO(List<Evento> eventos) {
+	public List<EventoListadoDTO> listaADTO(List<Evento> eventos) {
 
-		List<EventoDTO> eventosDTO = new ArrayList<EventoDTO>();
+		List<EventoListadoDTO> eventosDTO = new ArrayList<EventoListadoDTO>();
 
 		for (Evento evento : eventos) {
-			eventosDTO.add(new EventoDTO(evento.getIdEvento(), evento.getNombre(), evento.getDescripcionCorta(), evento.getDescripcionExtendida(), evento.getFoto(),
-					evento.getFechaEvento(), evento.getHoraEvento(), evento.getPrecioMinimo(), evento.getPrecioMaximo(), evento.getNormas(), evento.getRecinto().getNombre()));
+			eventosDTO.add(new EventoListadoDTO(evento.getIdEvento(), evento.getNombre(), evento.getDescripcionCorta(), evento.getDescripcionExtendida(), evento.getFoto(),
+					evento.getFechaEvento(), evento.getHoraEvento(), evento.getPrecioMinimo(), evento.getPrecioMaximo(), evento.getNormas(), new RecintoDTO(evento.getRecinto())));
 		}
 
 		return eventosDTO;
 	}
 	
-    public EventoDTO of(Evento evento) {
-    	EventoDTO eventoDTO = new EventoDTO();
-    	eventoDTO.setIdEvento(evento.getIdEvento());
+    public EventoListadoDTO of(Evento evento) {
+    	EventoListadoDTO eventoDTO = new EventoListadoDTO();
+    	eventoDTO.setId(evento.getIdEvento());
     	eventoDTO.setNombre(evento.getNombre());
     	eventoDTO.setDescripcionCorta(evento.getDescripcionCorta());
     	eventoDTO.setDescripcionExtendida(evento.getDescripcionExtendida());
@@ -38,14 +40,14 @@ public class EventoAdapter {
     	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo());
     	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
     	eventoDTO.setNormas(evento.getNormas());
-    	eventoDTO.setRecinto(evento.getRecinto().getNombre());
+    	eventoDTO.setRecinto( new RecintoDTO(evento.getRecinto()));
 
         return eventoDTO;
     }
     
-    public EventoDTO of(Evento evento, Recinto recinto) {
-    	EventoDTO eventoDTO = new EventoDTO();
-    	eventoDTO.setIdEvento(evento.getIdEvento());
+    public EventoListadoDTO of(Evento evento, Recinto recinto) {
+    	EventoListadoDTO eventoDTO = new EventoListadoDTO();
+    	eventoDTO.setId(evento.getIdEvento());
     	eventoDTO.setNombre(evento.getNombre());
     	eventoDTO.setDescripcionCorta(evento.getDescripcionCorta());
     	eventoDTO.setDescripcionExtendida(evento.getDescripcionExtendida());
@@ -55,12 +57,12 @@ public class EventoAdapter {
     	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo());
     	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
     	eventoDTO.setNormas(evento.getNormas());
-    	eventoDTO.setRecinto(recinto.getNombre());
+    	eventoDTO.setRecinto( new RecintoDTO(evento.getRecinto()));
 
         return eventoDTO;
     }
 
-    public List<EventoDTO> of(List<Evento> eventos) {
+    public List<EventoListadoDTO> of(List<Evento> eventos) {
 
         return eventos.stream()
                 .map(p -> of(p))

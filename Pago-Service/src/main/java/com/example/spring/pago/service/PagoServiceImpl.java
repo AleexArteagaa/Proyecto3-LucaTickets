@@ -1,6 +1,9 @@
 package com.example.spring.pago.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import feign.FeignException;
+import feign.codec.DecodeException;
 
 @Service
 public class PagoServiceImpl implements PagoService {
@@ -59,77 +63,81 @@ public class PagoServiceImpl implements PagoService {
 		logger.info("--------- reliza el feign client de evento");
 		Recinto recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
 		logger.info("--------- reliza el feign client de recinto");
-		// repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO),
-		// eventoAdapter.of(eventoListadoDTO, recinto)));
-		logger.info("--------- reliza el save de usuarioEvento");
 
 		Token token = bancoFeign.getToken();
 		TarjetaResponse response = new TarjetaResponse();
-		try {
+	try {
 			response = bancoFeign.obtenerDatosValidacion(token.getToken(), tarjeta);
-			logger.info("--------- RESPONSE: "+response.toString());
-			//response.setMessage("Entrada comprada con éxito");
-			
+			logger.info("--------- RESPONSE: " + response.toString());
+
 
 		} catch (FeignException e) {
-			logger.info(e.getMessage());
+			if (e.status() == 400) {
+				String feignErrorMessage = e.contentUTF8();
+				ObjectMapper objectMapper = new ObjectMapper();
+				List<String> errorMessages = new ArrayList<>();
+				String status = "";
+				String error = "";
+				String timeStamp = "";
 
-			String feignErrorMessage = e.contentUTF8();
-			ObjectMapper objectMapper = new ObjectMapper();
-			List<String> errorMessages = new ArrayList<>();
-			String status = "";
-			String error = "";
-			String infoAdicional = "";
-			String timeStamp = "";
-			
+				try {
+					JsonNode jsonNode = objectMapper.readTree(feignErrorMessage);
+					JsonNode messageNode = jsonNode.get("message");
+					JsonNode statusNode = jsonNode.get("status");
+					JsonNode timestampNode = jsonNode.get("timestamp");
+					JsonNode errorNode = jsonNode.get("error");
 
-			try {
-				JsonNode jsonNode = objectMapper.readTree(feignErrorMessage);
-				JsonNode messageNode = jsonNode.get("message");
-				JsonNode statusNode = jsonNode.get("status");
-				JsonNode timestampNode = jsonNode.get("timestamp");
-				JsonNode errorNode = jsonNode.get("error");
-				JsonNode infoAdicionalNode = jsonNode.get("infoAdicional");
-
-				if (statusNode != null) {
-					status = statusNode.asText();
-				}
-				
-				if (timestampNode != null) {
-					timeStamp = timestampNode.asText();
-				}
-				
-				if (errorNode != null) {
-					error = errorNode.asText();
-				}
-
-				if (infoAdicionalNode != null) {
-					infoAdicional = infoAdicionalNode.asText();
-				}
-
-				if (messageNode != null && messageNode.isArray()) {
-					for (final JsonNode objNode : messageNode) {
-						errorMessages.add(objNode.asText());
+					if (statusNode != null) {
+						status = statusNode.asText();
 					}
+
+					if (timestampNode != null) {
+						timeStamp = timestampNode.asText();
+					}
+
+					if (errorNode != null) {
+						error = errorNode.asText();
+					}
+
+					if (messageNode != null && messageNode.isArray()) {
+						for (final JsonNode objNode : messageNode) {
+							errorMessages.add(objNode.asText());
+						}
+					}
+
+				} catch (IOException ioException) {
+					logger.error("Error al parsear el mensaje de la excepción Feign: " + ioException.getMessage());
 				}
-				
-				
-			} catch (IOException ioException) {
-				logger.error("Error al parsear el mensaje de la excepción Feign: " + ioException.getMessage());
-			}
-			
-			response.setError(error);
-			response.setInfo(tarjeta);
-			response.setInfoAdicional(infoAdicional);
-			response.setStatus(status);
-			response.setTimestamp(timeStamp);
-			System.out.println(error + "dfsz");
-			if (error.equals("")) {
-				response.setMessage("Entrada comprada con éxito");
-			} else {
+
+				response.setError(error);
+				response.setInfo(tarjeta);
+				if (ConversionMensajes.convertirError(error).equals("")) {
+					response.setInfoAdicional(
+							"Revisa el formato de los campos. Posiblemente te hayas equivocado en el tipo y sea numérico o te hayas equivocado en el nombre de un dato de entrada o directamente te falte una información de entrada");
+				} else {
+					response.setInfoAdicional("");
+				}
+				response.setStatus(status);
+				response.setTimestamp(timeStamp);
 				response.setMessage(ConversionMensajes.convertirError(error));
+
+			} else {
+				LocalDateTime ahora = LocalDateTime.now();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				String timestampFormateado = ahora.format(formatter);
+
+				response.setError("Transacción correcta");
+				response.setStatus("200.0001");
+				response.setTimestamp(timestampFormateado);
+				response.setMessage("Entrada comprada con éxito");
+				response.setInfoAdicional("");
+				response.setInfo(tarjeta);
+
+				repo.save(
+						new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
+				logger.info("--------- reliza el save de usuarioEvento");
 			}
-			
+
 		}
 
 		return response;

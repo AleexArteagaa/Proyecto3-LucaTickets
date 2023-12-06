@@ -68,12 +68,13 @@ public class PagoServiceImpl implements PagoService {
 			eventoListadoDTO = eventoFeign.getEvento(idEvento);
 			logger.info("--------- reliza el feign client de evento");
 			recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
+			logger.info("--------- reliza el feign client de recinto");
 
 		} catch (FeignException e) {
 			
 		}
 		
-		logger.info("--------- reliza el feign client de recinto");
+
 
 		Token token = bancoFeign.getToken();
 		TarjetaResponse response = new TarjetaResponse();

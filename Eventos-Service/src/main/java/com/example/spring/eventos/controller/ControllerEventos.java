@@ -83,7 +83,6 @@ public class ControllerEventos {
 				.buildAndExpand(result.getIdEvento()).toUri();
 
 		return ResponseEntity.created(location).body(adapter.of(result));
-
 	}
 
 	/**

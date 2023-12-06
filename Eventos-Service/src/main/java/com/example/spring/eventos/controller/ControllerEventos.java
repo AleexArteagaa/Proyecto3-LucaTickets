@@ -114,7 +114,7 @@ public class ControllerEventos {
 	 * @return Lista de objetos {@code EventoListadoDTO} que representan la información simplificada de los eventos
 	 *         coincidentes con el nombre proporcionado.
 	 */
-    @GetMapping("/{nombre}")
+    @GetMapping("/nombre/{nombre}")
     @Operation(summary = "Buscar eventos por nombre", description = "Obtiene la lista de eventos que coinciden con el nombre proporcionado.")
     @ApiResponse(responseCode = "200", description = "Lista de eventos obtenida exitosamente")
     @ApiResponse(responseCode = "404", description = "No se encontraron eventos con el nombre especificado")
@@ -125,6 +125,14 @@ public class ControllerEventos {
 	    
 	    	return adapter.of(eventoNombre);   	
 	}
+    
+	@GetMapping("/{id}")
+	public EventoListadoDTO findById(@PathVariable Long id) {
+		logger.info("------ Listado de eventos por id (GET) ");
+		Evento evento = serviceEventos.findById(id);
+ 
+		return adapter.of(evento);
+	}
 	
 	@GetMapping("/recinto/{nombre}")
 	public Recinto findRecintoByNombre(@PathVariable String nombre) {
@@ -133,13 +141,7 @@ public class ControllerEventos {
 		return serviceRecinto.obtenerPorNombre(nombre);
 	}
 	
-	@GetMapping("/{id}")
-	public EventoListadoDTO findById(@PathVariable Long id) {
-		logger.info("------ Listado de eventos por id (GET) ");
-		Evento evento = serviceEventos.findById(id);
- 
-		return adapter.of(evento);
-	}
+
 
 	
 	

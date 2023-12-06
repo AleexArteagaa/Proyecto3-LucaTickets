@@ -122,19 +122,19 @@ public class EventoListadoDTO {
 		this.horaEvento = horaEvento;
 	}
 
-	public String getPrecioMaximo() {
+	public String getPrecioMaximo2() {
 		return precioMaximo.toString() + " €";
 	}
 
-	public String getPrecioMinimo() {
+	public String getPrecioMinimo2() {
 		return precioMinimo.toString() + " €";
 	}
 
-	public Double getPrecioMinimo2() {
+	public Double getPrecioMinimo() {
 		return precioMinimo;
 	}
 
-	public Double getPrecioMaximo2() {
+	public Double getPrecioMaximo() {
 		return precioMaximo;
 	}
 

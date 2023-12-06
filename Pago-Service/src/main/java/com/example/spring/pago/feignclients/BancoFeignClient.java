@@ -7,11 +7,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.example.spring.pago.model.Tarjeta;
+import com.example.spring.pago.model.Token;
 import com.example.spring.pago.response.TarjetaResponse;
 
 @FeignClient(name = "banco-service", url = "http://banco-env.eba-3zvamy8n.eu-west-3.elasticbeanstalk.com")
 public interface BancoFeignClient {
 
     @PostMapping("/pasarela/validacion")
-    public TarjetaResponse obtenerDatosValidacion(@RequestBody Tarjeta tarjeta, @RequestHeader("Authorization") String token);
+    public TarjetaResponse obtenerDatosValidacion( @RequestHeader("Authorization") String token, @RequestBody Tarjeta tarjeta);
+    
+    @PostMapping("/pasarela/validaruser?user=Grupo02&password=AntoniosRules")
+    public Token getToken();
 }

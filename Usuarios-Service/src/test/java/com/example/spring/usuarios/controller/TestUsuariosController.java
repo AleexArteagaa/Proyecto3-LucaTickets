@@ -2,6 +2,7 @@ package com.example.spring.usuarios.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -18,8 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,23 +36,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.spring.usuarios.controller.error.UsuarioNotFoundException;
 import com.example.spring.usuarios.controller.error.UsuarioRepetidoException;
 import com.example.spring.usuarios.model.Usuario;
-import com.example.spring.usuarios.response.UsuarioDTO;
 import com.example.spring.usuarios.service.UsuarioService;
-import com.example.spring.usuarios.utilidades.Utilidades;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.spring.usuarios.controller.error.InvalidPasswordException;
-import com.example.spring.usuarios.controller.error.UsuarioRepetidoException;
-import com.example.spring.usuarios.model.Usuario;
-import com.example.spring.usuarios.service.UsuarioService;
+import com.example.spring.usuarios.controller.error.ListEmptyException;
+import static org.hamcrest.Matchers.lessThan;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -102,7 +98,7 @@ public class TestUsuariosController {
 		Usuario usuario = new Usuario(id, "prueba", "prueba", "prueba@gmail.com", "prueba", LocalDate.now());
 		when(servicio.findById(id)).thenReturn(usuario);
 
-		mockMvc.perform(delete("/usuario/{id}", id)).andDo(print()).andExpect(status().isOk());
+		mockMvc.perform(delete("/usuario/{id}", id)).andDo(print()).andExpect(status().isAccepted());
 
 		verify(servicio, times(1)).deleteById(id);
 	}
@@ -189,4 +185,43 @@ public class TestUsuariosController {
 				.andExpect(status().isInternalServerError()).andExpect(jsonPath("$.message").value(errorMessage));
 	}
 
+	@Test
+	void testFindAllListaVacia() throws Exception{
+		
+		when(servicio.findAll()).thenThrow(new ListEmptyException());
+		
+		mockMvc.perform(get("/usuario")).andDo(print()).andExpect(status().isNotFound());
+		
+	}
+	
+	@Test
+	void testFindAllFechaAltaAnteriorDiaActual() throws Exception{
+		
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		usuarios.add(new Usuario("usuario1","usuario1","usuario1@gmail.com","usuario1",LocalDate.now().minusDays(1)));
+		usuarios.add(new Usuario("usuario2","usuario2","usuario2@gmail.com","usuario2",LocalDate.now().minusDays(2)));
+		usuarios.add(new Usuario("usuario3","usuario3","usuario3@gmail.com","usuario3",LocalDate.now().minusDays(3)));
+		
+		
+		when(servicio.findAll()).thenReturn(usuarios);
+		
+		mockMvc.perform(get("/usuario")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$[*].fechaAlta", everyItem(lessThan(LocalDate.now().toString()))));
+		
+	}
+	
+	@Test
+	void testFindAllUsuarioConApellidoGarcia() throws Exception{
+		
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		usuarios.add(new Usuario("usuario1","Garcia","usuario1@gmail.com","usuario1",LocalDate.now()));
+		usuarios.add(new Usuario("usuario2","usuario2","usuario2@gmail.com","usuario2",LocalDate.now()));
+		usuarios.add(new Usuario("usuario3","usuario3","usuario3@gmail.com","usuario3",LocalDate.now()));
+		
+		
+		when(servicio.findAll()).thenReturn(usuarios);
+		
+		mockMvc.perform(get("/usuario")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$[*].apellido", hasItem(equalTo("Garcia"))));
+		
+	}
+	
 }

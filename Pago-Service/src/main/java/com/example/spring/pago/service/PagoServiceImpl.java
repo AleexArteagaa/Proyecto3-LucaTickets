@@ -13,6 +13,7 @@ import com.example.spring.pago.feignclients.EventoFeignClient;
 import com.example.spring.pago.feignclients.UsuarioFeignClient;
 import com.example.spring.pago.model.Recinto;
 import com.example.spring.pago.model.Tarjeta;
+import com.example.spring.pago.model.Token;
 import com.example.spring.pago.model.UsuarioEvento;
 import com.example.spring.pago.repository.UsuarioEventoRepository;
 import com.example.spring.pago.response.EventoListadoDTO;
@@ -25,33 +26,42 @@ public class PagoServiceImpl implements PagoService {
 
 	@Autowired
 	BancoFeignClient bancoFeign;
+	
+	 @Autowired 
+	 EventoFeignClient eventoFeign;
+	 
+	 @Autowired
+	 UsuarioFeignClient usuarioFeign;
+	 
+	 @Autowired
+	 UsuarioEventoRepository repo;
+	 
+	 @Autowired
+	 UsuarioAdapter usuarioAdapter;
+	 
+	 @Autowired
+	 EventoAdapter eventoAdapter;
+	 	 
+	
+	 public TarjetaResponse realizarPago(Tarjeta tarjeta, Long idUsuario, Long idEvento) {	
+			logger.info("--------- entra en realizar pago");
+			UsuarioDTO usuarioDTO = usuarioFeign.getUsuario(idUsuario);
+			logger.info("--------- reliza el feign client de usuario");
+			EventoListadoDTO eventoListadoDTO = eventoFeign.getEvento(idEvento);
+			logger.info("--------- reliza el feign client de evento");
+			Recinto recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
+			logger.info("--------- reliza el feign client de recinto");
+			//repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
+			logger.info("--------- reliza el save de usuarioEvento");
+			
+			Token token = bancoFeign.getToken();
+			
+			TarjetaResponse response = bancoFeign.obtenerDatosValidacion(token.getToken(),tarjeta);
+			
+			logger.info(response.toString());
 
-	@Autowired
-	EventoFeignClient eventoFeign;
-
-	@Autowired
-	UsuarioFeignClient usuarioFeign;
-
-	@Autowired
-	UsuarioEventoRepository repo;
-
-	@Autowired
-	UsuarioAdapter usuarioAdapter;
-
-	@Autowired
-	EventoAdapter eventoAdapter;
-
-	public TarjetaResponse realizarPago(Tarjeta tarjeta, Long idUsuario, Long idEvento) {
-		logger.info("--------- entra en realizar pago");
-		UsuarioDTO usuarioDTO = usuarioFeign.getUsuario(idUsuario);
-		logger.info("--------- reliza el feign client de usuario");
-		EventoListadoDTO eventoListadoDTO = eventoFeign.getEvento(idEvento);
-		logger.info("--------- reliza el feign client de evento");
-		Recinto recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
-		logger.info("--------- reliza el feign client de recinto");
-		//repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
-		logger.info("--------- reliza el save de usuarioEvento");
-
-		return bancoFeign.obtenerDatosValidacion(tarjeta, "");
-	}
+			
+			return response;
+		
+	 }
 }

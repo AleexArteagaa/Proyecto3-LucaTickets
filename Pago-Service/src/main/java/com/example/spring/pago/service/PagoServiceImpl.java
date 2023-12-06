@@ -132,8 +132,8 @@ public class PagoServiceImpl implements PagoService {
 				response.setInfoAdicional("");
 				response.setInfo(tarjeta);
 
-				//repo.save(
-					//	new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
+				repo.save(
+						new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
 				logger.info("--------- reliza el save de usuarioEvento");
 			}
 

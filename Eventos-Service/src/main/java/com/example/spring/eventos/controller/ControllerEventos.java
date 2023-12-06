@@ -85,8 +85,6 @@ public class ControllerEventos {
 		return ResponseEntity.created(location).body(adapter.of(result));
 		
 	}
-
-	}
 	
 
 	/**

@@ -154,7 +154,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 			}
 
 			if (!ex.getCause().toString().contains("DayOfMonth") && !ex.getCause().toString().contains("MonthOfYear")) {
-				mensajes.add("El formato de la fecha debe ser yyyy-MM-dd");
+				mensajes.add("El formato de la fecha debe ser dd-MM-yyyy");
 			}
 
 		} else if (ex.getMessage().contains("Required request body is missing")) {

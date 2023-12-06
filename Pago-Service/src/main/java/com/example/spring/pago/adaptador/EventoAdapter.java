@@ -22,7 +22,7 @@ public class EventoAdapter {
 
 		for (Evento evento : eventos) {
 			eventosDTO.add(new EventoListadoDTO(evento.getIdEvento(), evento.getNombre(), evento.getDescripcionCorta(), evento.getDescripcionExtendida(), evento.getFoto(),
-					evento.getFechaEvento(), evento.getHoraEvento(), evento.getPrecioMinimo(), evento.getPrecioMaximo(), evento.getNormas(), new RecintoDTO(evento.getRecinto())));
+					evento.getFechaEvento(), evento.getHoraEvento(), evento.getPrecioMinimo().toString(), evento.getPrecioMaximo().toString(), evento.getNormas(), new RecintoDTO(evento.getRecinto())));
 		}
 
 		return eventosDTO;
@@ -37,8 +37,8 @@ public class EventoAdapter {
     	eventoDTO.setFoto(evento.getFoto());
     	eventoDTO.setFechaEvento(evento.getFechaEvento());
     	eventoDTO.setHoraEvento(evento.getHoraEvento());
-    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo());
-    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
+    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo().toString());
+    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo().toString());
     	eventoDTO.setNormas(evento.getNormas());
     	eventoDTO.setRecinto( new RecintoDTO(evento.getRecinto()));
 
@@ -54,8 +54,8 @@ public class EventoAdapter {
     	eventoDTO.setFoto(evento.getFoto());
     	eventoDTO.setFechaEvento(evento.getFechaEvento());
     	eventoDTO.setHoraEvento(evento.getHoraEvento());
-    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo());
-    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
+    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo().toString());
+    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo().toString());
     	eventoDTO.setNormas(evento.getNormas());
     	eventoDTO.setRecinto( new RecintoDTO(evento.getRecinto()));
 
@@ -71,8 +71,8 @@ public class EventoAdapter {
     	evento.setFoto(eventoDTO.getFoto());
     	evento.setFechaEvento(eventoDTO.getFechaEvento());
     	evento.setHoraEvento(eventoDTO.getHoraEvento());
-    	evento.setPrecioMinimo(eventoDTO.getPrecioMinimo());
-    	evento.setPrecioMaximo(eventoDTO.getPrecioMaximo());
+    	evento.setPrecioMaximo(Double.parseDouble(eventoDTO.getPrecioMinimo().toString().substring(0,eventoDTO.getPrecioMaximo().toString().length()-2)));
+    	evento.setPrecioMaximo(Double.parseDouble(eventoDTO.getPrecioMaximo().toString().substring(0,eventoDTO.getPrecioMaximo().toString().length()-2)));
     	evento.setNormas(eventoDTO.getNormas());
     	evento.setRecinto(recinto);
 

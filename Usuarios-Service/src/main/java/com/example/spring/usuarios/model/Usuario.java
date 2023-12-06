@@ -2,7 +2,9 @@ package com.example.spring.usuarios.model;
 
 import java.time.LocalDate;
 
+import com.example.spring.usuarios.utilidades.DeserializacionLocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +41,7 @@ public class Usuario {
     @NotEmpty(message = "La contraseña no puede estar vacía")
     private String contrasenia;
 
+    @JsonDeserialize(using = DeserializacionLocalDate.class)
     @Column(name = "fecha_alta")
     private LocalDate fechaAlta;
 

@@ -2,6 +2,11 @@ package com.example.spring.usuarios.response;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.example.spring.usuarios.utilidades.DeserializacionLocalDate;
 
 public class UsuarioDTO {
 	private Long id;
@@ -9,6 +14,8 @@ public class UsuarioDTO {
 	private String apellido;
 	private String mail;
 	private String contrasenia;
+	
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate fechaAlta;
 
 	public UsuarioDTO() {
@@ -22,7 +29,9 @@ public class UsuarioDTO {
 		this.apellido = apellido;
 		this.mail = mail;
 		this.contrasenia = contrasenia;
-		this.fechaAlta = fechaAlta;
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
+        this.fechaAlta = LocalDate.parse(fechaAlta.format(formatter), formatter);
 	}
 	
 	public UsuarioDTO(String nombre, String apellido, String mail, String contrasenia, LocalDate fechaAlta) {
@@ -34,6 +43,10 @@ public class UsuarioDTO {
 		this.fechaAlta = fechaAlta;
 	}
 
+	public UsuarioDTO(String nombre, String apellido, String mail, String contrasenia, String fechaFormateada) {
+		
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -74,20 +87,10 @@ public class UsuarioDTO {
 		this.contrasenia = contrasenia;
 	}
 	
-	public String getFechaAlta2() {		
-		return formatearFecha(fechaAlta);	
-	}	
-
 	public  LocalDate getFechaAlta() {		
 		
 		return fechaAlta;
 	}
-
-	private String formatearFecha(LocalDate fechaAlta) {
-		DateTimeFormatter formateada = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		return fechaAlta.format(formateada);
-	}
-
 
 	public void setFechaAlta(LocalDate fechaAlta) {
 		this.fechaAlta = fechaAlta;

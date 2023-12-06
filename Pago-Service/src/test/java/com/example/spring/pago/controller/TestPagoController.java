@@ -72,5 +72,47 @@ public class TestPagoController {
 	            .andExpect(jsonPath("$.message").value(errorMessage))
 	            .andExpect(jsonPath("$.status").value("400"));
 	}
+	
+	@Test
+	public void testCvvNoValido() throws Exception {
+	    String errorMessage = "El formato del CVV no es válido";
+	    
+	    String tarjetaJson = "{\r\n"
+	            + "  \"nombreTitular\": \"Alejandro\",\r\n"
+	            + "  \"numeroTarjeta\": \"4245-5678-9012-3456\",\r\n"
+	            + "  \"mesCaducidad\": \"12\",\r\n"
+	            + "  \"yearCaducidad\": \"2025\",\r\n"
+	            + "  \"cvv\": \"12443\",\r\n"
+	            + "  \"emisor\": \"VISA\",\r\n"
+	            + "  \"concepto\": \"Compra en línea\",\r\n"
+	            + "  \"cantidad\": 100.00\r\n"
+	            + "}";
+	    
+	    mockMvc.perform(
+	            post("/pago?idUsuario=3&idEvento=1").content(tarjetaJson).contentType(MediaType.APPLICATION_JSON))
+	            .andExpect(jsonPath("$.message").value(errorMessage))
+	            .andExpect(jsonPath("$.status").value("400"));
+	}
+	
+	@Test
+	public void testMesNoValido() throws Exception {
+	    String errorMessage = "El mes de caducidad de la tarjeta no es correcto";
+	    
+	    String tarjetaJson = "{\r\n"
+	            + "  \"nombreTitular\": \"Alejandro\",\r\n"
+	            + "  \"numeroTarjeta\": \"4243-5678-9012-3456\",\r\n"
+	            + "  \"mesCaducidad\": \"13\",\r\n"
+	            + "  \"yearCaducidad\": \"2025\",\r\n"
+	            + "  \"cvv\": \"124\",\r\n"
+	            + "  \"emisor\": \"VISA\",\r\n"
+	            + "  \"concepto\": \"Compra en línea\",\r\n"
+	            + "  \"cantidad\": 100.00\r\n"
+	            + "}";
+	    
+	    mockMvc.perform(
+	            post("/pago?idUsuario=3&idEvento=1").content(tarjetaJson).contentType(MediaType.APPLICATION_JSON))
+	            .andExpect(jsonPath("$.message").value(errorMessage))
+	            .andExpect(jsonPath("$.status").value("400"));
+	}
 
 }

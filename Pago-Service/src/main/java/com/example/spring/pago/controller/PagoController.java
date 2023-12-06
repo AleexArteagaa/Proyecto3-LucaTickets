@@ -33,7 +33,7 @@ public class PagoController {
 	PagoService serv;
 
 	// /pago?idUsuario=2&idEvento=3
-//	@CircuitBreaker(name = "evento", fallbackMethod = "circuitBreakerEvento")
+	@CircuitBreaker(name = "evento", fallbackMethod = "circuitBreakerEvento")
 	@PostMapping
 	public TarjetaResponse realizarPago(@RequestParam Long idUsuario, @RequestParam Long idEvento,
 			@Valid @RequestBody Tarjeta tarjeta) {
@@ -45,18 +45,18 @@ public class PagoController {
 		return tarjetaResponse;
 	}
     
-//    private TarjetaResponse circuitBreakerEvento(RuntimeException e) {
-//    	System.out.println("----------- circuitBreakerEvento");
-//    	TarjetaResponse response = new TarjetaResponse();
-//    	LocalDateTime ahora = LocalDateTime.now();
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//		String timestampFormateado = ahora.format(formatter);
-//
-//		response.setError("Servidor no disponible");
-//		response.setStatus("500");
-//		response.setTimestamp(timestampFormateado);
-//		response.setMessage("Lo sentimos, en estos momentos no estan disponibles los servidores. Intentelo más tarde");
-//    	return response; 
-//
-//    }
+    private TarjetaResponse circuitBreakerEvento(RuntimeException e) {
+    	System.out.println("----------- circuitBreakerEvento");
+    	TarjetaResponse response = new TarjetaResponse();
+    	LocalDateTime ahora = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		String timestampFormateado = ahora.format(formatter);
+
+		response.setError("Servidor no disponible");
+		response.setStatus("500");
+		response.setTimestamp(timestampFormateado);
+		response.setMessage("Lo sentimos, en estos momentos no estan disponibles los servidores. Intentelo más tarde");
+    	return response; 
+
+    }
 }

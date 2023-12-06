@@ -45,7 +45,7 @@ public class ControllerEventos {
 	private EventoAdapter adapter = new EventoAdapter();
 
 	@PostMapping
-	public EventoListadoDTO save(@Valid @RequestBody EventoDTO eventoDTO) {
+	public ResponseEntity<EventoListadoDTO> save(@Valid @RequestBody EventoDTO eventoDTO) {
 		
 		logger.info("------ Alta de evento (POST)");
 		Recinto recinto = serviceRecinto.obtenerPorNombre(eventoDTO.getRecinto());
@@ -56,7 +56,11 @@ public class ControllerEventos {
 		
 		Evento result = this.serviceEventos.save(evento);
 
-		return adapter.of(result);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getIdEvento())
+				.toUri();
+
+		return ResponseEntity.created(location).body(adapter.of(result));
+		
 	}
 
 	@GetMapping()

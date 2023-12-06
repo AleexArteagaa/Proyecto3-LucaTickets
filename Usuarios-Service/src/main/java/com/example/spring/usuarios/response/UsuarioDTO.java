@@ -73,6 +73,10 @@ public class UsuarioDTO {
 	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
+	
+	public LocalDate getFechaAlta2() {		
+		return fechaAlta;		
+	}	
 
 	public String getFechaAlta() {		
 		return formatearFecha(fechaAlta);		

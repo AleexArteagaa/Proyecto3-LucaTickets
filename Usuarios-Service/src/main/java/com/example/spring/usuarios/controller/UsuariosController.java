@@ -93,6 +93,7 @@ public class UsuariosController {
 		logger.info("----- LISTADO DE USUARIO POR ID (GET)-----");
 
 		UsuarioDTO usuario = adaptador.of(servicio.findById(id));
+
 		return usuario;
 	}
 

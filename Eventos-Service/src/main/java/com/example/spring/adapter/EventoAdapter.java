@@ -22,7 +22,7 @@ public class EventoAdapter {
 
 		for (Evento evento : eventos) {
 			eventosDTO.add(new EventoListadoDTO(evento.getIdEvento(), evento.getNombre(), evento.getDescripcionCorta(), evento.getDescripcionExtendida(), evento.getFoto(),
-					evento.getFechaEvento(), evento.getHoraEvento(), evento.getPrecioMinimo(), evento.getPrecioMaximo(), evento.getNormas(), new RecintoDTO(evento.getRecinto())));
+					evento.getFechaEvento(), evento.getHoraEvento(), evento.getPrecioMinimo().toString(), evento.getPrecioMaximo().toString(), evento.getNormas(), new RecintoDTO(evento.getRecinto())));
 		}
 
 		return eventosDTO;
@@ -37,8 +37,8 @@ public class EventoAdapter {
     	eventoDTO.setFoto(evento.getFoto());
     	eventoDTO.setFechaEvento(evento.getFechaEvento());
     	eventoDTO.setHoraEvento(evento.getHoraEvento());
-    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo());
-    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
+    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo().toString());
+    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo().toString());
     	eventoDTO.setNormas(evento.getNormas());
     	eventoDTO.setRecinto( new RecintoDTO(evento.getRecinto()));
 
@@ -54,8 +54,8 @@ public class EventoAdapter {
     	eventoDTO.setFoto(evento.getFoto());
     	eventoDTO.setFechaEvento(evento.getFechaEvento());
     	eventoDTO.setHoraEvento(evento.getHoraEvento());
-    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo());
-    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo());
+    	eventoDTO.setPrecioMinimo(evento.getPrecioMinimo().toString());
+    	eventoDTO.setPrecioMaximo(evento.getPrecioMaximo().toString());
     	eventoDTO.setNormas(evento.getNormas());
     	eventoDTO.setRecinto( new RecintoDTO(evento.getRecinto()));
 

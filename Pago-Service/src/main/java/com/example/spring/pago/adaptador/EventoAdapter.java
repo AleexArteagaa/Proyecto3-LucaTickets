@@ -71,8 +71,8 @@ public class EventoAdapter {
     	evento.setFoto(eventoDTO.getFoto());
     	evento.setFechaEvento(eventoDTO.getFechaEvento());
     	evento.setHoraEvento(eventoDTO.getHoraEvento());
-    	evento.setPrecioMinimo(Double.parseDouble(eventoDTO.getPrecioMinimo()));
-    	evento.setPrecioMaximo(Double.parseDouble(eventoDTO.getPrecioMaximo()));
+    	evento.setPrecioMaximo(Double.parseDouble(eventoDTO.getPrecioMinimo().toString().substring(0,eventoDTO.getPrecioMaximo().toString().length()-2)));
+    	evento.setPrecioMaximo(Double.parseDouble(eventoDTO.getPrecioMaximo().toString().substring(0,eventoDTO.getPrecioMaximo().toString().length()-2)));
     	evento.setNormas(eventoDTO.getNormas());
     	evento.setRecinto(recinto);
 

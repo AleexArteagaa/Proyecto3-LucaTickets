@@ -125,14 +125,14 @@ public class EventoListadoDTO {
 	public void setHoraEvento(LocalTime horaEvento) {
 		this.horaEvento = horaEvento;
 	}
-
-	public String getPrecioMaximo2() {
-		return precioMaximo.toString() + " €";
-	}
-
-	public String getPrecioMinimo2() {
-		return precioMinimo.toString() + " €";
-	}
+//
+//	public String getPrecioMaximo2() {
+//		return precioMaximo.toString() + " €";
+//	}
+//
+//	public String getPrecioMinimo2() {
+//		return precioMinimo.toString() + " €";
+//	}
 
 	public String getPrecioMinimo() {
 		return precioMinimo;

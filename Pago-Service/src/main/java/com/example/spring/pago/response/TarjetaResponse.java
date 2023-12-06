@@ -1,38 +1,35 @@
 package com.example.spring.pago.response;
 
-import java.util.List;
-
 import com.example.spring.pago.model.Tarjeta;
 
 public class TarjetaResponse {
-	
+
 	private String timestamp;
-	
+
 	private String status;
-	
-	private List<String> message;
-	
+
+	private String error;
+
+	private String message;
+
 	private Tarjeta info;
-	
+
 	private String infoAdicional;
-	
-	
 
 	public TarjetaResponse() {
 		super();
 	}
-	
-	
 
-	public TarjetaResponse(String timestamp, String status,  List<String> message, Tarjeta info, String infoAdicional) {
+	public TarjetaResponse(String timestamp, String status, String error, String message, Tarjeta info,
+			String infoAdicional) {
 		super();
 		this.timestamp = timestamp;
 		this.status = status;
+		this.error = error;
 		this.message = message;
 		this.info = info;
 		this.infoAdicional = infoAdicional;
 	}
-
 
 	public String getTimestamp() {
 		return timestamp;
@@ -50,11 +47,19 @@ public class TarjetaResponse {
 		this.status = status;
 	}
 
-	public  List<String> getMessage() {
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public String getMessage() {
 		return message;
 	}
 
-	public void setMessage( List<String> message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 
@@ -74,14 +79,10 @@ public class TarjetaResponse {
 		this.infoAdicional = infoAdicional;
 	}
 
-
-
 	@Override
 	public String toString() {
-		return "TarjetaResponse [timestamp=" + timestamp + ", status=" + status + ", message=" + message + ", info="
-				+ info + ", infoAdicional=" + infoAdicional + "]";
+		return "TarjetaResponse [timestamp=" + timestamp + ", status=" + status + ", error=" + error + ", message="
+				+ message + ", info=" + info + ", infoAdicional=" + infoAdicional + "]";
 	}
-	
-	
 
 }

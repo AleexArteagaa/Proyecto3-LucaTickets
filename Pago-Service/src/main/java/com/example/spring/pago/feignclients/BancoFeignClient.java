@@ -10,7 +10,7 @@ import com.example.spring.pago.model.Tarjeta;
 import com.example.spring.pago.model.Token;
 import com.example.spring.pago.response.TarjetaResponse;
 
-@FeignClient(name = "banco-service", url = "http://banco-env.eba-3zvamy8n.eu-west-3.elasticbeanstalk.com")
+@FeignClient(name = "banco", url = "http://banco-env.eba-3zvamy8n.eu-west-3.elasticbeanstalk.com")
 public interface BancoFeignClient {
 
 	@PostMapping("/pasarela/validacion")

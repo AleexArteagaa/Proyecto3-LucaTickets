@@ -81,9 +81,10 @@ public class ControllerEventos {
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getIdEvento())
 				.toUri();
+
+		return ResponseEntity.created(location).body(adapter.of(result));
 		
-		return ResponseEntity.created(location).body(result);
-		
+	}
 
 	}
 	

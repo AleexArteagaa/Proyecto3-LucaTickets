@@ -13,6 +13,7 @@ import com.example.spring.pago.feignclients.EventoFeignClient;
 import com.example.spring.pago.feignclients.UsuarioFeignClient;
 import com.example.spring.pago.model.Recinto;
 import com.example.spring.pago.model.Tarjeta;
+import com.example.spring.pago.model.Token;
 import com.example.spring.pago.model.UsuarioEvento;
 import com.example.spring.pago.repository.UsuarioEventoRepository;
 import com.example.spring.pago.response.EventoListadoDTO;
@@ -51,10 +52,17 @@ public class PagoServiceImpl implements PagoService {
 			logger.info("--------- reliza el feign client de evento");
 			Recinto recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
 			logger.info("--------- reliza el feign client de recinto");
-			repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
+			//repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
 			logger.info("--------- reliza el save de usuarioEvento");
 			
-			return bancoFeign.obtenerDatosValidacion(tarjeta);
+			Token token = bancoFeign.getToken();
+			
+			TarjetaResponse response = bancoFeign.obtenerDatosValidacion(token.getToken(),tarjeta);
+			
+			logger.info(response.toString());
+
+			
+			return response;
 		
 	 }
 }

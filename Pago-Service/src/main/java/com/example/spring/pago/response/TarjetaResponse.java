@@ -71,6 +71,14 @@ public class TarjetaResponse {
 	public void setInfoAdicional(String infoAdicional) {
 		this.infoAdicional = infoAdicional;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "TarjetaResponse [timestamp=" + timestamp + ", status=" + status + ", message=" + message + ", info="
+				+ info + ", infoAdicional=" + infoAdicional + "]";
+	}
 	
 	
 

@@ -30,15 +30,13 @@ public class PagoController {
 	
 	// /pago?idUsuario=2&idEvento=3
 	@PostMapping
-	public ResponseEntity<TarjetaResponse> realizarPago(@RequestParam Long idUsuario, @RequestParam Long idEvento, @Valid @RequestBody Tarjeta tarjeta){
+	public TarjetaResponse realizarPago(@RequestParam Long idUsuario, @RequestParam Long idEvento, @Valid @RequestBody Tarjeta tarjeta){
 		
 		TarjetaResponse tarjetaResponse = serv.realizarPago(tarjeta, idUsuario, idEvento);
 
-		if (tarjetaResponse == null) {
-        	return ResponseEntity.badRequest().build();
-        }
-        else {
-        	return ResponseEntity.ok(tarjetaResponse);
-        }
+		logger.info(tarjetaResponse.toString());
+
+		
+		return tarjetaResponse;
 	}
 }

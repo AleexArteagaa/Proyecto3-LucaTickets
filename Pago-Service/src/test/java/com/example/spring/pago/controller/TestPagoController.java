@@ -35,7 +35,7 @@ import feign.Response;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PagoControllerTests {
+public class TestPagoController {
 
 	@Autowired
 	private MockMvc mockMvc;

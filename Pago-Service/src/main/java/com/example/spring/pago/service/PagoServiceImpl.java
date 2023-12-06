@@ -115,7 +115,7 @@ public class PagoServiceImpl implements PagoService {
 			response.setInfoAdicional("");
 			response.setStatus(status);
 			response.setTimestamp(timeStamp);
-			response.setMessage(errorMessages);
+			response.setMessage(errorMessages.get(0));
 			
 			return response;
 
@@ -173,7 +173,7 @@ public class PagoServiceImpl implements PagoService {
 				}
 				response.setStatus(status);
 				response.setTimestamp(timeStamp);
-				response.setMessage(List.of(ConversionMensajes.convertirError(error)));
+				response.setMessage(ConversionMensajes.convertirError(error));
 
 			} else {
 				LocalDateTime ahora = LocalDateTime.now();
@@ -183,7 +183,7 @@ public class PagoServiceImpl implements PagoService {
 				response.setError("Transacción correcta");
 				response.setStatus("200.0001");
 				response.setTimestamp(timestampFormateado);
-				response.setMessage(List.of("Entrada comprada con éxito"));
+				response.setMessage("Entrada comprada con éxito");
 				response.setInfoAdicional("");
 				response.setInfo(tarjeta);
 

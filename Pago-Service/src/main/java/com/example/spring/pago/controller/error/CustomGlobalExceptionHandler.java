@@ -33,24 +33,26 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 	private static final Logger logger = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class);
 
 	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex,
+			WebRequest request) {
+		logger.error("------ AnioNotValidException()");
+
+		CustomErrorJson customError = new CustomErrorJson();
+		customError.setTimestamp(new Date());
+		customError.setStatus(HttpStatus.BAD_REQUEST.value());
+		customError.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		customError.setMessage(List.of("Valor introducido por parámetro no válido"));
+		customError.setPath(request.getDescription(false));
+		String uri = request.getDescription(false);
+		uri = uri.substring(uri.lastIndexOf("=") + 1);
+		customError.setPath(uri);
+		customError.setJdk(System.getProperty("java.version"));
 
 
-//	@ExceptionHandler(FeignException.class)
-//	@ResponseStatus(HttpStatus.BAD_REQUEST)
-//	public ResponseEntity<Object> handleInvalidYearException(FeignException ex,
-//			WebRequest request) {
-//		logger.error("------ InvalidYearException()");
-//
-//		TarjetaResponse customError = new TarjetaResponse();
-//		customError.setTimestamp(ex.getStackTrace().toString());
-//		customError.setStatus("Estado");
-//		customError.setMessage(List.of("Año no váido. Debe ser mayor del 2000"));
-//		customError.setInfo(null);
-//		customError.getInfoAdicional();
-//
-//		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
-//	}
-//	
+		return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+	}
 
 	
 	@Override

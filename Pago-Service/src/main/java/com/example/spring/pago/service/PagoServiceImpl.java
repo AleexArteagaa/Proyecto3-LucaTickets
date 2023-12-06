@@ -32,7 +32,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import feign.FeignException;
 import feign.codec.DecodeException;
+import jakarta.transaction.Transactional;
 
+@Transactional
 @Service
 public class PagoServiceImpl implements PagoService {
 	private static final Logger logger = LoggerFactory.getLogger(PagoServiceImpl.class);
@@ -59,9 +61,18 @@ public class PagoServiceImpl implements PagoService {
 		logger.info("--------- entra en realizar pago");
 		UsuarioDTO usuarioDTO = usuarioFeign.getUsuario(idUsuario);
 		logger.info("--------- reliza el feign client de usuario");
-		EventoListadoDTO eventoListadoDTO = eventoFeign.getEvento(idEvento);
-		logger.info("--------- reliza el feign client de evento");
-		Recinto recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
+		
+		EventoListadoDTO eventoListadoDTO = new EventoListadoDTO();
+		Recinto recinto = new Recinto();
+		try {
+			eventoListadoDTO = eventoFeign.getEvento(idEvento);
+			logger.info("--------- reliza el feign client de evento");
+			recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
+
+		} catch (FeignException e) {
+			
+		}
+		
 		logger.info("--------- reliza el feign client de recinto");
 
 		Token token = bancoFeign.getToken();
@@ -123,7 +134,7 @@ public class PagoServiceImpl implements PagoService {
 
 			} else {
 				LocalDateTime ahora = LocalDateTime.now();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 				String timestampFormateado = ahora.format(formatter);
 
 				response.setError("Transacción correcta");

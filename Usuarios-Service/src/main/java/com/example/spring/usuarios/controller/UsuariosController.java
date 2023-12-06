@@ -28,12 +28,13 @@ import com.example.spring.usuarios.utilidades.Utilidades;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuario")
-@Tag(name = "usuarios", description = "the Usuarios API")
+@Tag(name = "usuarios", description = "Operaciones relacionadas con usuarios")
 public class UsuariosController {
 	private static final Logger logger = LoggerFactory.getLogger(UsuariosController.class);
 
@@ -48,7 +49,10 @@ public class UsuariosController {
 	 *
 	 * @return Una lista de objetos UsuarioDTO.
 	 */
-	@Operation(summary = "Obtener todos los usuarios")
+	@Operation(summary = "Obtener todos los usuarios", description = "Obtiene la lista de todos los usuarios disponibles")
+	@ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente")
+	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
 	@GetMapping
 	public List<UsuarioDTO> findAll() {
 		logger.info("----- LISTADO DE USUARIOS (GET) -----");
@@ -61,7 +65,10 @@ public class UsuariosController {
 	 * @param id El ID del usuario a eliminar.
 	 * @return ResponseEntity con un mapa de datos y el estado HTTP correspondiente.
 	 */
-	@Operation(summary = "Eliminar usuario por ID")
+	@Operation(summary = "Eliminar usuario por ID", description = "Elimina al usuario con el ID indicado")
+	@ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente")
+	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> deleteById(
 			@Parameter(description = "ID del usuario a eliminar") @PathVariable Long id) {
@@ -77,7 +84,10 @@ public class UsuariosController {
 	 * @param id El ID del usuario a buscar.
 	 * @return Un objeto UsuarioDTO correspondiente al usuario encontrado.
 	 */
-	@Operation(summary = "Buscar usuario por ID")
+	@Operation(summary = "Buscar usuario por ID", description = "Realiza una búsqueda del usuario con el ID indicado")
+	@ApiResponse(responseCode = "200", description = "Usuario obtenido correctamente")
+	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
 	@GetMapping("/{id}")
 	public UsuarioDTO findById(@Parameter(description = "ID del usuario a buscar") @PathVariable Long id) {
 		logger.info("----- LISTADO DE USUARIO POR ID (GET)-----");
@@ -93,7 +103,11 @@ public class UsuariosController {
 	 * @return ResponseEntity con un objeto UsuarioDTO y la respuesta HTTP
 	 *         correspondiente.
 	 */
-	@Operation(summary = "Dar de alta un nuevo usuario")
+	@Operation(summary = "Alta de usuario", description = "Realiza un alta de un usuario")
+	@ApiResponse(responseCode = "201", description = "Usuario dado de alta correctamente")
+	@ApiResponse(responseCode = "400", description = "Solicitud mal formada")
+	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
 	@PostMapping
 	public ResponseEntity<UsuarioDTO> altaUsuario(
 			@Parameter(description = "Datos del usuario a dar de alta", required = true) @Valid @RequestBody Usuario usuario) {
@@ -114,7 +128,11 @@ public class UsuariosController {
 	 * @return ResponseEntity con un objeto UsuarioDTO y la respuesta HTTP
 	 *         correspondiente.
 	 */
-	@Operation(summary = "Editar un usuario existente")
+	@Operation(summary = "Alta de usuario", description = "Realiza un alta de un usuario")
+	@ApiResponse(responseCode = "200", description = "Usuario editado correctamente")
+	@ApiResponse(responseCode = "400", description = "Solicitud mal formada")
+	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
 	@PutMapping("/{id}")
 	public ResponseEntity<UsuarioDTO> editarUsuario(
 			@Parameter(description = "ID del usuario a editar") @PathVariable Long id,

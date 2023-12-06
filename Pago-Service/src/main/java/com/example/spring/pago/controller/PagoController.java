@@ -33,8 +33,8 @@ public class PagoController {
 	public ResponseEntity<TarjetaResponse> realizarPago(@RequestParam Long idUsuario, @RequestParam Long idEvento, @Valid @RequestBody Tarjeta tarjeta){
 		
 		TarjetaResponse tarjetaResponse = serv.realizarPago(tarjeta, idUsuario, idEvento);
-
-		if (tarjetaResponse == null) {
+		
+		if (tarjeta == null) {
         	return ResponseEntity.badRequest().build();
         }
         else {

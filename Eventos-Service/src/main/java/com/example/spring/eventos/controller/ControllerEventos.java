@@ -51,6 +51,7 @@ public class ControllerEventos {
 	private EventoAdapter adapter = new EventoAdapter();
 
 
+
 	/**
 	 * Guarda un nuevo evento mediante una solicitud HTTP POST. El método utiliza la información proporcionada en el objeto
 	 * {@code EventoDTO} para crear y almacenar un nuevo evento en la base de datos. Se realiza la validación del cuerpo de la
@@ -67,7 +68,8 @@ public class ControllerEventos {
     @ApiResponse(responseCode = "400", description = "Solicitud inválida")
     @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	 	public ResponseEntity<?> save(@Valid @RequestBody EventoDTO eventoDTO) {
-		
+	
+	
 		logger.info("------ Alta de evento (POST)");
 		Recinto recinto = serviceRecinto.obtenerPorNombre(eventoDTO.getRecinto());
 		
@@ -82,8 +84,10 @@ public class ControllerEventos {
 		
 		return ResponseEntity.created(location).body(result);
 		
+
 	}
 	
+
 	/**
 	 * Recupera una lista de todos los eventos mediante una solicitud HTTP GET. El método obtiene todos los eventos
 	 * almacenados en la base de datos y los transforma en objetos {@code EventoListadoDTO} antes de devolver la lista
@@ -128,5 +132,16 @@ public class ControllerEventos {
 		
 		return serviceRecinto.obtenerPorNombre(nombre);
 	}
+	
+	@GetMapping("/{id}")
+	public EventoListadoDTO findById(@PathVariable Long id) {
+		logger.info("------ Listado de eventos por id (GET) ");
+		Evento evento = serviceEventos.findById(id);
+ 
+		return adapter.of(evento);
+	}
+
+	
+	
 
 }

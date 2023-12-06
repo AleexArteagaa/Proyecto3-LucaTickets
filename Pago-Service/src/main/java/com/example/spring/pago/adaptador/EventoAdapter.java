@@ -69,7 +69,7 @@ public class EventoAdapter {
     	evento.setDescripcionCorta(eventoDTO.getDescripcionCorta());
     	evento.setDescripcionExtendida(eventoDTO.getDescripcionExtendida());
     	evento.setFoto(eventoDTO.getFoto());
-    	evento.setFechaEvento(eventoDTO.getFechaEvento2());
+    	evento.setFechaEvento(eventoDTO.getFechaEvento());
     	evento.setHoraEvento(eventoDTO.getHoraEvento());
     	evento.setPrecioMinimo(eventoDTO.getPrecioMinimo2());
     	evento.setPrecioMaximo(eventoDTO.getPrecioMaximo2());

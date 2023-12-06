@@ -121,5 +121,12 @@ public class ControllerEventos {
 	    
 	    	return adapter.of(eventoNombre);   	
 	}
+	
+	@GetMapping("/recinto/{nombre}")
+	public Recinto findRecintoByNombre(@PathVariable String nombre) {
+		logger.info("------ Buscar recinto por nombre (GET) ");
+		
+		return serviceRecinto.obtenerPorNombre(nombre);
+	}
 
 }

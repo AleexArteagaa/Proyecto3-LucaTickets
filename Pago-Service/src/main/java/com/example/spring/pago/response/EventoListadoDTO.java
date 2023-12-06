@@ -8,165 +8,174 @@ import java.util.Locale;
 import com.example.spring.pago.model.Evento;
 import com.example.spring.pago.model.Recinto;
 
-
 public class EventoListadoDTO {
-	
-	 private Long id;
 
-    private String nombre;
+	private Long id;
 
-    private String descripcionCorta;
+	private String nombre;
 
-    private String descripcionExtendida;
+	private String descripcionCorta;
 
-    private String foto;
+	private String descripcionExtendida;
 
-    private LocalDate fechaEvento;
+	private String foto;
 
-    private LocalTime horaEvento;
+	private LocalDate fechaEvento;
 
-    private Double precioMinimo;
+	private LocalTime horaEvento;
 
-    private Double precioMaximo;
+	private Double precioMinimo;
 
-    private String normas;
+	private Double precioMaximo;
 
-    private RecintoDTO recinto;
-    
-		public EventoListadoDTO() {
-			super();
-		}
+	private String normas;
 
-		public EventoListadoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
-				LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas,
-				RecintoDTO recinto) {
-			super();
-			this.id = id;
-			this.nombre = nombre;
-			this.descripcionCorta = descripcionCorta;
-			this.descripcionExtendida = descripcionExtendida;
-			this.foto = foto;
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
-	        this.fechaEvento = LocalDate.parse(fechaEvento.format(formatter), formatter);
-			this.horaEvento = horaEvento;
-			this.precioMinimo = precioMinimo;
-			this.precioMaximo = precioMaximo;
-			this.normas = normas;
-			this.recinto = recinto;
-		}
-		
-		public EventoListadoDTO(Evento evento, Recinto recinto) {
-			this.id = evento.getIdEvento();
-			this.nombre = evento.getNombre();
-			this.descripcionCorta = evento.getDescripcionCorta();
-			this.descripcionExtendida = evento.getDescripcionExtendida();
-			this.foto = evento.getFoto();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
-	        this.fechaEvento = LocalDate.parse(evento.getFechaEvento().format(formatter), formatter);
-			this.horaEvento = evento.getHoraEvento();
-	        this.precioMinimo = evento.getPrecioMinimo();
-	        this.precioMaximo = evento.getPrecioMaximo();
-			this.normas = evento.getNormas();
-			this.recinto = new RecintoDTO(recinto);
-		}
-		
+	private RecintoDTO recinto;
 
-		public String getNombre() {
-			return nombre;
-		}
+	public EventoListadoDTO() {
+		super();
+	}
 
-		public void setNombre(String nombre) {
-			this.nombre = nombre;
-		}
+	public EventoListadoDTO(Long id, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
+			LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas,
+			RecintoDTO recinto) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcionCorta = descripcionCorta;
+		this.descripcionExtendida = descripcionExtendida;
+		this.foto = foto;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
+		this.fechaEvento = LocalDate.parse(fechaEvento.format(formatter), formatter);
+		this.horaEvento = horaEvento;
+		this.precioMinimo = precioMinimo;
+		this.precioMaximo = precioMaximo;
+		this.normas = normas;
+		this.recinto = recinto;
+	}
 
-		public String getDescripcionCorta() {
-			return descripcionCorta;
-		}
+	public EventoListadoDTO(Evento evento, Recinto recinto) {
+		this.id = evento.getIdEvento();
+		this.nombre = evento.getNombre();
+		this.descripcionCorta = evento.getDescripcionCorta();
+		this.descripcionExtendida = evento.getDescripcionExtendida();
+		this.foto = evento.getFoto();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("es", "ES"));
+		this.fechaEvento = LocalDate.parse(evento.getFechaEvento().format(formatter), formatter);
+		this.horaEvento = evento.getHoraEvento();
+		this.precioMinimo = evento.getPrecioMinimo();
+		this.precioMaximo = evento.getPrecioMaximo();
+		this.normas = evento.getNormas();
+		this.recinto = new RecintoDTO(recinto);
+	}
 
-		public void setDescripcionCorta(String descripcionCorta) {
-			this.descripcionCorta = descripcionCorta;
-		}
+	public String getNombre() {
+		return nombre;
+	}
 
-		public String getDescripcionExtendida() {
-			return descripcionExtendida;
-		}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-		public void setDescripcionExtendida(String descripcionExtendida) {
-			this.descripcionExtendida = descripcionExtendida;
-		}
+	public String getDescripcionCorta() {
+		return descripcionCorta;
+	}
 
-		public String getFoto() {
-			return foto;
-		}
+	public void setDescripcionCorta(String descripcionCorta) {
+		this.descripcionCorta = descripcionCorta;
+	}
 
-		public void setFoto(String foto) {
-			this.foto = foto;
-		}
+	public String getDescripcionExtendida() {
+		return descripcionExtendida;
+	}
 
-		public String getFechaEvento() {
-			DateTimeFormatter formateada = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			return fechaEvento.format(formateada);
-		}
+	public void setDescripcionExtendida(String descripcionExtendida) {
+		this.descripcionExtendida = descripcionExtendida;
+	}
 
-		public void setFechaEvento(LocalDate fechaEvento) {
-			this.fechaEvento = fechaEvento;
-		}
+	public String getFoto() {
+		return foto;
+	}
 
-		public LocalTime getHoraEvento() {
-			return horaEvento;
-		}
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
 
-		public void setHoraEvento(LocalTime horaEvento) {
-			this.horaEvento = horaEvento;
-		}
+	public LocalDate getFechaEvento2() {
+		return fechaEvento;
+	}
 
-	    public String getPrecioMaximo() {
-	        return precioMaximo.toString()+ " €";
-	    }
-	    public String getPrecioMinimo() {
-	    	return precioMinimo.toString() + " €";
-	    }
-	    
-		public void setPrecioMaximo(Double precioMaximo) {
-			this.precioMaximo = precioMaximo;
-		}
-		
-		public void setPrecioMinimo(Double precioMinimo) {
-			this.precioMinimo = precioMinimo;
-		}
-	    
-		public String getNormas() {
-			return normas;
-		}
+	public String getFechaEvento() {
+		DateTimeFormatter formateada = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return fechaEvento.format(formateada);
+	}
 
-		public void setNormas(String normas) {
-			this.normas = normas;
-		}
+	public void setFechaEvento(LocalDate fechaEvento) {
+		this.fechaEvento = fechaEvento;
+	}
 
+	public LocalTime getHoraEvento() {
+		return horaEvento;
+	}
 
-		public Long getId() {
-			return id;
-		}
+	public void setHoraEvento(LocalTime horaEvento) {
+		this.horaEvento = horaEvento;
+	}
 
-		public void setId(Long id) {
-			this.id = id;
-		}
+	public String getPrecioMaximo() {
+		return precioMaximo.toString() + " €";
+	}
 
-		public RecintoDTO getRecinto() {
-			return recinto;
-		}
+	public String getPrecioMinimo() {
+		return precioMinimo.toString() + " €";
+	}
 
-		public void setRecinto(RecintoDTO recinto) {
-			this.recinto = recinto;
-		}
+	public Double getPrecioMinimo2() {
+		return precioMinimo;
+	}
 
-		@Override
-		public String toString() {
-			return "EventoDTO [nombre=" + nombre + ", descripcionCorta=" + descripcionCorta + ", descripcionExtendida="
-					+ descripcionExtendida + ", foto=" + foto + ", fechaEvento=" + fechaEvento + ", horaEvento="
-					+ horaEvento + ", precioMinimo=" + precioMinimo + ", precioMaximo=" + precioMaximo + ", normas="
-					+ normas + ", recinto=" + recinto + "]";
-		}
-		
-   
+	public Double getPrecioMaximo2() {
+		return precioMaximo;
+	}
+
+	public void setPrecioMaximo(Double precioMaximo) {
+		this.precioMaximo = precioMaximo;
+	}
+
+	public void setPrecioMinimo(Double precioMinimo) {
+		this.precioMinimo = precioMinimo;
+	}
+
+	public String getNormas() {
+		return normas;
+	}
+
+	public void setNormas(String normas) {
+		this.normas = normas;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public RecintoDTO getRecinto() {
+		return recinto;
+	}
+
+	public void setRecinto(RecintoDTO recinto) {
+		this.recinto = recinto;
+	}
+
+	@Override
+	public String toString() {
+		return "EventoDTO [nombre=" + nombre + ", descripcionCorta=" + descripcionCorta + ", descripcionExtendida="
+				+ descripcionExtendida + ", foto=" + foto + ", fechaEvento=" + fechaEvento + ", horaEvento="
+				+ horaEvento + ", precioMinimo=" + precioMinimo + ", precioMaximo=" + precioMaximo + ", normas="
+				+ normas + ", recinto=" + recinto + "]";
+	}
+
 }

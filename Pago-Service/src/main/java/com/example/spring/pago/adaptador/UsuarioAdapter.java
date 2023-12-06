@@ -22,23 +22,23 @@ public class UsuarioAdapter {
 		return usuariosDTO;
 	}
 
-	public UsuarioDTO of(Usuario usuario) {
-		UsuarioDTO usuarioDTO = new UsuarioDTO();
-		usuarioDTO.setId(usuario.getIdUsuario());
-		usuarioDTO.setApellido(usuario.getApellido());
-		usuarioDTO.setContrasenia(usuario.getContrasenia());
-		usuarioDTO.setFechaAlta(usuario.getFechaAlta());
-		usuarioDTO.setMail(usuario.getMail());
-		usuarioDTO.setNombre(usuario.getNombre());
-		return usuarioDTO;
-	}
-	
+//	public UsuarioDTO of(Usuario usuario) {
+//		UsuarioDTO usuarioDTO = new UsuarioDTO();
+//		usuarioDTO.setId(usuario.getIdUsuario());
+//		usuarioDTO.setApellido(usuario.getApellido());
+//		usuarioDTO.setContrasenia(usuario.getContrasenia());
+//		usuarioDTO.setFechaAlta(usuario.getFechaAlta2());
+//		usuarioDTO.setMail(usuario.getMail());
+//		usuarioDTO.setNombre(usuario.getNombre());
+//		return usuarioDTO;
+//	}
+//	
 	public Usuario of(UsuarioDTO usuarioDTO) {
 		Usuario usuario = new Usuario();
 		usuario.setIdUsuario(usuarioDTO.getId());
 		usuario.setApellido(usuarioDTO.getApellido());
 		usuario.setContrasenia(usuarioDTO.getContrasenia());
-		usuario.setFechaAlta(usuarioDTO.getFechaAlta2());
+		usuario.setFechaAlta(usuarioDTO.getFechaAlta());
 		usuario.setMail(usuarioDTO.getMail());
 		usuario.setNombre(usuarioDTO.getNombre());
 		return usuario;

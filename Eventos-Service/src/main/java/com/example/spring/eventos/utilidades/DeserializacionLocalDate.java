@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
-public class DeserializaciónLocalDate extends JsonDeserializer<LocalDate>{
+public class DeserializacionLocalDate extends JsonDeserializer<LocalDate>{
 
 	/**
 	 * Este método nos permite deserializar la fecha del eventoDTO para insertarla en la base de datos.

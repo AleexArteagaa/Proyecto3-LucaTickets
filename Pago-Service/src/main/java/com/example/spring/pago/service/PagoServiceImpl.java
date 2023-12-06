@@ -61,9 +61,13 @@ public class PagoServiceImpl implements PagoService {
 		logger.info("--------- entra en realizar pago");
 		UsuarioDTO usuarioDTO = usuarioFeign.getUsuario(idUsuario);
 		logger.info("--------- reliza el feign client de usuario");
-		
+
 		EventoListadoDTO eventoListadoDTO = new EventoListadoDTO();
 		Recinto recinto = new Recinto();
+		
+		Token token = bancoFeign.getToken();
+		TarjetaResponse response = new TarjetaResponse();
+		
 		try {
 			eventoListadoDTO = eventoFeign.getEvento(idEvento);
 			logger.info("--------- reliza el feign client de evento");
@@ -71,17 +75,55 @@ public class PagoServiceImpl implements PagoService {
 			logger.info("--------- reliza el feign client de recinto");
 
 		} catch (FeignException e) {
+			String feignErrorMessage = e.contentUTF8();
+			ObjectMapper objectMapper = new ObjectMapper();
+			List<String> errorMessages = new ArrayList<>();
+			String status = "";
+			String error = "";
+			String timeStamp = "";
+
+			try {
+				JsonNode jsonNode = objectMapper.readTree(feignErrorMessage);
+				JsonNode messageNode = jsonNode.get("message");
+				JsonNode statusNode = jsonNode.get("status");
+				JsonNode timestampNode = jsonNode.get("timestamp");
+				JsonNode errorNode = jsonNode.get("error");
+
+				if (statusNode != null) {
+					status = statusNode.asText();
+				}
+
+				if (timestampNode != null) {
+					timeStamp = timestampNode.asText();
+				}
+
+				if (errorNode != null) {
+					error = errorNode.asText();
+				}
+
+				if (messageNode != null && messageNode.isArray()) {
+					for (final JsonNode objNode : messageNode) {
+						errorMessages.add(objNode.asText());
+					}
+				}
+
+			} catch (IOException ioException) {
+				logger.error("Error al parsear el mensaje de la excepción Feign: " + ioException.getMessage());
+			}
+
+			response.setError(error);
+			response.setInfo(tarjeta);
+			response.setInfoAdicional("");
+			response.setStatus(status);
+			response.setTimestamp(timeStamp);
+			response.setMessage(errorMessages.get(0));
 			
+			return response;
+
 		}
-		
 
-
-		Token token = bancoFeign.getToken();
-		TarjetaResponse response = new TarjetaResponse();
-	try {
+		try {
 			response = bancoFeign.obtenerDatosValidacion(token.getToken(), tarjeta);
-			logger.info("--------- RESPONSE: " + response.toString());
-
 
 		} catch (FeignException e) {
 			if (e.status() == 400) {

@@ -3,12 +3,16 @@ package com.example.spring.pago.response;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class UsuarioDTO {
 	private Long id;
 	private String nombre;
 	private String apellido;
 	private String mail;
 	private String contrasenia;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate fechaAlta;
 
 	public UsuarioDTO() {

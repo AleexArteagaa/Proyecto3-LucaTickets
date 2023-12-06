@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import feign.FeignException;
+import feign.codec.DecodeException;
 
 @Service
 public class PagoServiceImpl implements PagoService {
@@ -65,72 +66,72 @@ public class PagoServiceImpl implements PagoService {
 
 		Token token = bancoFeign.getToken();
 		TarjetaResponse response = new TarjetaResponse();
-		try {
+//		try {
 			response = bancoFeign.obtenerDatosValidacion(token.getToken(), tarjeta);
 			logger.info("--------- RESPONSE: "+response.toString());
 			//response.setMessage("Entrada comprada con éxito");
 			
 
-		} catch (FeignException e) {
-			logger.info(e.getMessage());
-
-			String feignErrorMessage = e.contentUTF8();
-			ObjectMapper objectMapper = new ObjectMapper();
-			List<String> errorMessages = new ArrayList<>();
-			String status = "";
-			String error = "";
-			String infoAdicional = "";
-			String timeStamp = "";
-			
-
-			try {
-				JsonNode jsonNode = objectMapper.readTree(feignErrorMessage);
-				JsonNode messageNode = jsonNode.get("message");
-				JsonNode statusNode = jsonNode.get("status");
-				JsonNode timestampNode = jsonNode.get("timestamp");
-				JsonNode errorNode = jsonNode.get("error");
-				JsonNode infoAdicionalNode = jsonNode.get("infoAdicional");
-
-				if (statusNode != null) {
-					status = statusNode.asText();
-				}
-				
-				if (timestampNode != null) {
-					timeStamp = timestampNode.asText();
-				}
-				
-				if (errorNode != null) {
-					error = errorNode.asText();
-				}
-
-				if (infoAdicionalNode != null) {
-					infoAdicional = infoAdicionalNode.asText();
-				}
-
-				if (messageNode != null && messageNode.isArray()) {
-					for (final JsonNode objNode : messageNode) {
-						errorMessages.add(objNode.asText());
-					}
-				}
-				
-				
-			} catch (IOException ioException) {
-				logger.error("Error al parsear el mensaje de la excepción Feign: " + ioException.getMessage());
-			}
-			
-			response.setError(error);
-			response.setInfo(tarjeta);
-			response.setInfoAdicional(infoAdicional);
-			response.setStatus(status);
-			response.setTimestamp(timeStamp);
-			System.out.println(error + "dfsz");
-			if (error.equals("")) {
-				response.setMessage("Entrada comprada con éxito");
-			} else {
-				response.setMessage(ConversionMensajes.convertirError(error));
-			}
-			
-		}
+//		} catch (FeignException.BadRequest e ) {
+//			logger.info(e.getMessage());
+//
+//			String feignErrorMessage = e.contentUTF8();
+//			ObjectMapper objectMapper = new ObjectMapper();
+//			List<String> errorMessages = new ArrayList<>();
+//			String status = "";
+//			String error = "";
+//			String infoAdicional = "";
+//			String timeStamp = "";
+//			
+//
+//			try {
+//				JsonNode jsonNode = objectMapper.readTree(feignErrorMessage);
+//				JsonNode messageNode = jsonNode.get("message");
+//				JsonNode statusNode = jsonNode.get("status");
+//				JsonNode timestampNode = jsonNode.get("timestamp");
+//				JsonNode errorNode = jsonNode.get("error");
+//				JsonNode infoAdicionalNode = jsonNode.get("infoAdicional");
+//
+//				if (statusNode != null) {
+//					status = statusNode.asText();
+//				}
+//				
+//				if (timestampNode != null) {
+//					timeStamp = timestampNode.asText();
+//				}
+//				
+//				if (errorNode != null) {
+//					error = errorNode.asText();
+//				}
+//
+//				if (infoAdicionalNode != null) {
+//					infoAdicional = infoAdicionalNode.asText();
+//				}
+//
+//				if (messageNode != null && messageNode.isArray()) {
+//					for (final JsonNode objNode : messageNode) {
+//						errorMessages.add(objNode.asText());
+//					}
+//				}
+//				
+//				
+//			} catch (IOException ioException) {
+//				logger.error("Error al parsear el mensaje de la excepción Feign: " + ioException.getMessage());
+//			}
+//			
+//			response.setError(error);
+//			response.setInfo(tarjeta);
+//			response.setInfoAdicional(infoAdicional);
+//			response.setStatus(status);
+//			response.setTimestamp(timeStamp);
+//			System.out.println(error + "dfsz");
+//			if (error.equals("")) {
+//				response.setMessage("Entrada comprada con éxito");
+//			} else {
+//				response.setMessage(ConversionMensajes.convertirError(error));
+//			}
+//			
+//		}
 
 		return response;
 

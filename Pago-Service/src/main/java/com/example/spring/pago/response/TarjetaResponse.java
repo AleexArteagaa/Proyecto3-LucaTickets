@@ -1,5 +1,7 @@
 package com.example.spring.pago.response;
 
+import java.util.List;
+
 import com.example.spring.pago.model.Tarjeta;
 
 public class TarjetaResponse {
@@ -8,7 +10,7 @@ public class TarjetaResponse {
 	
 	private String status;
 	
-	private String message;
+	private List<String> message;
 	
 	private Tarjeta info;
 	
@@ -22,7 +24,7 @@ public class TarjetaResponse {
 	
 	
 
-	public TarjetaResponse(String timestamp, String status, String message, Tarjeta info, String infoAdicional) {
+	public TarjetaResponse(String timestamp, String status,  List<String> message, Tarjeta info, String infoAdicional) {
 		super();
 		this.timestamp = timestamp;
 		this.status = status;
@@ -48,11 +50,11 @@ public class TarjetaResponse {
 		this.status = status;
 	}
 
-	public String getMessage() {
+	public  List<String> getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage( List<String> message) {
 		this.message = message;
 	}
 

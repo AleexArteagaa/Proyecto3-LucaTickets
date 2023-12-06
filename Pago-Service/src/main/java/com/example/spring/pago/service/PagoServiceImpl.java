@@ -20,6 +20,8 @@ import com.example.spring.pago.response.EventoListadoDTO;
 import com.example.spring.pago.response.TarjetaResponse;
 import com.example.spring.pago.response.UsuarioDTO;
 
+import feign.FeignException;
+
 @Service
 public class PagoServiceImpl implements PagoService {
 	
@@ -56,10 +58,17 @@ public class PagoServiceImpl implements PagoService {
 			logger.info("--------- reliza el save de usuarioEvento");
 			
 			Token token = bancoFeign.getToken();
+			TarjetaResponse response = new TarjetaResponse();
+			//try {
+				response = bancoFeign.obtenerDatosValidacion(token.getToken(),tarjeta);
+				logger.info(response.toString());
+
+//			} catch (FeignException e) {
+//				logger.info(e.getMessage());
+//				response.setInfo(tarjeta);
+//			}
 			
-			TarjetaResponse response = bancoFeign.obtenerDatosValidacion(token.getToken(),tarjeta);
 			
-			logger.info(response.toString());
 
 			
 			return response;

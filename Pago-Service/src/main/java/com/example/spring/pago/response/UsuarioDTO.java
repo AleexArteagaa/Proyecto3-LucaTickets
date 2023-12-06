@@ -1,4 +1,4 @@
-package com.example.spring.usuarios.response;
+package com.example.spring.pago.response;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

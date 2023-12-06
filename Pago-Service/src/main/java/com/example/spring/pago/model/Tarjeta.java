@@ -16,7 +16,9 @@ public class Tarjeta {
 	
 	private String concepto;
 	
-	private String cantidad;
+	private Double cantidad;
+	
+	
 
 	
 	
@@ -26,7 +28,7 @@ public class Tarjeta {
 
 
 	public Tarjeta(String nombreTitular, String numeroTarjeta, String mesCaducidad, String yearCaducidad, String cvv,
-			String emisor, String concepto, String cantidad) {
+			String emisor, String concepto, Double cantidad) {
 		super();
 		this.nombreTitular = nombreTitular;
 		this.numeroTarjeta = numeroTarjeta;
@@ -109,12 +111,12 @@ public class Tarjeta {
 	}
 
 
-	public String getCantidad() {
+	public Double getCantidad() {
 		return cantidad;
 	}
 
 
-	public void setCantidad(String cantidad) {
+	public void setCantidad(Double cantidad) {
 		this.cantidad = cantidad;
 	}
 

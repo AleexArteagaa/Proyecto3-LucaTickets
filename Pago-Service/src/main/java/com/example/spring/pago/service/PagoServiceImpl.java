@@ -52,6 +52,6 @@ public class PagoServiceImpl implements PagoService {
 		//repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
 		logger.info("--------- reliza el save de usuarioEvento");
 
-		return bancoFeign.obtenerDatosValidacion(tarjeta);
+		return bancoFeign.obtenerDatosValidacion(tarjeta, "");
 	}
 }

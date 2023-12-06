@@ -101,11 +101,11 @@ public class EventoListadoDTO {
 		this.foto = foto;
 	}
 
-	public LocalDate getFechaEvento2() {
+	public LocalDate getFechaEvento() {
 		return fechaEvento;
 	}
 
-	public String getFechaEvento() {
+	public String getFechaEvento2() {
 		DateTimeFormatter formateada = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		return fechaEvento.format(formateada);
 	}

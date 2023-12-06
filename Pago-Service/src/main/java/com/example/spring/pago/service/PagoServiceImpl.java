@@ -1,10 +1,13 @@
 package com.example.spring.pago.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.spring.pago.adaptador.EventoAdapter;
 import com.example.spring.pago.adaptador.UsuarioAdapter;
+import com.example.spring.pago.controller.PagoController;
 import com.example.spring.pago.feignclients.BancoFeignClient;
 import com.example.spring.pago.feignclients.EventoFeignClient;
 import com.example.spring.pago.feignclients.UsuarioFeignClient;
@@ -18,6 +21,9 @@ import com.example.spring.pago.response.UsuarioDTO;
 
 @Service
 public class PagoServiceImpl implements PagoService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(PagoServiceImpl.class);
+
 	@Autowired
 	BancoFeignClient bancoFeign;
 	
@@ -37,12 +43,18 @@ public class PagoServiceImpl implements PagoService {
 	 EventoAdapter eventoAdapter;
 	 	 
 	
-	public TarjetaResponse realizarPago(Tarjeta tarjeta, Long idUsuario, Long idEvento) {		
-		UsuarioDTO usuarioDTO = usuarioFeign.getUsuario(idUsuario);
-		EventoListadoDTO eventoListadoDTO = eventoFeign.getEvento(idEvento);
-		Recinto recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
-		repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
+	 public TarjetaResponse realizarPago(Tarjeta tarjeta, Long idUsuario, Long idEvento) {	
+			logger.info("--------- entra en realizar pago");
+			UsuarioDTO usuarioDTO = usuarioFeign.getUsuario(idUsuario);
+			logger.info("--------- reliza el feign client de usuario");
+			EventoListadoDTO eventoListadoDTO = eventoFeign.getEvento(idEvento);
+			logger.info("--------- reliza el feign client de evento");
+			Recinto recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
+			logger.info("--------- reliza el feign client de recinto");
+			repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO), eventoAdapter.of(eventoListadoDTO, recinto)));
+			logger.info("--------- reliza el save de usuarioEvento");
+			
+			return bancoFeign.obtenerDatosValidacion(tarjeta);
 		
-		return bancoFeign.obtenerDatosValidacion(tarjeta);
-	}
+	 }
 }

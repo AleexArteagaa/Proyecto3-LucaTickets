@@ -74,18 +74,20 @@ public class UsuarioDTO {
 		this.contrasenia = contrasenia;
 	}
 	
-	public LocalDate getFechaAlta2() {		
-		return fechaAlta;		
+	public String getFechaAlta2() {		
+		return formatearFecha(fechaAlta);	
 	}	
 
-	public String getFechaAlta() {		
-		return formatearFecha(fechaAlta);		
+	public  LocalDate getFechaAlta() {		
+		
+		return fechaAlta;
 	}
 
 	private String formatearFecha(LocalDate fechaAlta) {
 		DateTimeFormatter formateada = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		return fechaAlta.format(formateada);
 	}
+
 
 	public void setFechaAlta(LocalDate fechaAlta) {
 		this.fechaAlta = fechaAlta;

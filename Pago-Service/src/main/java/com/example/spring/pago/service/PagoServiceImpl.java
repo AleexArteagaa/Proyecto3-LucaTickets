@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import feign.FeignException;
+import feign.codec.DecodeException;
 
 @Service
 public class PagoServiceImpl implements PagoService {
@@ -65,10 +66,10 @@ public class PagoServiceImpl implements PagoService {
 
 		Token token = bancoFeign.getToken();
 		TarjetaResponse response = new TarjetaResponse();
-		try {
+	try {
 			response = bancoFeign.obtenerDatosValidacion(token.getToken(), tarjeta);
 			logger.info("--------- RESPONSE: " + response.toString());
-			// response.setMessage("Entrada comprada con éxito");
+
 
 		} catch (FeignException e) {
 			if (e.status() == 400) {

@@ -125,7 +125,11 @@ public class PagoServiceImpl implements PagoService {
 					}
 					response.setStatus(status);
 					response.setTimestamp(timeStamp);
-					response.setMessage(ConversionMensajes.convertirError(error));
+					if (ConversionMensajes.convertirError(error).equals("")) {
+						response.setMessage("Error en el formato de los campos");
+					} else {
+						response.setMessage(ConversionMensajes.convertirError(error));
+					}
 
 				} else {
 					LocalDateTime ahora = LocalDateTime.now();

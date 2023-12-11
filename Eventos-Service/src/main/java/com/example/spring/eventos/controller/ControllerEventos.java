@@ -143,5 +143,13 @@ public class ControllerEventos {
 
 		return serviceRecinto.obtenerPorNombre(nombre);
 	}
+	
+	@GetMapping("/genero/{genero}")
+	public List<EventoListadoDTO> findByGenero(@PathVariable String genero) {
+		logger.info("------ Buscar evento por genero (GET) ");
+		List<Evento> eventoGenero = serviceEventos.findByGenero(genero);
+		
+		return adapter.of(eventoGenero);
+	}
 
 }

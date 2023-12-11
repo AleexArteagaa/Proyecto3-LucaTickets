@@ -20,10 +20,12 @@ import com.example.spring.pago.service.PagoService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pago")
+@Tag(name = "Pago", description = "Operaciones relacionadas con la venta de eventos")
 public class PagoController {
 	private static final Logger logger = LoggerFactory.getLogger(PagoController.class);
 

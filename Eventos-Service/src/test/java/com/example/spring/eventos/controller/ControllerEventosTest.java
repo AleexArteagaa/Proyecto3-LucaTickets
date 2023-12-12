@@ -232,29 +232,28 @@ public class ControllerEventosTest {
 		given().queryParam("nombre", "nombre_inexistente").when().get("/nombre/nombre").then().statusCode(404);
 	}
 
-//	
-//    @Test
-//    void testFindByGeneroCorrecto() throws Exception {
-//    	
-//    	given()
-//        .queryParam("genero", "música")
-//    .when()
-//        .get("/evento/genero")
-//    .then()
-//        .statusCode(200)
-//        .body("descripcion_corta", hasItem(containsString("música")));
-//	}
-//    
-//    @Test
-//    void testFindByGeneroInexistente() throws Exception {
-//        given()
-//            .queryParam("genero", "genero_inexistente")
-//        .when()
-//            .get("/evento/genero")
-//        .then()
-//            .statusCode(404);
-//    }
+	
+    @Test
+    void testFindByGeneroCorrecto() throws Exception {
+
+	    given()
+	    .when()
+	        .get("/evento/genero/corta")
+	    .then()
+	        .statusCode(200)
+	        .body("descripcionCorta", hasItem(containsString("corta")));
+	}
+    
+    @Test
+    void testFindByGeneroInexistente() throws Exception {
+    	given().queryParam("genero", "genero_inexistente").when().get("/evento/genero").then().statusCode(400);
+    }
   
+	@Test
+	void testFindByGeneroError() throws Exception {
+		given().queryParam("genero", "genero_inexistente").when().get("/genero/genero").then().statusCode(404);
+	}
+	
 	@Test
 	void testFindByCiudadCorrecto() throws Exception {
 

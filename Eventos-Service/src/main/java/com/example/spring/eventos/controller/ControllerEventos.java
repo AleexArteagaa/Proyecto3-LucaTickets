@@ -147,13 +147,13 @@ public class ControllerEventos {
 		return serviceRecinto.obtenerPorNombre(nombre);
 	}
 	
-//	@GetMapping("/genero/{genero}")
-//	public List<EventoListadoDTO> findByGenero(@PathVariable String genero) {
-//		logger.info("------ Buscar evento por genero (GET) ");
-//		List<Evento> eventoGenero = serviceEventos.findByGenero(genero);
-//		
-//		return adapter.of(eventoGenero);
-//	}
+	@GetMapping("/genero/{genero}")
+	public List<EventoListadoDTO> findByGenero(@PathVariable String genero) {
+		logger.info("------ Buscar evento por genero (GET) ");
+		List<Evento> eventoGenero = serviceEventos.findByGenero(genero);
+		
+		return adapter.of(eventoGenero);
+	}
 
 	@Operation(summary = "Eliminar evento por ID", description = "Elimina al evento con el ID indicado")
 	@ApiResponse(responseCode = "200", description = "Evento eliminado correctamente")

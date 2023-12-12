@@ -14,7 +14,7 @@ public interface ServiceEventos {
 
 	public Evento findById(Long id);
 	
-//	public List<Evento> findByGenero(String genero);
+	public List<Evento> findByGenero(String genero);
 	
 	public List<Evento> findByCiudad(String ciudad);
 	

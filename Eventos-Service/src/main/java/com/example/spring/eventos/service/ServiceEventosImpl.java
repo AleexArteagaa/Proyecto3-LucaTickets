@@ -72,17 +72,17 @@ public class ServiceEventosImpl implements ServiceEventos {
 		
 	}
 
-//	@Override
-//	public List<Evento> findByGenero(String genero) {
-//		
-//	    List<Evento> eventos = repository.findByGenero(genero).orElseThrow(EventoNotFoundException::new);
-//	    
-//	    if (eventos.isEmpty()) {
-//			throw new EventosIsEmptyException();
-//		}
-//	    
-//	    return eventos;
-//	}
+	@Override
+	public List<Evento> findByGenero(String genero) {
+		
+	    List<Evento> eventos = repository.findByGenero(genero).orElseThrow(EventoNotFoundException::new);
+	    
+	    if (eventos.isEmpty()) {
+			throw new EventosIsEmptyException();
+		}
+	    
+	    return eventos;
+	}
 
 	@Override
 	public List<Evento> findByCiudad(String ciudad) {

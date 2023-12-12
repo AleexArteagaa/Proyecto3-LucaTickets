@@ -76,6 +76,29 @@ public class ServiceEventosImpl implements ServiceEventos {
 	public void deleteById(Long id) {
 		repository.deleteById(id);
 	}
+//	@Override
+//	public List<Evento> findByGenero(String genero) {
+//		
+//	    List<Evento> eventos = repository.findByGenero(genero).orElseThrow(EventoNotFoundException::new);
+//	    
+//	    if (eventos.isEmpty()) {
+//			throw new EventosIsEmptyException();
+//		}
+//	    
+//	    return eventos;
+//	}
+
+	@Override
+	public List<Evento> findByCiudad(String ciudad) {
+		
+	    List<Evento> ciudades = repository.findByCiudad(ciudad).orElseThrow(EventoNotFoundException::new);
+	    
+	    if (ciudades.isEmpty()) {
+			throw new EventosIsEmptyException();
+		}
+	    
+	    return ciudades;
+	}
 	
 	
 }

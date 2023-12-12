@@ -71,6 +71,11 @@ public class ServiceEventosImpl implements ServiceEventos {
 		return evento;
 		
 	}
+
+	@Override
+	public void deleteById(Long id) {
+		repository.deleteById(id);
+	}
 	
 	
 }

@@ -5,7 +5,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -169,8 +172,33 @@ public class ControllerEventosTest {
 		
 		Long id = (long) 234788234;
 
-		when(serviceEventos.findById(id)).thenThrow(new EventoNotFoundException());
+		when(serviceEventos.findById(id)).thenThrow(new EventoNotFoundException(id));
 
 		mockMvc.perform(get("/evento/{id}", id)).andDo(print()).andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void testEliminarEventoNoExiste() throws Exception {
+		
+		Long id=5000L;
+		
+		when(serviceEventos.findById(id)).thenThrow(new EventoNotFoundException());
+		
+		mockMvc.perform(delete("/evento/{id}",id)).andDo(print()).andExpect(status().isNotFound());
+		
+		
+	}
+	
+	@Test
+	void testEliminarUsuarioCorrecto() throws Exception {
+		Long id=5000L;
+		
+		Evento evento = new Evento("eventoEliminado","eventoEliminado","eventoEliminado","fotoEventoEliminado", LocalDate.now(), LocalTime.now(),10.0,20.0,"prueba",new Recinto());
+		
+		when(serviceEventos.findById(id)).thenReturn(evento);
+		
+		mockMvc.perform(delete("/evento/{id}",id)).andDo(print()).andExpect(status().isAccepted());
+		
+		verify(serviceEventos, times(1)).deleteById(id);
 	}
 }

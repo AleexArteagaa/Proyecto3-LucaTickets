@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ import com.example.spring.eventos.response.EventoDTO;
 import com.example.spring.eventos.response.EventoListadoDTO;
 import com.example.spring.eventos.service.ServiceEventos;
 import com.example.spring.eventos.service.ServiceRecinto;
+import com.example.spring.eventos.utilidades.Utilidades;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -144,4 +147,13 @@ public class ControllerEventos {
 		return serviceRecinto.obtenerPorNombre(nombre);
 	}
 
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Map<String, Object>> deleteById(
+			@Parameter(description = "ID del usuario a eliminar") @PathVariable Long id) {
+		logger.info("----- BORRADO DE USUARIO (DELETE) -----");
+		Evento evento = serviceEventos.findById(id);
+		serviceEventos.deleteById(id);
+		return Utilidades.eventoEliminadoJson(adapter.of(evento));
+	}
 }

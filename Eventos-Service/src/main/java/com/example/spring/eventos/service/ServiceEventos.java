@@ -14,5 +14,6 @@ public interface ServiceEventos {
 
 	public Evento findById(Long id);
 	
+	public void deleteById(Long id);
 
 }

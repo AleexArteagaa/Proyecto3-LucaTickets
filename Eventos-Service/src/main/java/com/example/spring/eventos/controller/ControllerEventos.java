@@ -155,7 +155,10 @@ public class ControllerEventos {
 //		return adapter.of(eventoGenero);
 //	}
 
-	
+	@Operation(summary = "Eliminar evento por ID", description = "Elimina al evento con el ID indicado")
+	@ApiResponse(responseCode = "200", description = "Evento eliminado correctamente")
+	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
+	@ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> deleteById(
 			@Parameter(description = "ID del usuario a eliminar") @PathVariable Long id) {

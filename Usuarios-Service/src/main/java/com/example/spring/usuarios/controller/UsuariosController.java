@@ -52,7 +52,7 @@ public class UsuariosController {
 	@Operation(summary = "Obtener todos los usuarios", description = "Obtiene la lista de todos los usuarios disponibles")
 	@ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente")
 	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
-	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
+	@ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	@GetMapping
 	public List<UsuarioDTO> findAll() {
 		logger.info("----- LISTADO DE USUARIOS (GET) -----");
@@ -68,7 +68,7 @@ public class UsuariosController {
 	@Operation(summary = "Eliminar usuario por ID", description = "Elimina al usuario con el ID indicado")
 	@ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente")
 	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
-	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
+	@ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> deleteById(
 			@Parameter(description = "ID del usuario a eliminar") @PathVariable Long id) {
@@ -87,7 +87,7 @@ public class UsuariosController {
 	@Operation(summary = "Buscar usuario por ID", description = "Realiza una búsqueda del usuario con el ID indicado")
 	@ApiResponse(responseCode = "200", description = "Usuario obtenido correctamente")
 	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
-	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
+	@ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	@GetMapping("/{id}")
 	public UsuarioDTO findById(@Parameter(description = "ID del usuario a buscar") @PathVariable Long id) {
 		logger.info("----- LISTADO DE USUARIO POR ID (GET)-----");
@@ -108,7 +108,7 @@ public class UsuariosController {
 	@ApiResponse(responseCode = "201", description = "Usuario dado de alta correctamente")
 	@ApiResponse(responseCode = "400", description = "Solicitud mal formada")
 	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
-	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
+	@ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	@PostMapping
 	public ResponseEntity<UsuarioDTO> altaUsuario(
 			@Parameter(description = "Datos del usuario a dar de alta", required = true) @Valid @RequestBody Usuario usuario) {
@@ -133,7 +133,7 @@ public class UsuariosController {
 	@ApiResponse(responseCode = "200", description = "Usuario editado correctamente")
 	@ApiResponse(responseCode = "400", description = "Solicitud mal formada")
 	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
-	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
+	@ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	@PutMapping("/{id}")
 	public ResponseEntity<UsuarioDTO> editarUsuario(
 			@Parameter(description = "ID del usuario a editar") @PathVariable Long id,

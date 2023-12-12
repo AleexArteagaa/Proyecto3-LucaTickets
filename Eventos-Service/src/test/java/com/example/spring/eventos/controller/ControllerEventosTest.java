@@ -280,4 +280,9 @@ public class ControllerEventosTest {
 	void testFindByCiudadError() throws Exception {
 		given().queryParam("nombre", "nombre_inexistente").when().get("/ciudad/ciudad").then().statusCode(404);
 	}
+	
+	@Test
+	void testEliminarEventoRestAssured() throws Exception {
+		given().queryParam("id", 8000L).when().delete("/evento/id").then().statusCode(404);
+	}
 }

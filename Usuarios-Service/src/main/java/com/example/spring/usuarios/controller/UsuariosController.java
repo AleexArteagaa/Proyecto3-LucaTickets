@@ -1,5 +1,6 @@
 package com.example.spring.usuarios.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.spring.usuarios.adapter.UsuarioAdapter;
+import com.example.spring.usuarios.controller.error.CustomErrorJson;
 import com.example.spring.usuarios.model.Usuario;
 import com.example.spring.usuarios.response.UsuarioDTO;
 import com.example.spring.usuarios.service.UsuarioService;
@@ -30,6 +32,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -110,8 +113,9 @@ public class UsuariosController {
 	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")
 	@ApiResponse(responseCode = "500", description = "Solicitud inválida")
 	@PostMapping
-	public ResponseEntity<UsuarioDTO> altaUsuario(
-			@Parameter(description = "Datos del usuario a dar de alta", required = true) @Valid @RequestBody Usuario usuario) {
+	public ResponseEntity<?> altaUsuario(
+			@Parameter(description = "Datos del usuario a dar de alta", required = true) @Valid @RequestBody Usuario usuario,
+			HttpServletRequest request) {
 		logger.info("------ Alta de usuario (POST)");
 		UsuarioDTO result = adaptador.of(servicio.save(usuario));
 
@@ -119,6 +123,7 @@ public class UsuariosController {
 				.toUri();
 
 		return ResponseEntity.created(location).body(result);
+
 	}
 
 	/**
@@ -129,7 +134,7 @@ public class UsuariosController {
 	 * @return ResponseEntity con un objeto UsuarioDTO y la respuesta HTTP
 	 *         correspondiente.
 	 */
-	@Operation(summary = "Alta de usuario", description = "Realiza un alta de un usuario")
+	@Operation(summary = "Editar usuario", description = "Realiza una edición de un usuario")
 	@ApiResponse(responseCode = "200", description = "Usuario editado correctamente")
 	@ApiResponse(responseCode = "400", description = "Solicitud mal formada")
 	@ApiResponse(responseCode = "404", description = "Recurso no encontrado")

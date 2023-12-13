@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +87,47 @@ public class ControllerEventos {
 	}
 
 	/**
+	 * Edita un evento existente en base a su ID.
+	 *
+	 * @param id        ID del evento a editar
+	 * @param eventoDTO Datos actualizados del evento
+	 * @return ResponseEntity con el evento editado
+	 */
+	@PutMapping("/{id}")
+	@Operation(summary = "Editar un evento", description = "Edita un evento existente en base a su ID.")
+	@ApiResponse(responseCode = "200", description = "Evento editado exitosamente")
+	@ApiResponse(responseCode = "400", description = "Solicitud inválida")
+	@ApiResponse(responseCode = "404", description = "Evento no encontrado")
+	@ApiResponse(responseCode = "500", description = "Error interno del servidor")
+	public ResponseEntity<EventoListadoDTO> editarEvento(
+			@Parameter(description = "ID del evento a editar") @PathVariable Long id,
+			@Parameter(description = "Datos actualizados del usuario", required = true) @Valid @RequestBody EventoDTO eventoDTO) {
+
+		logger.info("------ Editar evento (PUT)");
+		Evento evento = serviceEventos.findById(id);
+
+		Recinto recinto = serviceRecinto.obtenerPorNombre(eventoDTO.getRecinto());
+
+		evento.setNombre(eventoDTO.getNombre());
+		evento.setDescripcionCorta(eventoDTO.getDescripcionCorta());
+		evento.setDescripcionExtendida(eventoDTO.getDescripcionExtendida());
+		evento.setFoto(eventoDTO.getFoto());
+		evento.setFechaEvento(eventoDTO.getFechaEvento());
+		evento.setHoraEvento(eventoDTO.getHoraEvento());
+		evento.setPrecioMinimo(eventoDTO.getPrecioMinimo());
+		evento.setPrecioMaximo(eventoDTO.getPrecioMaximo());
+		evento.setNormas(eventoDTO.getNormas());
+		evento.setRecinto(recinto);
+
+		Evento result = this.serviceEventos.save(evento);
+
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(result.getIdEvento()).toUri();
+
+		return ResponseEntity.created(location).body(adapter.of(result));
+	}
+
+	/**
 	 * Recupera una lista de todos los eventos mediante una solicitud HTTP GET. El
 	 * método obtiene todos los eventos almacenados en la base de datos y los
 	 * transforma en objetos {@code EventoListadoDTO} antes de devolver la lista
@@ -143,12 +185,12 @@ public class ControllerEventos {
 
 		return serviceRecinto.obtenerPorNombre(nombre);
 	}
-	
+
 	@GetMapping("/genero/{genero}")
 	public List<EventoListadoDTO> findByGenero(@PathVariable String genero) {
 		logger.info("------ Buscar evento por genero (GET) ");
 		List<Evento> eventoGenero = serviceEventos.findByGenero(genero);
-		
+
 		return adapter.of(eventoGenero);
 	}
 
@@ -156,7 +198,7 @@ public class ControllerEventos {
 	public List<EventoListadoDTO> findByCiudad(@PathVariable String ciudad) {
 		logger.info("------ Buscar evento por ciudad (GET) ");
 		List<Evento> eventoCiudad = serviceEventos.findByCiudad(ciudad);
-		
+
 		return adapter.of(eventoCiudad);
 	}
 }

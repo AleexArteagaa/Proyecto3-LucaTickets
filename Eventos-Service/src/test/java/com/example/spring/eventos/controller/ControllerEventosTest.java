@@ -13,6 +13,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,6 +42,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.example.spring.eventos.controller.error.EventoNotFoundException;
 import com.example.spring.eventos.controller.error.EventoRepetidoException;
 import com.example.spring.eventos.controller.error.EventosIsEmptyException;
+import com.example.spring.eventos.controller.error.RecintoNotFoundException;
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
 import com.example.spring.eventos.service.ServiceEventos;
@@ -79,6 +81,93 @@ public class ControllerEventosTest {
                 .content("{\"nombre\": \"Concierto Melendi\", \"descripcionCorta\": \"Descripción corta del evento\", \"descripcionExtendida\": \"Descripción extendida del evento\", \"foto\": \"URL de la foto del evento\", \"fechaEvento\": \"2023-12-01\", \"horaEvento\": \"18:30\", \"precioMinimo\": 30.5, \"precioMaximo\": 100.0, \"normas\": \"Normas del evento\", \"recinto\": \"Wizink Center\"}"))
                 .andExpect(status().isBadRequest()); 
     }
+
+	@Test
+	void testEditarEventoRecintoNotFound() throws Exception {
+		String errorMessage = "No existe el recinto en la base de datos";
+		
+		Evento eventoExistente = new Evento();
+		eventoExistente.setIdEvento(3L);
+		
+		when(serviceEventos.findById(3L)).thenReturn(eventoExistente);
+		when(serviceEventos.save(any())).thenThrow(new RecintoNotFoundException());
+
+		String eventoJson = "{\r\n"
+				+ "  \"nombre\": \"Concierto Feid\",\r\n"
+				+ "  \"descripcionCorta\": \"Descripción corta del evento\",\r\n"
+				+ "  \"descripcionExtendida\": \"Descripción extendida del evento\",\r\n"
+				+ "  \"foto\": \"URL de la foto del evento\",\r\n"
+				+ "  \"fechaEvento\": \"27-02-2023\",\r\n"
+				+ "  \"horaEvento\": \"12:30\",\r\n"
+				+ "  \"precioMinimo\": \"30.5\",\r\n"
+				+ "  \"precioMaximo\": \"100.0\",\r\n"
+				+ "  \"normas\": \"Normas del evento\",\r\n"
+				+ "  \"recinto\": \"Recinto Inventado\"\r\n"
+				+ "}";
+
+		mockMvc.perform(put("/evento/{id}", 3)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(eventoJson))
+				.andExpect(status().isNotFound()).andExpect(jsonPath("$.message").value(errorMessage));
+	}
+
+	@Test
+	void testEditarEventoExitoso() throws Exception {
+		Evento eventoExistente = new Evento();
+		eventoExistente.setIdEvento(3L);
+		
+		Recinto recinto = new Recinto();
+		recinto.setIdRecinto(900L);			
+		
+		when(serviceRecinto.obtenerPorNombre("Wizink Center")).thenReturn(recinto);
+		when(serviceEventos.findById(3L)).thenReturn(eventoExistente);
+		when(serviceEventos.save(any())).thenReturn(eventoExistente);
+
+		String eventoDTOJson = "{\r\n"
+				+ "  \"nombre\": \"Concierto Feid\",\r\n"
+				+ "  \"descripcionCorta\": \"Descripción corta del evento\",\r\n"
+				+ "  \"descripcionExtendida\": \"Descripción extendida del evento\",\r\n"
+				+ "  \"foto\": \"URL de la foto del evento\",\r\n"
+				+ "  \"fechaEvento\": \"27-02-2023\",\r\n"
+				+ "  \"horaEvento\": \"12:30\",\r\n"
+				+ "  \"precioMinimo\": \"30.5\",\r\n"
+				+ "  \"precioMaximo\": \"100.0\",\r\n"
+				+ "  \"normas\": \"Normas del evento\",\r\n"
+				+ "  \"recinto\": \"Wizink Center\"\r\n"
+				+ "}";
+
+		mockMvc.perform(put("/evento/{id}", 3).content(eventoDTOJson).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated());
+	}
+
+	@Test
+	void testEditarEventoRepetido() throws Exception {
+		String errorMessage = "Ya existe ese evento en la base de datos";
+
+		Evento eventoExistente = new Evento();
+		eventoExistente.setIdEvento(3L);
+		
+		when(serviceEventos.findById(3L)).thenReturn(eventoExistente);
+		when(serviceEventos.save(any())).thenThrow(new EventoRepetidoException());
+		
+		String eventoJson = "{\r\n"
+				+ "  \"nombre\": \"Concierto Feid\",\r\n"
+				+ "  \"descripcionCorta\": \"Descripción corta del evento\",\r\n"
+				+ "  \"descripcionExtendida\": \"Descripción extendida del evento\",\r\n"
+				+ "  \"foto\": \"URL de la foto del evento\",\r\n"
+				+ "  \"fechaEvento\": \"27-02-2023\",\r\n"
+				+ "  \"horaEvento\": \"12:30\",\r\n"
+				+ "  \"precioMinimo\": \"30.5\",\r\n"
+				+ "  \"precioMaximo\": \"100.0\",\r\n"
+				+ "  \"normas\": \"Normas del evento\",\r\n"
+				+ "  \"recinto\": \"Wizink Center\"\r\n"
+				+ "}";
+		
+		mockMvc.perform(put("/evento/{id}", 3)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(eventoJson))
+				.andExpect(status().isBadRequest()).andExpect(jsonPath("$.message").value(errorMessage));
+	}
 
 	@Test
     void testListadoEventosVacio() throws Exception {
@@ -186,67 +275,49 @@ public class ControllerEventosTest {
 	@Test
 	void testFindByNombreFound() throws Exception {
 
-	    given()
-	    .when()
-	        .get("/evento/nombre/melendi")
-	    .then()
-	        .statusCode(200)
-	        .body("nombre", hasItem(containsString("Concierto Melendi")));
+		given().when().get("/evento/nombre/melendi").then().statusCode(200).body("nombre",
+				hasItem(containsString("Concierto Melendi")));
 	}
-	
+
 	@Test
 	void testFindByNombreInexistente() throws Exception {
 		given().queryParam("nombre", "nombre_inexistente").when().get("/evento/nombre").then().statusCode(400);
 	}
-	
+
 	@Test
 	void testFindByNombreError() throws Exception {
 		given().queryParam("nombre", "nombre_inexistente").when().get("/nombre/nombre").then().statusCode(404);
 	}
 
-	
-    @Test
-    void testFindByGeneroCorrecto() throws Exception {
+	@Test
+	void testFindByGeneroCorrecto() throws Exception {
 
-	    given()
-	    .when()
-	        .get("/evento/genero/corta")
-	    .then()
-	        .statusCode(200)
-	        .body("descripcionCorta", hasItem(containsString("corta")));
+		given().when().get("/evento/genero/corta").then().statusCode(200).body("descripcionCorta",
+				hasItem(containsString("corta")));
 	}
-    
-    @Test
-    void testFindByGeneroInexistente() throws Exception {
-    	given().queryParam("genero", "genero_inexistente").when().get("/evento/genero").then().statusCode(400);
-    }
-  
+
+	@Test
+	void testFindByGeneroInexistente() throws Exception {
+		given().queryParam("genero", "genero_inexistente").when().get("/evento/genero").then().statusCode(400);
+	}
+
 	@Test
 	void testFindByGeneroError() throws Exception {
 		given().queryParam("genero", "genero_inexistente").when().get("/genero/genero").then().statusCode(404);
 	}
-	
+
 	@Test
 	void testFindByCiudadCorrecto() throws Exception {
 
-	    given()
-	    .when()
-	        .get("/evento/ciudad/Madrid")
-	    .then()
-	        .statusCode(200)
-	        .body("recinto.localidad", hasItem(containsString("Madrid")));
+		given().when().get("/evento/ciudad/Madrid").then().statusCode(200).body("recinto.localidad",
+				hasItem(containsString("Madrid")));
 	}
 
 	@Test
 	void testFindByCiudadInexistente() throws Exception {
-      given()
-      	.queryParam("ciudad", "genero_inexistente")
-      .when()
-      	.get("/evento/ciudad")
-      .then()
-      	.statusCode(400);
+		given().queryParam("ciudad", "genero_inexistente").when().get("/evento/ciudad").then().statusCode(400);
 	}
-	
+
 	@Test
 	void testFindByCiudadError() throws Exception {
 		given().queryParam("nombre", "nombre_inexistente").when().get("/ciudad/ciudad").then().statusCode(404);

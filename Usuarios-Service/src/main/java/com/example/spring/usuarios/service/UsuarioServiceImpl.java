@@ -41,19 +41,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (usuario.getContrasenia().length() < 4) {
 			throw new InvalidPasswordException();
 		}
-		
+
 		if (usuario.getFechaAlta() != null) {
 			if (usuario.getFechaAlta().getYear() < 2000) {
 				throw new InvalidYearException();
 			}
-		}else {
+		} else {
 			usuario.setFechaAlta(LocalDate.now());
 		}
 
 		List<Usuario> lista = findAll();
 		for (Usuario user : lista) {
-			if (!user.getIdUsuario().equals(usuario.getIdUsuario())
-					&& user.getMail().equalsIgnoreCase(usuario.getMail())) {
+			if (user.getIdUsuario() != usuario.getIdUsuario() && user.getMail().equalsIgnoreCase(usuario.getMail())) {
 				throw new UsuarioRepetidoException();
 			}
 		}

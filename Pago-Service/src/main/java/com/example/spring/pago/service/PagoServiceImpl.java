@@ -59,13 +59,13 @@ public class PagoServiceImpl implements PagoService {
 
 	public TarjetaResponse realizarPago(Tarjeta tarjeta, Long idUsuario, Long idEvento) {
 		logger.info("--------- entra en realizar pago");
-
+ 
 		EventoListadoDTO eventoListadoDTO = new EventoListadoDTO();
 		Recinto recinto = new Recinto();
-
+ 
 		Token token = bancoFeign.getToken();
 		TarjetaResponse response = new TarjetaResponse();
-
+ 
 		try {
 			UsuarioDTO usuarioDTO = usuarioFeign.getUsuario(idUsuario);
 			logger.info("--------- reliza el feign client de usuario");
@@ -73,10 +73,10 @@ public class PagoServiceImpl implements PagoService {
 			logger.info("--------- reliza el feign client de evento");
 			recinto = eventoFeign.getRecinto(eventoListadoDTO.getRecinto().getNombre());
 			logger.info("--------- reliza el feign client de recinto");
-
+ 
 			try {
 				response = bancoFeign.obtenerDatosValidacion(token.getToken(), tarjeta);
-
+ 
 			} catch (FeignException e) {
 				if (e.status() == 400 || e.status() == 500) {
 					String feignErrorMessage = e.contentUTF8();
@@ -85,36 +85,36 @@ public class PagoServiceImpl implements PagoService {
 					String status = "";
 					String error = "";
 					String timeStamp = "";
-
+ 
 					try {
 						JsonNode jsonNode = objectMapper.readTree(feignErrorMessage);
 						JsonNode messageNode = jsonNode.get("message");
 						JsonNode statusNode = jsonNode.get("status");
 						JsonNode timestampNode = jsonNode.get("timestamp");
 						JsonNode errorNode = jsonNode.get("error");
-
+ 
 						if (statusNode != null) {
 							status = statusNode.asText();
 						}
-
+ 
 						if (timestampNode != null) {
 							timeStamp = timestampNode.asText();
 						}
-
+ 
 						if (errorNode != null) {
 							error = errorNode.asText();
 						}
-
+ 
 						if (messageNode != null && messageNode.isArray()) {
 							for (final JsonNode objNode : messageNode) {
 								errorMessages.add(objNode.asText());
 							}
 						}
-
+ 
 					} catch (IOException ioException) {
 						logger.error("Error al parsear el mensaje de la excepción Feign: " + ioException.getMessage());
 					}
-
+ 
 					response.setError(error);
 					response.setInfo(tarjeta);
 					if (ConversionMensajes.convertirError(error).equals("")) {
@@ -124,7 +124,7 @@ public class PagoServiceImpl implements PagoService {
 						response.setInfoAdicional("");
 					}
 					response.setStatus(status);
-					response.setTimestamp(timeStamp);
+					response.setTimestamp(timeStamp); 
 					if (ConversionMensajes.convertirError(error).equals("")) {
 						response.setMessage("Error en el formato de los campos");
 					} else {
@@ -135,19 +135,19 @@ public class PagoServiceImpl implements PagoService {
 					LocalDateTime ahora = LocalDateTime.now();
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 					String timestampFormateado = ahora.format(formatter);
-
+ 
 					response.setError("Transacción correcta");
 					response.setStatus("200.0001");
 					response.setTimestamp(timestampFormateado);
 					response.setMessage("Entrada comprada con éxito");
 					response.setInfoAdicional("");
 					response.setInfo(tarjeta);
-
+ 
 					repo.save(new UsuarioEvento(usuarioAdapter.of(usuarioDTO),
 							eventoAdapter.of(eventoListadoDTO, recinto)));
 					logger.info("--------- reliza el save de usuarioEvento");
 				}
-
+ 
 			}
 		} catch (FeignException e) {
 			logger.info("--------- ENTRA EN EXCEPCION DE EVENTO");
@@ -157,46 +157,46 @@ public class PagoServiceImpl implements PagoService {
 			String status = "";
 			String error = "";
 			String timeStamp = "";
-
+ 
 			try {
 				JsonNode jsonNode = objectMapper.readTree(feignErrorMessage);
 				JsonNode messageNode = jsonNode.get("message");
 				JsonNode statusNode = jsonNode.get("status");
 				JsonNode timestampNode = jsonNode.get("timestamp");
 				JsonNode errorNode = jsonNode.get("error");
-
+ 
 				if (statusNode != null) {
 					status = statusNode.asText();
 				}
-
+ 
 				if (timestampNode != null) {
 					timeStamp = timestampNode.asText();
 				}
-
+ 
 				if (errorNode != null) {
 					error = errorNode.asText();
 				}
-
+ 
 				if (messageNode != null && messageNode.isArray()) {
 					for (final JsonNode objNode : messageNode) {
 						errorMessages.add(objNode.asText());
 					}
 				}
-
+ 
 			} catch (IOException ioException) {
 				logger.error("Error al parsear el mensaje de la excepción Feign: " + ioException.getMessage());
 			}
-
+ 
 			response.setError(error);
 			response.setInfo(tarjeta);
 			response.setInfoAdicional("");
 			response.setStatus(status);
 			response.setTimestamp(timeStamp);
 			response.setMessage(errorMessages.get(0));
-
+ 
 		}
-
+ 
 		return response;
-
+ 
 	}
 }

@@ -143,5 +143,20 @@ public class ControllerEventos {
 
 		return serviceRecinto.obtenerPorNombre(nombre);
 	}
+	
+	@GetMapping("/genero/{genero}")
+	public List<EventoListadoDTO> findByGenero(@PathVariable String genero) {
+		logger.info("------ Buscar evento por genero (GET) ");
+		List<Evento> eventoGenero = serviceEventos.findByGenero(genero);
+		
+		return adapter.of(eventoGenero);
+	}
 
+	@GetMapping("/ciudad/{ciudad}")
+	public List<EventoListadoDTO> findByCiudad(@PathVariable String ciudad) {
+		logger.info("------ Buscar evento por ciudad (GET) ");
+		List<Evento> eventoCiudad = serviceEventos.findByCiudad(ciudad);
+		
+		return adapter.of(eventoCiudad);
+	}
 }

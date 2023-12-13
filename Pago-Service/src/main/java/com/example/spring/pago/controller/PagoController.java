@@ -20,10 +20,12 @@ import com.example.spring.pago.service.PagoService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pago")
+@Tag(name = "Pago", description = "Operaciones relacionadas con la venta de eventos")
 public class PagoController {
 	private static final Logger logger = LoggerFactory.getLogger(PagoController.class);
 
@@ -31,10 +33,11 @@ public class PagoController {
 	PagoService serv;
 
 	// /pago?idUsuario=2&idEvento=3
+
 	@Operation(summary = "Realizar un pago")
 	@ApiResponse(responseCode = "200", description = "Pago exitoso")
 	@ApiResponse(responseCode = "500", description = "Servidor no disponible")
-	@CircuitBreaker(name = "evento", fallbackMethod = "circuitBreakerEvento")
+	@CircuitBreaker(name = "evento", fallbackMethod = "circuitBreaker")
 	@PostMapping
 	public TarjetaResponse realizarPago(@RequestParam Long idUsuario, @RequestParam Long idEvento,
 			@Valid @RequestBody Tarjeta tarjeta) {
@@ -45,11 +48,12 @@ public class PagoController {
 
 		return tarjetaResponse;
 	}
+    
 
 	@Operation(summary = "Fallback en caso de error en realizarPago")
 	@ApiResponse(responseCode = "200", description = "Respuesta de fallback exitosa")
 	@ApiResponse(responseCode = "500", description = "Servidor no disponible")
-	private TarjetaResponse circuitBreakerEvento(RuntimeException e) {
+	private TarjetaResponse circuitBreaker(RuntimeException e) {
 		System.out.println("----------- circuitBreakerEvento");
 		TarjetaResponse response = new TarjetaResponse();
 		LocalDateTime ahora = LocalDateTime.now();
@@ -60,7 +64,8 @@ public class PagoController {
 		response.setStatus("500");
 		response.setTimestamp(timestampFormateado);
 		response.setMessage("Lo sentimos, en estos momentos no estan disponibles los servidores. Intentelo más tarde");
-		return response;
+    	return response; 
 
-	}
+    }
+
 }

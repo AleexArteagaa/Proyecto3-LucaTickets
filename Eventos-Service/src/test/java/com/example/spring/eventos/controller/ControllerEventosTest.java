@@ -282,6 +282,6 @@ public class ControllerEventosTest {
 	
 	@Test
 	void testEliminarEventoRestAssured() throws Exception {
-		given().queryParam("id", 8000L).when().delete("/evento/id").then().statusCode(404);
+		given().pathParam("id", 8000L).when().delete("/evento/{id}").then().statusCode(404);
 	}
 }

@@ -17,10 +17,8 @@ import com.example.spring.eventos.model.Recinto;
 
 public class EventoItemWriter implements ItemWriter<Evento>{
 
-	// La conexión se establece en el constructor o se obtiene de alguna manera
     private Connection connection;
 
-    // Constructor que establece la conexión
     public EventoItemWriter() {
 
 
@@ -39,20 +37,19 @@ public class EventoItemWriter implements ItemWriter<Evento>{
         System.out.println("--- Escribiendo Datos");
 
         for (Evento evento : chunk) {
-            // Verificar si el recinto ya existe en la base de datos
+        	
             Recinto recinto = evento.getRecinto();
             Recinto existingRecinto = findExistingRecinto(recinto);
             
             if (existingRecinto == null) {
-                // El recinto no existe, por lo que lo insertamos
-                insertRecinto(recinto);
+
+            	insertRecinto(recinto);
             }
 
-            // Ahora podemos verificar y agregar el evento
             Evento existingEvento = findExistingEvento(evento);
 
             if (existingEvento == null) {
-                // El evento no existe, por lo que lo insertamos
+            	
                 insertEvento(evento);
             }
         }
@@ -80,7 +77,7 @@ public class EventoItemWriter implements ItemWriter<Evento>{
                             resultSet.getDouble("precio_minimo"),
                             resultSet.getDouble("precio_maximo"),
                             resultSet.getString("normas"),
-                            // Recuperar el recinto
+                            
                             new Recinto(
                                     resultSet.getLong("id_recinto"),
                                     resultSet.getString("nombre")
@@ -90,7 +87,6 @@ public class EventoItemWriter implements ItemWriter<Evento>{
             }
         }
 
-        // El evento no existe
         return null;
     }
 

@@ -42,6 +42,27 @@ public class Recinto {
         this.tipoRecinto = tipoRecinto;
         this.aforo = aforo;
     }
+	
+	
+	
+
+	public Recinto(Long idRecinto, String nombre, String ciudad, String direccion, String tipoRecinto, int aforo) {
+		super();
+		this.idRecinto = idRecinto;
+		this.nombre = nombre;
+		this.ciudad = ciudad;
+		this.direccion = direccion;
+		this.tipoRecinto = tipoRecinto;
+		this.aforo = aforo;
+	}
+	
+	
+
+	public Recinto(Long idRecinto, String nombre) {
+		super();
+		this.idRecinto = idRecinto;
+		this.nombre = nombre;
+	}
 
 	public Long getIdRecinto() {
 		return idRecinto;

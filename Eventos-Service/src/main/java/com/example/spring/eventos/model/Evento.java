@@ -94,6 +94,26 @@ public class Evento {
 		this.recinto=recinto;
 	}
 
+	
+	
+
+	public Evento(Long idEvento, String nombre, String descripcionCorta, String descripcionExtendida, String foto,
+			LocalDate fechaEvento, LocalTime horaEvento, Double precioMinimo, Double precioMaximo, String normas,
+			Recinto recinto) {
+		super();
+		this.idEvento = idEvento;
+		this.nombre = nombre;
+		this.descripcionCorta = descripcionCorta;
+		this.descripcionExtendida = descripcionExtendida;
+		this.foto = foto;
+		this.fechaEvento = fechaEvento;
+		this.horaEvento = horaEvento;
+		this.precioMinimo = precioMinimo;
+		this.precioMaximo = precioMaximo;
+		this.normas = normas;
+		this.recinto = recinto;
+	}
+
 
 	public Long getIdEvento() {
 		return idEvento;

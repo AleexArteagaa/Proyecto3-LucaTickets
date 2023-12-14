@@ -4,12 +4,9 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.validation.constraints.NotEmpty;

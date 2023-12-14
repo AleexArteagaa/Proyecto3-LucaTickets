@@ -2,8 +2,6 @@ package com.example.spring.eventos.response;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;

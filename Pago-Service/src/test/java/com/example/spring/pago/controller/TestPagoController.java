@@ -1,18 +1,10 @@
 package com.example.spring.pago.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDate;
-import java.util.Collections;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.example.spring.pago.feignclients.BancoFeignClient;
 import com.example.spring.pago.feignclients.EventoFeignClient;
 import com.example.spring.pago.feignclients.UsuarioFeignClient;
-import com.example.spring.pago.model.Tarjeta;
-import com.example.spring.pago.response.TarjetaResponse;
-import com.example.spring.pago.service.PagoService;
 
-import feign.FeignException;
-import feign.Request;
-import feign.Response;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,8 +27,7 @@ public class TestPagoController {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	private PagoService servicio;
+
 
 	@MockBean
 	private UsuarioFeignClient usuarioFeign;

@@ -3,7 +3,6 @@ package com.example.spring.usuarios.model;
 import java.time.LocalDate;
 
 import com.example.spring.usuarios.utilidades.DeserializacionLocalDate;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.persistence.Column;

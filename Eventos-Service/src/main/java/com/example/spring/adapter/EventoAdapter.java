@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
-import com.example.spring.eventos.response.EventoDTO;
 import com.example.spring.eventos.response.EventoListadoDTO;
 import com.example.spring.eventos.response.RecintoDTO;
 

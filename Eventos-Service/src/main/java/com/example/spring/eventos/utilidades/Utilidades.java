@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.example.spring.eventos.response.EventoDTO;
 import com.example.spring.eventos.response.EventoListadoDTO;
 
 public class Utilidades {

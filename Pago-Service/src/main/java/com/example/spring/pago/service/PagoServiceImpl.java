@@ -1,7 +1,6 @@
 package com.example.spring.pago.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.spring.pago.adaptador.EventoAdapter;
 import com.example.spring.pago.adaptador.UsuarioAdapter;
-import com.example.spring.pago.controller.PagoController;
 import com.example.spring.pago.feignclients.BancoFeignClient;
 import com.example.spring.pago.feignclients.EventoFeignClient;
 import com.example.spring.pago.feignclients.UsuarioFeignClient;
@@ -31,7 +29,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import feign.FeignException;
-import feign.codec.DecodeException;
 import jakarta.transaction.Transactional;
 
 @Transactional

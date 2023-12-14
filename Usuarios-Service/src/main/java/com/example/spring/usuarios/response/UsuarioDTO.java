@@ -5,8 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.example.spring.usuarios.utilidades.DeserializacionLocalDate;
 
 public class UsuarioDTO {
 	private Long id;

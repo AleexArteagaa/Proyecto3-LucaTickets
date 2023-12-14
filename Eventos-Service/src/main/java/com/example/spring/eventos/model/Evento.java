@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import com.example.spring.eventos.utilidades.DeserializacionLocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

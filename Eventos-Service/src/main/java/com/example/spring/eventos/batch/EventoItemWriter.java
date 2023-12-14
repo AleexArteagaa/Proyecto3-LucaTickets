@@ -1,20 +1,17 @@
 package com.example.spring.eventos.batch;
 
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.Properties;
+
 
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 
-import com.example.spring.eventos.EventosServiceApplication;
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
 

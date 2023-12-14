@@ -14,7 +14,6 @@ import org.springframework.batch.item.ItemProcessor;
 
 import com.example.spring.eventos.model.Evento;
 import com.example.spring.eventos.model.Recinto;
-import com.example.spring.eventos.response.EventoDTOCarga;
 
 public class EventoItemProcessor implements ItemProcessor<String[], Evento>{
 

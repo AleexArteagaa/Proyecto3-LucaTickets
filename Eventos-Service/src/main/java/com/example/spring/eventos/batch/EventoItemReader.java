@@ -3,17 +3,11 @@ package com.example.spring.eventos.batch;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.core.io.ClassPathResource;
 
-import com.example.spring.eventos.response.EventoDTOCarga;
 import com.opencsv.CSVReader;
 
 public class EventoItemReader implements ItemReader<String[]> {

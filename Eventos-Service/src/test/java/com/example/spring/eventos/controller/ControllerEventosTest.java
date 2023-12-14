@@ -210,10 +210,10 @@ public class ControllerEventosTest {
 
 	    given()
 	    .when()
-	        .get("/evento/genero/corta")
+	        .get("/evento/genero/trap")
 	    .then()
 	        .statusCode(200)
-	        .body("descripcionCorta", hasItem(containsString("corta")));
+	        .body("descripcionCorta", hasItem(containsString("trap")));
 	}
     
     @Test

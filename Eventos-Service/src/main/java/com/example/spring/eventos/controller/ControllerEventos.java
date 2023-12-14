@@ -140,7 +140,6 @@ public class ControllerEventos {
 	 * @return Lista de objetos {@code EventoListadoDTO} que representan la
 	 *         información simplificada de todos los eventos.
 	 */
-
 	@GetMapping
 	@Operation(summary = "Obtener todos los eventos", description = "Obtiene la lista de todos los eventos disponibles.")
 	@ApiResponse(responseCode = "200", description = "Lista de eventos obtenida exitosamente")
@@ -166,16 +165,29 @@ public class ControllerEventos {
 	@Operation(summary = "Buscar eventos por nombre", description = "Obtiene la lista de eventos que coinciden con el nombre proporcionado.")
 	@ApiResponse(responseCode = "200", description = "Lista de eventos obtenida exitosamente")
 	@ApiResponse(responseCode = "404", description = "No se encontraron eventos con el nombre especificado")
-	@Parameter(name = "nombre", description = "Nombre del evento a buscar", required = true)
-	public List<EventoListadoDTO> findByNombre(@PathVariable String nombre) {
+	public List<EventoListadoDTO> findByNombre(@Parameter(name = "nombre", description = "Nombre del evento a buscar", required = true)@PathVariable String nombre) {
 		logger.info("------ Listado de eventos por nombre (GET) ");
 		List<Evento> eventoNombre = serviceEventos.findByNombre(nombre);
 
 		return adapter.of(eventoNombre);
 	}
 
+	/**
+	 * Recupera una lista de eventos filtrados por id mediante una solicitud
+	 * HTTP GET. El método busca eventos cuyo id coincida con el parámetro
+	 * proporcionado. La información detallada de cada evento se transforma en
+	 * objetos {@code EventoListadoDTO} antes de devolver la lista resultante.
+	 *
+	 * @param id Id de los eventos a ser buscados.
+	 * @return Lista de objetos {@code EventoListadoDTO} que representan la
+	 *         información simplificada de los eventos coincidentes con el id
+	 *         proporcionado.
+	 */         
 	@GetMapping("/{id}")
-	public EventoListadoDTO findById(@PathVariable Long id) {
+	@Operation(summary = "Buscar eventos por id", description = "Obtiene la lista de eventos que coinciden con el id proporcionado.")
+	@ApiResponse(responseCode = "200", description = "Lista de eventos obtenida exitosamente")
+	@ApiResponse(responseCode = "404", description = "No se encontraron eventos con el id especificado")
+	public EventoListadoDTO findById(@Parameter(name = "id", description = "Id del evento a buscar")@PathVariable Long id) {
 		logger.info("------ Listado de eventos por id (GET) ");
 		Evento evento = serviceEventos.findById(id);
 
@@ -188,9 +200,24 @@ public class ControllerEventos {
 
 		return serviceRecinto.obtenerPorNombre(nombre);
 	}
-
+	
+	/**
+	 * Recupera una lista de eventos filtrados por genero mediante una solicitud
+	 * HTTP GET. El método busca eventos cuyo genero coincida total o parcialmente
+	 * con el parámetro proporcionado. La información detallada de cada evento se
+	 * transforma en objetos {@code EventoListadoDTO} antes de devolver la lista
+	 * resultante.
+	 *
+	 * @param genero Nombre o parte del nombre del genero de los eventos a ser buscados.
+	 * @return Lista de objetos {@code EventoListadoDTO} que representan la
+	 *         información simplificada de los eventos coincidentes con el genero
+	 *         proporcionado.
+	 */
 	@GetMapping("/genero/{genero}")
-	public List<EventoListadoDTO> findByGenero(@PathVariable String genero) {
+	@Operation(summary = "Buscar eventos por genero", description = "Obtiene la lista de eventos que coinciden con el genero proporcionado.")
+	@ApiResponse(responseCode = "200", description = "Lista de eventos obtenida exitosamente")
+	@ApiResponse(responseCode = "404", description = "No se encontraron eventos con el genero especificado")
+	public List<EventoListadoDTO> findByGenero(@Parameter(name = "genero", description = "Genero del evento a buscar", required = true)@PathVariable String genero) {
 		logger.info("------ Buscar evento por genero (GET) ");
 		List<Evento> eventoGenero = serviceEventos.findByGenero(genero);
 
@@ -209,8 +236,24 @@ public class ControllerEventos {
 		serviceEventos.deleteById(id);
 		return Utilidades.eventoEliminadoJson(adapter.of(evento));
 	}
+
+	/**
+	 * Recupera una lista de eventos filtrados por ciudad mediante una solicitud
+	 * HTTP GET. El método busca eventos cuya ciudad coincida total o parcialmente
+	 * con el parámetro proporcionado. La información detallada de cada evento se
+	 * transforma en objetos {@code EventoListadoDTO} antes de devolver la lista
+	 * resultante.
+	 *
+	 * @param ciudad Nombre o parte del nombre de la ciudad de los eventos a ser buscados.
+	 * @return Lista de objetos {@code EventoListadoDTO} que representan la
+	 *         información simplificada de los eventos coincidentes con el nombre
+	 *         de la ciudad proporcionada.
+	 */
 	@GetMapping("/ciudad/{ciudad}")
-	public List<EventoListadoDTO> findByCiudad(@PathVariable String ciudad) {
+	@Operation(summary = "Buscar eventos por ciudad", description = "Obtiene la lista de eventos que coinciden con la ciudad proporcionada.")
+	@ApiResponse(responseCode = "200", description = "Lista de eventos obtenida exitosamente")
+	@ApiResponse(responseCode = "404", description = "No se encontraron eventos con la ciudad especificado")
+	public List<EventoListadoDTO> findByCiudad(@Parameter(name = "ciudad", description = "Ciudad del evento a buscar", required = true)@PathVariable String ciudad) {
 		logger.info("------ Buscar evento por ciudad (GET) ");
 		List<Evento> eventoCiudad = serviceEventos.findByCiudad(ciudad);
 

@@ -319,9 +319,12 @@ public class ControllerEventosTest {
 
 	@Test
 	void testFindByGeneroCorrecto() throws Exception {
-
-		given().when().get("/evento/genero/corta").then().statusCode(200).body("descripcionCorta",
-				hasItem(containsString("corta")));
+	    given()
+	    .when()
+	        .get("/evento/genero/trap")
+	    .then()
+	        .statusCode(200)
+	        .body("descripcionCorta", hasItem(containsString("trap")));
 	}
 
 	@Test

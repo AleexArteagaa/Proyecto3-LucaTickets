@@ -1,8 +1,9 @@
 package com.example.spring.eventos.service;
 
-
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,36 +16,38 @@ import com.example.spring.eventos.repository.RepositoryEventos;
 
 @Service
 public class ServiceEventosImpl implements ServiceEventos {
+	private static final Logger logger = LoggerFactory.getLogger(ServiceEventosImpl.class);
 
-	
 	@Autowired
 	private RepositoryEventos repository;
-	
+
 	@Override
 	public Evento save(Evento evento) {
 
 		List<Evento> eventos = repository.findAll();
-		
+
 		if (evento.getFechaEvento().getYear() < 2000) {
 			throw new InvalidYearException();
 		}
-		
-        for (Evento existingEvento : eventos) {
-            if (existingEvento.equals(evento)) {
-                throw new EventoRepetidoException();
-            }
-        }
-		
+
+		System.out.println(eventos);
+		for (Evento existingEvento : eventos) {
+			System.out.println(existingEvento);
+			if (existingEvento.getIdEvento() != evento.getIdEvento() && existingEvento.equals(evento)) {
+				throw new EventoRepetidoException();
+			}
+		}
+
 		return repository.save(evento);
-		
+
 	}
-	
+
 	@Override
 	public List<Evento> findAll() {
-		
+
 		List<Evento> eventos = repository.findAll();
-				
-	    if (eventos.isEmpty()) {
+
+		if (eventos.isEmpty()) {
 			throw new EventosIsEmptyException();
 		}
 
@@ -53,24 +56,51 @@ public class ServiceEventosImpl implements ServiceEventos {
 
 	@Override
 	public List<Evento> findByNombre(String name) {
-		
-	    List<Evento> eventos = repository.findByNombre(name).orElseThrow(EventoNotFoundException::new);
-	    
-	    if (eventos.isEmpty()) {
+
+		List<Evento> eventos = repository.findByNombre(name).orElseThrow(EventoNotFoundException::new);
+
+		if (eventos.isEmpty()) {
 			throw new EventosIsEmptyException();
 		}
-	    
-	    return eventos;
+
+		return eventos;
 
 	}
 
 	@Override
 	public Evento findById(Long id) {
 		Evento evento = repository.findById(id).orElseThrow(EventoNotFoundException::new);
-    
+
 		return evento;
-		
+
 	}
-	
-	
+
+	@Override
+	public void deleteById(Long id) {
+		repository.deleteById(id);
+	}
+
+	public List<Evento> findByGenero(String genero) {
+
+		List<Evento> eventos = repository.findByGenero(genero).orElseThrow(EventoNotFoundException::new);
+
+		if (eventos.isEmpty()) {
+			throw new EventosIsEmptyException();
+		}
+
+		return eventos;
+	}
+
+	@Override
+	public List<Evento> findByCiudad(String ciudad) {
+
+		List<Evento> ciudades = repository.findByCiudad(ciudad).orElseThrow(EventoNotFoundException::new);
+
+		if (ciudades.isEmpty()) {
+			throw new EventosIsEmptyException();
+		}
+
+		return ciudades;
+	}
+
 }

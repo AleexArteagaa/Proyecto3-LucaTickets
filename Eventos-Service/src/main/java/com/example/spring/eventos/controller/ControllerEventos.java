@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/evento")
 @Tag(name = "Eventos", description = "Operaciones relacionadas con eventos")
+@CrossOrigin(origins="*")
 public class ControllerEventos {
 
 	private static final Logger logger = LoggerFactory.getLogger(ControllerEventos.class);
